@@ -5,19 +5,43 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class Widget_SII extends StatelessWidget {
-/*
+
+  final controller = new FlutterWebviewPlugin();
+
+
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: WebviewScaffold(
+    final flutterWebviewPlugin = new FlutterWebviewPlugin();
+
+
+
+    return Visibility(
+      visible: false,
+      child:WebviewScaffold(
         url: 'http://mictlantecuhtli.itmatamoros.edu.mx',
         hidden: true,
         withZoom: true,
+        useWideViewPort: true,
+            withOverviewMode: true,
+        persistentFooterButtons: <Widget>[
+
+      FloatingActionButton(
+
+      child: Icon(Icons.refresh),
+      onPressed: (){
+        ()=>{};
+      },
+    )
+
+        ],
       )
     );
   }
-*/
 
+
+
+/*
  final Completer<WebViewController> _controller = Completer<WebViewController>();
 
   @override
@@ -48,6 +72,6 @@ class Widget_SII extends StatelessWidget {
     );
   }
 
-
+*/
 
 }
