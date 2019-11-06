@@ -40,13 +40,38 @@ class AppState extends State<App> {
     });
   }
 
+  var isDrawerOpen=false;
+
+  void _handleDrawer(){
+    RenderBox box = _key.currentContext?.findRenderObject();
+
+    setState(() {
+      _key.currentState.openDrawer();
+
+      isDrawerOpen=!isDrawerOpen;
+      print("\n\n\n\n\n\nDrawer: "+isDrawerOpen.toString());
+
+      if(box!=null){
+        print("\n\n\n\n\n\nABIERTO");
+      }else{print("\n\n\n\n\nCERRADO");}
+    });
+
+  }
+
+  GlobalKey<ScaffoldState> _key = new GlobalKey<ScaffoldState>();
+
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title:"Tec-MAS Develop",
       home:Scaffold(
+          key: _key,
         appBar: AppBar(
+            leading: new IconButton(
+              icon: new Icon(Icons.menu),
+              onPressed:_handleDrawer,
+            ),
           title:   Text("Tec-Mas"),
           backgroundColor:BaseThemeColor_DarkLightBlue,
 
