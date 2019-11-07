@@ -8,6 +8,10 @@ class Widget_SII extends StatelessWidget {
 
   final controller = new FlutterWebviewPlugin();
 
+  Widget_SII(){
+    print("Objeto creado");
+  }
+
 
 
   @override
@@ -17,7 +21,7 @@ class Widget_SII extends StatelessWidget {
 
 
     return Visibility(
-      visible: false,
+      visible: true,
       child:WebviewScaffold(
         url: 'http://mictlantecuhtli.itmatamoros.edu.mx',
         hidden: true,

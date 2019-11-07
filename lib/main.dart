@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tecmas/BarraDeNavegacion/Drawer.dart';
 import 'package:tecmas/Secciones/SII/Widget_SII.dart';
+import 'package:tecmas/Secciones/SharedClasses/Articles/Articles.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
 
 import 'Secciones/Calendario/Widget_Calendario.dart';
@@ -26,31 +27,31 @@ class AppState extends State<App> {
 
   void funcSeccionActual(double NumSeccion, var contexto){
     setState(() {
-      if(NumSeccion==1.0){Seccion=Text("Inicio");}
+      if(NumSeccion==1.0){Seccion=Widget_Articles();}
       if(NumSeccion==2.0){Seccion=Text("Becas");}
       if(NumSeccion==3.0){Seccion=Widget_Calendario();}
       if(NumSeccion==4.0){Seccion=Text("Transporte");}
       if(NumSeccion==5.0){Seccion=Text("Emergencias");}
       if(NumSeccion==6.0){Seccion=Text("Mapa Interactivo");}
-      if(NumSeccion==7.0){Seccion=Widget_SII();}
+      //if(NumSeccion==7.0){Seccion=Widget_SII();}
 
       Navigator.pop(contexto);
-
-
-    });
+    }
+    );
   }
 
   var isDrawerOpen=false;
 
+
   void _handleDrawer(){
-    RenderBox box = _key.currentContext?.findRenderObject();
+
 
     setState(() {
       _key.currentState.openDrawer();
 
       isDrawerOpen=!isDrawerOpen;
       print("\n\n\n\n\n\nDrawer: "+isDrawerOpen.toString());
-
+      box=_key.currentContext?.findRenderObject();
       if(box!=null){
         print("\n\n\n\n\n\nABIERTO");
       }else{print("\n\n\n\n\nCERRADO");}
@@ -59,6 +60,7 @@ class AppState extends State<App> {
   }
 
   GlobalKey<ScaffoldState> _key = new GlobalKey<ScaffoldState>();
+  RenderBox box;
 
 
   @override

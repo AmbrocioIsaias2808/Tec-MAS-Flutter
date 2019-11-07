@@ -29,7 +29,7 @@ class BarraDeNavegacion extends StatelessWidget {
             Seccion(SectionIcon: Icons.airport_shuttle,SectionText: "Transporte",color:Colors.black,accion: ()=> funcSeccionActual(4.0,context)),
             Seccion(SectionIcon: Icons.local_hospital,SectionText: "Emergencias",color:Colors.black,accion: ()=> funcSeccionActual(5.0,context)),
             Seccion(SectionIcon: Icons.map,SectionText: "Mapa Interactivo",color:Colors.black,accion: ()=> funcSeccionActual(6.0,context)),
-            Seccion(SectionIcon: Icons.book,SectionText: "SII",color:Colors.black,accion: ()=> funcSeccionActual(7.0,context)),
+            // Seccion(SectionIcon: Icons.book,SectionText: "SII",color:Colors.black,accion: ()=> funcSeccionActual(7.0,context)),
 
           ],
         ),

@@ -12,11 +12,7 @@ class Cabecera extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(70.0)),
             color: Colors.white,
             child: Padding(padding: EdgeInsets.all(12),
-                child:Image.network(
-                  'http://www.itcdcuauhtemoc.edu.mx/contenido/LOGOS/LOGO%20VERTICAL%20TECNM.png',
-                  width: 80,height: 80,
-
-                )
+                child:Image.asset("assets/Imagenes/LOGO_TECNM.png",width: 80,height: 80,)
             )
             ,
           ),
