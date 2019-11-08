@@ -6,7 +6,7 @@ import 'cards.dart';
 
 class Widget_Articles extends StatelessWidget {
 
-  List<Articles> entries = <Articles>[];
+  List<Articles> entries = <Articles>[]; //Lista de Articulos
 
   Widget_Articles(){
 
