@@ -27,16 +27,23 @@ class cards extends StatelessWidget {
 
           width: double.infinity,
           child: Column(
+
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.all(20),
-              child:Text(articulo.title.toString(),style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),)),
+              child:Text(articulo.title.toString(),style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),)
+              ),
               Padding(
                 padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                child: FittedBox(
-                child: Image.network(articulo.image.toString()),
-                fit: BoxFit.fill,
-              ),
+                child: Container(
+                  color:Colors.black,
+                  child: SizedBox(
+                    width: double.infinity, height:200 ,child: FittedBox(
+                    child: Image.network(articulo.image.toString()),
+                    fit: BoxFit.contain,
+                  ),
+                  ),
+                )
               ),
 
               SizedBox(width: double.infinity,height: 10,)

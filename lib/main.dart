@@ -6,6 +6,7 @@ import 'package:tecmas/Secciones/SharedClasses/Articles/Articles.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
 
 import 'Secciones/Calendario/Widget_Calendario.dart';
+import 'Secciones/Estructures/Articles.dart';
 
 
 void main(){
@@ -23,15 +24,16 @@ class AppState extends State<App> {
 
   double SeccionActual;
   String text="Inicio";
-  dynamic Seccion=Text("Inicio");
+  dynamic Seccion=Widget_Articles('https://wordpresspruebas210919.000webhostapp.com/wp-json/wp/v2/posts?categories=2');
+  dynamic articleview = new Widget_Articles('https://wordpresspruebas210919.000webhostapp.com/wp-json/wp/v2/posts?categories=2');
 
   void funcSeccionActual(double NumSeccion, var contexto){
     setState(() {
-      if(NumSeccion==1.0){Seccion=Widget_Articles();}
-      if(NumSeccion==2.0){Seccion=Text("Becas");}
+      if(NumSeccion==1.0){Seccion=Widget_Articles('https://wordpresspruebas210919.000webhostapp.com/wp-json/wp/v2/posts?categories=2');}
+      if(NumSeccion==2.0){Seccion=Widget_Articles('https://wordpresspruebas210919.000webhostapp.com/wp-json/wp/v2/posts?categories=3');}
       if(NumSeccion==3.0){Seccion=Widget_Calendario();}
       if(NumSeccion==4.0){Seccion=Text("Transporte");}
-      if(NumSeccion==5.0){Seccion=Text("Emergencias");}
+      if(NumSeccion==5.0){Seccion=Widget_Articles('https://wordpresspruebas210919.000webhostapp.com/wp-json/wp/v2/posts?categories=4');}
       if(NumSeccion==6.0){Seccion=Text("Mapa Interactivo");}
       //if(NumSeccion==7.0){Seccion=Widget_SII();}
 
