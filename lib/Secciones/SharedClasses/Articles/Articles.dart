@@ -9,11 +9,19 @@ import 'cards.dart';
 class Widget_Articles extends StatefulWidget {
 
   final String URL;
+  _Widget_ArticlesState State;
 
-  Widget_Articles(this.URL);
+
+  void ServerCall(){
+    State.ServerCall();
+  }
+
+  Widget_Articles(this.URL){
+    State= new _Widget_ArticlesState(URL);
+  }
 
   @override
-  _Widget_ArticlesState createState() => _Widget_ArticlesState(URL);
+  _Widget_ArticlesState createState() => State;
 
 
 }
@@ -23,6 +31,14 @@ class _Widget_ArticlesState extends State<Widget_Articles> {
   final String URL;
 
   _Widget_ArticlesState(this.URL){
+
+  }
+
+
+  void funcReset(){
+    setState(() {
+      ServerCall();
+    });
 
   }
 

@@ -29,7 +29,7 @@ class AppState extends State<App> {
 
   void funcSeccionActual(double NumSeccion, var contexto){
     setState(() {
-      if(NumSeccion==1.0){Seccion=Widget_Articles('https://wordpresspruebas210919.000webhostapp.com/wp-json/wp/v2/posts?categories=2');}
+      if(NumSeccion==1.0){Seccion.ServerCall();}
       if(NumSeccion==2.0){Seccion=Widget_Articles('https://wordpresspruebas210919.000webhostapp.com/wp-json/wp/v2/posts?categories=3');}
       if(NumSeccion==3.0){Seccion=Widget_Calendario();}
       if(NumSeccion==4.0){Seccion=Text("Transporte");}
