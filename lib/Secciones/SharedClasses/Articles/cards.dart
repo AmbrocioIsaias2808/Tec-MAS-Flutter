@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tecmas/Secciones/Estructures/Articles.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:tecmas/Secciones/SharedClasses/NetworkImageBox.dart';
+
+
 
 
 
@@ -37,12 +41,7 @@ class cards extends StatelessWidget {
                 padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: Container(
                   color:Colors.black,
-                  child: SizedBox(
-                    width: double.infinity, height:200 ,child: FittedBox(
-                    child: Image.network(articulo.image.toString()),
-                    fit: BoxFit.contain,
-                  ),
-                  ),
+                  child: NetworkImageBox(URL: articulo.image.toString()),
                 )
               ),
 

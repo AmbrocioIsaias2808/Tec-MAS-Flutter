@@ -6,6 +6,8 @@ import 'dart:convert';
 
 import 'cards.dart';
 
+
+
 class ArticlesList extends StatefulWidget {
 
   final String URL;
@@ -44,7 +46,11 @@ class _ArticlesListState extends State<ArticlesList> {
 
 
   Future<List<Articles>> ServerCall() async {
-    final response = await http.get(URL);
+    final response = await http.get(URL,
+       /* headers: {
+          'Authorization': 'Bearer w9ZNRvWfwUGHS1qcLvbQaMYPaeJ9GJhA',
+        }*/
+    );
     return Future.delayed(Duration(seconds: 1),(){
 
       if (response.statusCode == 200) {

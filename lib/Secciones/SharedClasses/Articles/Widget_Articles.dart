@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tecmas/BarraDeNavegacion/Drawer.dart';
-import 'package:tecmas/Secciones/SharedClasses/Articles/ArticlesList.dart';
+
+import 'ArticlesList.dart';
+
 
 
 class Widget_Articles extends StatelessWidget {
