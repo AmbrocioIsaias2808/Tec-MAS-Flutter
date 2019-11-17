@@ -24,11 +24,11 @@ class App extends StatelessWidget {
         title:"Tec-MAS Develop",
         initialRoute: '/',
       routes: {
-          '/':(context)=>Widget_Articles(SeccionTitle: "Inicio",URL:'https://wordpresspruebas210919.000webhostapp.com/wp-json/wp/v2/posts?categories=2'),
-          '/Becas':(context)=>Widget_Articles(SeccionTitle:"Becas",URL:'https://wordpresspruebas210919.000webhostapp.com/wp-json/wp/v2/posts?categories=3'),
+          '/':(context)=>Widget_Articles(SeccionTitle: "Inicio",URL:'https://wordpresspruebas210919.000webhostapp.com/wp-json/wp/v2/posts?categories=2&per_page=5&page='),
+          '/Becas':(context)=>Widget_Articles(SeccionTitle:"Becas",URL:'https://wordpresspruebas210919.000webhostapp.com/wp-json/wp/v2/posts?categories=3&per_page=5&page='),
           '/Calendario':(context)=>Widget_Calendario(),
           '/Transporte': (context)=>Widget_Transporte(),
-          '/Emergencias':(context)=>Widget_Articles(SeccionTitle:"Emergencias", URL:'https://wordpresspruebas210919.000webhostapp.com/wp-json/wp/v2/posts?categories=4'),
+          '/Emergencias':(context)=>Widget_Articles(SeccionTitle:"Emergencias", URL:'https://wordpresspruebas210919.000webhostapp.com/wp-json/wp/v2/posts?categories=4&per_page=5&page='),
           '/Mapa':(context)=>Scaffold(appBar: AppBar(title: Text('Mapa'),),drawer: BarraDeNavegacion(),body:Center(child: Text("Mapa Interactivo", style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),),),
       },
 

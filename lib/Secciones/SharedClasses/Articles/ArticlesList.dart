@@ -3,21 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:tecmas/Secciones/Estructures/Articles.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:tecmas/Secciones/SharedClasses/Messeges/Errors/MSG_NetworkConnectionError.dart';
 import 'dart:convert';
 
 import 'cards.dart';
-
-
 
 class ArticlesList extends StatefulWidget {
 
   final String URL;
   _ArticlesListState State;
 
-
-  void ServerCall(){
-    State.ServerCall();
-  }
 
   ArticlesList({@required this.URL}){
     State= new _ArticlesListState(URL);
@@ -42,37 +37,80 @@ class _ArticlesListState extends State<ArticlesList> {
     setState(() {
       ShowMoreLoadingAnimation=true;
       ServerCall();
-
-
     });
 
   }
 
 
   Future<List<Articles>> ServerCall() async {
-    final response = await http.get(URL,
-       /* headers: {
+
+
+
+
+    try {
+      networkError=false;
+      final response = await http.get(URL+Pagina.toString(),
+        /* headers: {
           'Authorization': 'Bearer w9ZNRvWfwUGHS1qcLvbQaMYPaeJ9GJhA',
         }*/
-    );
-    return Future.delayed(Duration(seconds: 1),(){
+      );
 
-      if (response.statusCode == 200) {
-        // If the call to the server was successful, parse the JSON.
+      return Future.delayed(Duration(seconds: 1),(){
+        print("Response: "+response.statusCode.toString());
+        if (response.statusCode == 200) {
+          // If the call to the server was successful, parse the JSON.
+          setState(() {
+            MoreHeigh=0;
+            ShowMoreLoadingAnimation=false;
+
+
+
+          });
+          return GetArticles(json.decode(response.body));
+        } else {
+          // If that call was not successful, throw an error.
+          if(response.statusCode==400){
+
+            /*Nota del desarrollador - Apuntes Personales
+          *
+          * Me sugiero a mi mismo personalizar mediante excepciones personalidas este tipo de errores.
+          * */
+            setState(() {
+              isAllArticlesDisplayed=true;
+              ShowMoreLoadingAnimation=false;
+            });
+          }
+
+          initState();
+          throw Error();
+        }
+
+      });
+
+
+
+
+
+
+
+
+
+
+
+
+
+    } on Exception catch(e) {
+      if (e.toString().contains('SocketException')) {
         setState(() {
-          MoreHeigh=0;
-          ShowMoreLoadingAnimation=false;
-
-
-
+          networkError=true;
         });
-        return GetArticles(json.decode(response.body));
-      } else {
-        // If that call was not successful, throw an error.
-        throw Exception('Failed to load post');
-      }
+    }
+    //do something else
+    }
 
-    });
+
+
+
 
   }
 
@@ -149,13 +187,18 @@ class _ArticlesListState extends State<ArticlesList> {
   String MoreText;
   double MoreHeigh=0;
   bool ShowMoreLoadingAnimation=false;
+  int Pagina=1; //Variable de paginación de resultados
+  bool isAllArticlesDisplayed=false;
+  bool networkError=false;
 
-
+  void Refresh(){
+    articulos.clear(); Pagina=1; isAllArticlesDisplayed=false;
+  }
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: (){
-        articulos.clear(); return ServerCall();
+        Refresh(); return ServerCall();
       },
        child: Column(
           children: <Widget>[
@@ -163,29 +206,65 @@ class _ArticlesListState extends State<ArticlesList> {
               future: GetArticlesFromServer,
               builder: (BuildContext context, AsyncSnapshot snapshot){
                 print(snapshot.data);
-                if(snapshot.data == null){
-                  return Expanded(child:
-                  Container(
-                      child: Center(
-                        child: CircularProgressIndicator(),
+
+                return (snapshot.connectionState == ConnectionState.done) //Si la conexión a terminado y
+                    ? snapshot.hasData &&  networkError==false//Se han obtenido datos de la consulta
+                    ? /* Y la peticion fue satisfactoria*/
+                       /*Despliega el sig elemento*/
+                        Expanded(child:
+                          ListView.builder(
+                            controller: scrollController,
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              try{
+                                return cards(articulo: snapshot.data[index]);
+                              }on RangeError{
+                                print("Error: desplazamiento al final de lista antes de finalizar el refresh");
+                              }
+                            },
+                          )
+                        )
+                    : /*Si sucesido algun error despliega el siguiente elemento*/
+                      Center(child: InkWell(
+                          child:MSG_NetworkConnectionError(),
+                          onTap: () => setState(() {
+                            initState();
+                          })
                       )
-                  )
-                  );
-                } else {
-                  return Expanded(child:
-                  ListView.builder(
-                    controller: scrollController,
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      try{
-                        return cards(articulo: snapshot.data[index]);
-                      }on RangeError{
-                        print("Error: desplazamiento al final de lista antes de finalizar el refresh");
-                      }
-                    },
-                  )
-                  );
-                }
+                      )
+
+                    : /*Si no tengo información y la conexion no ha terminado entonces muestro el icono de loading*/
+                Expanded(child:
+                        Container(
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            )
+                        )
+                        );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
               },
             ),
         AnimatedContainer(
@@ -202,9 +281,12 @@ class _ArticlesListState extends State<ArticlesList> {
           // Provide an optional curve to make the animation feel smoother.
           curve: Curves.fastOutSlowIn,
           child: ShowMoreLoadingAnimation ? Center(child: Padding(padding: EdgeInsets.all(4),child: CircularProgressIndicator(),),) : FlatButton(
-            child: Text('Cargar Mas'),
+            child: isAllArticlesDisplayed ? Text("Estos son todos los Articulos") : Text('Cargar Mas'),
             onPressed: (){
-              funcReset();
+              if(isAllArticlesDisplayed==false){
+                Pagina++;
+                funcReset();
+              }
             },
           ),
         )
