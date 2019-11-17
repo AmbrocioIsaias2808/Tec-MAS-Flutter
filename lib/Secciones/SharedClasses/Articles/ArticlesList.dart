@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tecmas/Secciones/Estructures/Articles.dart';
 import 'dart:async';
@@ -39,7 +40,10 @@ class _ArticlesListState extends State<ArticlesList> {
 
   dynamic funcReset(){
     setState(() {
+      ShowMoreLoadingAnimation=true;
       ServerCall();
+
+
     });
 
   }
@@ -55,6 +59,13 @@ class _ArticlesListState extends State<ArticlesList> {
 
       if (response.statusCode == 200) {
         // If the call to the server was successful, parse the JSON.
+        setState(() {
+          MoreHeigh=0;
+          ShowMoreLoadingAnimation=false;
+
+
+
+        });
         return GetArticles(json.decode(response.body));
       } else {
         // If that call was not successful, throw an error.
@@ -105,15 +116,39 @@ class _ArticlesListState extends State<ArticlesList> {
   void initState() {
     GetArticlesFromServer = ServerCall();
     scrollController.addListener((){
-      if(scrollController.position.maxScrollExtent==scrollController.offset){
-        print("final");
-
-        funcReset();
+      if((scrollController.offset >= scrollController.position.maxScrollExtent && !scrollController.position.outOfRange) && MoreIsVisible==false){
+         setState(() {
+           MoreIsVisible=true;
+           print("Mostrando: ");
+           print("scrollController.offset: "+scrollController.offset.toString());
+           print("scrollController.position.maxScrollExtent: "+scrollController.position.maxScrollExtent.toString());
+           print("scrollController.position.outOfRange: "+scrollController.position.outOfRange.toString());
+           MoreHeigh=40;
+         });
       }
+      if((scrollController.offset < scrollController.position.maxScrollExtent) && MoreIsVisible==true){
+        setState(() {
+          MoreIsVisible=false;
+          print("Ocultando: ");
+          print("scrollController.offset: "+scrollController.offset.toString());
+          print("scrollController.position.maxScrollExtent: "+scrollController.position.maxScrollExtent.toString());
+          print("scrollController.position.outOfRange: "+scrollController.position.outOfRange.toString());
+          MoreHeigh=0;
+        });
+      }
+
+
+
+
     });
     super.initState();
 
   }
+
+  bool MoreIsVisible=false;
+  String MoreText;
+  double MoreHeigh=0;
+  bool ShowMoreLoadingAnimation=false;
 
 
   @override
@@ -122,35 +157,65 @@ class _ArticlesListState extends State<ArticlesList> {
       onRefresh: (){
         articulos.clear(); return ServerCall();
       },
-       child: Container(
-          child: FutureBuilder(
-            future: GetArticlesFromServer,
-            builder: (BuildContext context, AsyncSnapshot snapshot){
-              print(snapshot.data);
-              if(snapshot.data == null){
-                return Container(
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    )
-                );
-              } else {
-                return ListView.builder(
-                  controller: scrollController,
-                  itemCount: snapshot.data.length+1,
-                  itemBuilder: (BuildContext context, int index) {
-                    if(index<articulos.length) {
-                      return cards(articulo: snapshot.data[index]);
-                    }/*else{
-                      return Padding(
-                        padding: EdgeInsets.symmetric(vertical: 32.0),
-                        child: Center(child: CircularProgressIndicator()),
-                      );
-                    }*/
-                  },
-                );
-              }
+       child: Column(
+          children: <Widget>[
+            FutureBuilder(
+              future: GetArticlesFromServer,
+              builder: (BuildContext context, AsyncSnapshot snapshot){
+                print(snapshot.data);
+                if(snapshot.data == null){
+                  return Expanded(child:
+                  Container(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      )
+                  )
+                  );
+                } else {
+                  return Expanded(child:
+                  ListView.builder(
+                    controller: scrollController,
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      try{
+                        return cards(articulo: snapshot.data[index]);
+                      }on RangeError{
+                        print("Error: desplazamiento al final de lista antes de finalizar el refresh");
+                      }
+                    },
+                  )
+                  );
+                }
+              },
+            ),
+        AnimatedContainer(
+          // Use the properties stored in the State class.
+          width: double.infinity,
+          height:MoreHeigh,
+
+          decoration: BoxDecoration(
+              //color: Color.fromRGBO(27, 55, 94,1),
+              //borderRadius:BorderRadius.circular(50),
+          ),
+          // Define how long the animation should take.
+          duration: Duration(milliseconds: 500),
+          // Provide an optional curve to make the animation feel smoother.
+          curve: Curves.fastOutSlowIn,
+          child: ShowMoreLoadingAnimation ? Center(child: Padding(padding: EdgeInsets.all(4),child: CircularProgressIndicator(),),) : FlatButton(
+            child: Text('Cargar Mas'),
+            onPressed: (){
+              funcReset();
             },
           ),
+        )
+
+
+
+
+
+
+
+          ]
         )
 
 
