@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_plugin_pdf_viewer/flutter_plugin_pdf_viewer.dart';
-import 'package:tecmas/BarraDeNavegacion/Drawer.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 
-class Widget_Calendario extends StatefulWidget {
-  String URL;
+class pdfViewer extends StatefulWidget {
+  String fromURL;
   String fromAsset;
 
 
-  Widget_Calendario({@required this.URL=''});
+  pdfViewer({this.fromURL='', this.fromAsset=''});
 
   @override
-  _Widget_CalendarioState createState() => _Widget_CalendarioState(fromURL: URL);
+  _pdfViewerState createState() => _pdfViewerState(fromURL: fromURL, fromAsset: fromAsset);
 
 }
 
-class _Widget_CalendarioState extends State<Widget_Calendario> {
+class _pdfViewerState extends State<pdfViewer> {
 
 
   bool _isLoading=true;
@@ -28,7 +27,7 @@ class _Widget_CalendarioState extends State<Widget_Calendario> {
   String fromAsset;
 
 
-  _Widget_CalendarioState({this.fromURL='', this.fromAsset=''});
+  _pdfViewerState({this.fromURL='', this.fromAsset=''});
 
   void loadDocument() async{
 
@@ -51,7 +50,7 @@ class _Widget_CalendarioState extends State<Widget_Calendario> {
       _isLoading=false;
     });
 
-
+    
 
 
 
@@ -68,15 +67,11 @@ class _Widget_CalendarioState extends State<Widget_Calendario> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: BarraDeNavegacion(),
-      appBar: AppBar(
-        title: Text("Calendario Escolar"),
-      ),
-      body: Stack(
+    return Container(
+      child: Stack(
           children:<Widget>[
-            _isLoading ? Center(child: CircularProgressIndicator())
-                : PDFViewer(document: Document, showPicker: true, showIndicator: true, showNavigation: true,indicatorBackground: BaseThemeColor_DarkBlue,),
+               _isLoading ? Center(child: CircularProgressIndicator())
+              : PDFViewer(document: Document, showPicker: true, showIndicator: true, showNavigation: true,indicatorBackground: BaseThemeColor_DarkBlue,),
 
             Positioned(
                 right: 20,
@@ -84,27 +79,31 @@ class _Widget_CalendarioState extends State<Widget_Calendario> {
                 child: new Container(
 
 
-                    child: FlatButton(
-                        color: BaseThemeColor_DarkBlue,
-                        shape: CircleBorder(),
-                        child: Icon(Icons.refresh, color: Colors.white,size: 30,),
+                  child: FlatButton(
+                      color: BaseThemeColor_DarkBlue,
+                      shape: CircleBorder(),
+                      child: Icon(Icons.refresh, color: Colors.white,size: 30,),
                         onPressed: (){
                           DefaultCacheManager().removeFile(fromURL);
                           Future.delayed(Duration(milliseconds: 100),(){
                             setState(() {
-                              _isLoading=true;
+                            _isLoading=true;
                             });
                             loadDocument();
                           }
                           );
                         }
-                    )
                 )
+            )
+
+
             )
           ]
       ),
+
+
+
     );
   }
 }
-
 

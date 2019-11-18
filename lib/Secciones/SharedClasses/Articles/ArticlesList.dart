@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tecmas/Secciones/Estructures/Articles.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:tecmas/Secciones/SharedClasses/Messeges/Errors/MSG_NetworkConnectionError.dart';
+import 'package:tecmas/Temas/BaseTheme.dart';
 import 'dart:convert';
 
 import 'cards.dart';
@@ -42,24 +45,35 @@ class _ArticlesListState extends State<ArticlesList> {
   }
 
 
+
+
   Future<List<Articles>> ServerCall() async {
 
 
-
+  //UQlrfPYbvLGU4YJIp6HyiTSYVHQWCi4L
 
     try {
-      networkError=false;
-      final response = await http.get(URL+Pagina.toString(),
-        /* headers: {
-          'Authorization': 'Bearer w9ZNRvWfwUGHS1qcLvbQaMYPaeJ9GJhA',
-        }*/
+      //Base URL format: https://wordpresspruebas210919.000webhostapp.com/wp-json/wp/v2/posts?categories=CATEGORY&per_page=5&page=Pagina
+
+      final response = await http.get(URL+"&per_page=5&page="+Pagina.toString(),
+
+          headers:{
+             /*'Authorization':'Bearer 2DxTBtiGdp2jdJ8cjNZt49FFPlDLzOa2',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',*/
+            },
       );
+
+      print(response.headers);
+
+
 
       return Future.delayed(Duration(seconds: 1),(){
         print("Response: "+response.statusCode.toString());
         if (response.statusCode == 200) {
           // If the call to the server was successful, parse the JSON.
           setState(() {
+            networkError=false;
             MoreHeigh=0;
             ShowMoreLoadingAnimation=false;
 
@@ -81,8 +95,7 @@ class _ArticlesListState extends State<ArticlesList> {
             });
           }
 
-          initState();
-          throw Error();
+          throw Exception("Error");
         }
 
       });
@@ -225,13 +238,24 @@ class _ArticlesListState extends State<ArticlesList> {
                           )
                         )
                     : /*Si sucesido algun error despliega el siguiente elemento*/
-                      Center(child: InkWell(
-                          child:MSG_NetworkConnectionError(),
-                          onTap: () => setState(() {
-                            initState();
-                          })
-                      )
-                      )
+
+                Expanded(child: Center(
+                  child:Column(children: <Widget>[
+                    SizedBox(height: 200, width: double.infinity,),
+                    Container(
+
+                        child:FloatingActionButton.extended(
+                        icon: Icon(Icons.network_check),
+                        label:Text("Fallo de conexión a Internet"),
+                        onPressed: () => setState(() {
+                          initState();
+                        })
+                    ))
+                  ],),
+                ) ,)
+
+
+
 
                     : /*Si no tengo información y la conexion no ha terminado entonces muestro el icono de loading*/
                 Expanded(child:
