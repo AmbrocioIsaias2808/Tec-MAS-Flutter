@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tecmas/Secciones/Estructures/Articles.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:tecmas/Secciones/SharedClasses/Articles/ArticleViewer.dart';
 import 'package:tecmas/Secciones/SharedClasses/NetworkImageBox.dart';
 
 
@@ -26,6 +27,10 @@ class cards extends StatelessWidget {
         splashColor: Colors.blue,
         onTap: () {
           print(articulo.id.toString());
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ArticleViewer(title:articulo.title.toString(),ArticleContent:articulo.content)),
+          );
         },
         child: Container(
 

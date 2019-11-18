@@ -72,36 +72,31 @@ class _Widget_CalendarioState extends State<Widget_Calendario> {
       drawer: BarraDeNavegacion(),
       appBar: AppBar(
         title: Text("Calendario Escolar"),
+        actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(10),
+              child: FlatButton(
+                  color: BaseThemeColor_DarkBlue,
+                  shape: CircleBorder(),
+                  child: Icon(Icons.refresh, color: Colors.white,),
+                  onPressed: (){
+                    DefaultCacheManager().removeFile(fromURL);
+                    Future.delayed(Duration(milliseconds: 100),(){
+                      setState(() {
+                        _isLoading=true;
+                      });
+                      loadDocument();
+                    }
+                    );
+                  }
+              )
+          )
+        ],
       ),
-      body: Stack(
-          children:<Widget>[
+      body: Center(
+          child:
             _isLoading ? Center(child: CircularProgressIndicator())
                 : PDFViewer(document: Document, showPicker: true, showIndicator: true, showNavigation: true,indicatorBackground: BaseThemeColor_DarkBlue,),
-
-            Positioned(
-                right: 20,
-                bottom: 50.0,
-                child: new Container(
-
-
-                    child: FlatButton(
-                        color: BaseThemeColor_DarkBlue,
-                        shape: CircleBorder(),
-                        child: Icon(Icons.refresh, color: Colors.white,size: 30,),
-                        onPressed: (){
-                          DefaultCacheManager().removeFile(fromURL);
-                          Future.delayed(Duration(milliseconds: 100),(){
-                            setState(() {
-                              _isLoading=true;
-                            });
-                            loadDocument();
-                          }
-                          );
-                        }
-                    )
-                )
-            )
-          ]
       ),
     );
   }
