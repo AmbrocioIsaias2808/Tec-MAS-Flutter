@@ -68,7 +68,7 @@ class _ArticlesListState extends State<ArticlesList> {
 
 
 
-      return Future.delayed(Duration(seconds: 1),(){
+      return Future.delayed(Duration(milliseconds: 500),(){
         print("Response: "+response.statusCode.toString());
         if (response.statusCode == 200) {
           // If the call to the server was successful, parse the JSON.
@@ -153,7 +153,9 @@ class _ArticlesListState extends State<ArticlesList> {
     }
 
     print(articulos.length);
-
+    setState(() {
+      isRefreshing=false;
+    });
     return articulos;
 
   }
@@ -170,20 +172,12 @@ class _ArticlesListState extends State<ArticlesList> {
       if((scrollController.offset >= scrollController.position.maxScrollExtent && !scrollController.position.outOfRange) && MoreIsVisible==false){
          setState(() {
            MoreIsVisible=true;
-           print("Mostrando: ");
-           print("scrollController.offset: "+scrollController.offset.toString());
-           print("scrollController.position.maxScrollExtent: "+scrollController.position.maxScrollExtent.toString());
-           print("scrollController.position.outOfRange: "+scrollController.position.outOfRange.toString());
            MoreHeigh=40;
          });
       }
       if((scrollController.offset < scrollController.position.maxScrollExtent) && MoreIsVisible==true){
         setState(() {
           MoreIsVisible=false;
-          print("Ocultando: ");
-          print("scrollController.offset: "+scrollController.offset.toString());
-          print("scrollController.position.maxScrollExtent: "+scrollController.position.maxScrollExtent.toString());
-          print("scrollController.position.outOfRange: "+scrollController.position.outOfRange.toString());
           MoreHeigh=0;
         });
       }
@@ -203,15 +197,29 @@ class _ArticlesListState extends State<ArticlesList> {
   int Pagina=1; //Variable de paginación de resultados
   bool isAllArticlesDisplayed=false;
   bool networkError=false;
+  bool isRefreshing=false;
 
   void Refresh(){
     articulos.clear(); Pagina=1; isAllArticlesDisplayed=false;
   }
+
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: (){
-        Refresh(); return ServerCall();
+        if(MoreIsVisible==false && ShowMoreLoadingAnimation==false){
+
+          setState(() {
+            isRefreshing=true;
+          });
+          Refresh(); return ServerCall();
+        }else{
+          return Future.delayed(Duration(milliseconds: 30),(){
+            print("Feature disable");
+        });
+        }
+
       },
        child: Column(
           children: <Widget>[
@@ -307,7 +315,7 @@ class _ArticlesListState extends State<ArticlesList> {
           child: ShowMoreLoadingAnimation ? Center(child: Padding(padding: EdgeInsets.all(4),child: CircularProgressIndicator(),),) : FlatButton(
             child: isAllArticlesDisplayed ? Text("Estos son todos los Articulos") : Text('Cargar Mas'),
             onPressed: (){
-              if(isAllArticlesDisplayed==false){
+              if(isAllArticlesDisplayed==false && isRefreshing==false){
                 Pagina++;
                 funcReset();
               }
