@@ -2,11 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tecmas/BarraDeNavegacion/Drawer.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:tecmas/Notifications/OneSignal/OneSignal.dart';
+//import 'package:tecmas/Notifications/OneSignal/OneSignal.dart';
+import 'package:tecmas/Secciones/SharedClasses/RestartApp.dart';
 
 import 'Secciones/Calendario/Widget_Calendario.dart';
 
 import 'Secciones/SharedClasses/Articles/Widget_Articles.dart';
 import 'Secciones/Transporte/Widget_Transporte.dart';
+
+
+final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
+final NotificationSystem notification = new NotificationSystem();
+
+
 
 void main(){
   runApp(App());
@@ -24,20 +33,17 @@ class _AppState extends State<App> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    OneSignal.shared.init(
-        "b43ebbab-e2b2-4b03-8496-0e054bac7c31",
-        iOSSettings: {
-          OSiOSSettings.autoPrompt: false,
-          OSiOSSettings.inAppLaunchUrl: true
-        }
-    );
-    OneSignal.shared.setInFocusDisplayType(OSNotificationDisplayType.notification);
+    notification.setNavigator(navigatorKey);
+    notification.init();
+
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       title:"Tec-MAS Develop",
+
 
       initialRoute: '/',
       routes: {

@@ -16,23 +16,13 @@ Tec-MAS pretende ser un medio de comunicación y difusión de información entre
 
 ### Notas del Desarrollador:
 
-En la presente versión se puede decir que se ha logrado generar la aplicación Homologa a la antes generada en el repositorio de <a href="https://github.com/AmbrocioIsaias2808/Tec-MAS" target="_blank">TecMAS</a> sin embargo esta versión:
+La presente versión incorpora el servicio de notificaciones de OneSignal, sin embargo tenemos ciertos bugs o contratiempos:
 
-* Permite visualizar todos los artículos dados de alta en la plataforma de wordpress de forma "paginada" 
-* Se incorpora un lector pdf para el calendario, ya no es simplemente un webview a una vista de google docs.
-* Es posible visualizar los artículos y navegar entre hipervínculos (a excepción de aquellos que requieren abrir una nueva pestaña, esos no están permitidos por flutter hasta el momento).
+* El servicio incorporado intenta abrir el navegador predefinido del equipo, comportamiento que deseamos modificar para que abra la aplicación y muestre el contenido del post en la misma. Este comportamiento no se a podido incorporar hasta el momento debido a:
 
-Por el momento se siguen utilizando los plugins de lado de servidor:
+  	* No hemos encontrado hasta el momento una forma de reabrir la aplicación en caso de estar cerrada. En caso de estar abierta los test demuestran que seria posible incorporar el comportamiento, sin embargo no es lo que se desea.
 
-- ```
-  Wordpress Rest API v2
-  ```
-
-- ```
-  Better REST API Featured Images
-  ```
-
-Las peticiones se siguen procesando en formato JSON.
+Por lo pronto las notificaciones son recibidas pero al intentar abrirlas solo se eliminan del panel de notificaciones.
 
 **Cosas por hacer:**
 
@@ -40,9 +30,12 @@ Las peticiones se siguen procesando en formato JSON.
 * Implementar seguridad para el sistema de backend.
 * Ajustar ciertos detalles en la sección de transporte (en funcionamiento interno, en cuanto a datos guardados en el cache).
 * Resolver un pequeño bug en la vista del calendario (corregir el disparo de una excepción)
-* Resolver un pequeño bug visual en el apartado de inicio (al momento de recargar mientras se solicitan artículos al mismo tiempo).
-* Implementar el servicio de notificaciones de OneSignal y Adaptarlo a nuestros requerimientos.
+* Adaptar el servicio de OneSignal (notificaciones).
 * Instruirme en el manejo de bases SQLite en flutter e implementar mejoras en la carga de contenido, rendimiento y funcionalidades.
+
+**Resuelto pero en revisión:**
+
+* Resolver un pequeño bug visual en el apartado de inicio (al momento de recargar mientras se solicitan artículos al mismo tiempo).
 
 *Cosas por hacer de forma personal: *
 

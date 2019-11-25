@@ -19,7 +19,7 @@ class BarraDeNavegacion extends StatelessWidget {
           padding: const EdgeInsets.all(0.0),
           children: <Widget>[
             Container(
-              height: 195,
+              height: 200,
               child: Cabecera(),
             ),
 

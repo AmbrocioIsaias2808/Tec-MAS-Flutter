@@ -37,6 +37,9 @@ dev_dependencies:
   flutter_plugin_pdf_viewer: ^1.0.7
   flutter_cache_manager: ^1.1.3
 
+  #In testing
+  url_launcher: ^5.2.5
+
 
 
 # For information on the generic Dart part of this file, see the
