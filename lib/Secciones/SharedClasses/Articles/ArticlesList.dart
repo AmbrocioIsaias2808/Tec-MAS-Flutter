@@ -29,6 +29,8 @@ class ArticlesList extends StatefulWidget {
 
 class _ArticlesListState extends State<ArticlesList> {
 
+  final String ApiKey="wFx01QuHh9ybSx82rzZvypurEs1HQpWy"; //Server
+  //final String ApiKey="eeOpx2D5gHJdPzmjF15UY2JBZgcDsBaj"; //Local
   final String URL;
 
   _ArticlesListState(this.URL){
@@ -49,18 +51,15 @@ class _ArticlesListState extends State<ArticlesList> {
 
   Future<List<Articles>> ServerCall() async {
 
-
-  //UQlrfPYbvLGU4YJIp6HyiTSYVHQWCi4L
-
     try {
       //Base URL format: https://wordpresspruebas210919.000webhostapp.com/wp-json/wp/v2/posts?categories=CATEGORY&per_page=5&page=Pagina
 
       final response = await http.get(URL+"&per_page=5&page="+Pagina.toString(),
 
           headers:{
-             /*'Authorization':'Bearer 2DxTBtiGdp2jdJ8cjNZt49FFPlDLzOa2',
+             'Authorization':'Bearer '+ApiKey,
             'Content-Type': 'application/json',
-            'Accept': 'application/json',*/
+            'Accept': 'application/json',
             },
       );
 
