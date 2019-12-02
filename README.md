@@ -16,7 +16,25 @@ Tec-MAS pretende ser un medio de comunicación y difusión de información entre
 
 ### Notas del Desarrollador:
 
-La versión actual incorpora ya con sistema de seguridad en el backend, esto utilizando el plugin:
+En la presente versión se puede decir que se ha logrado generar la aplicación Homologa a la antes generada en el repositorio de <a href="https://github.com/AmbrocioIsaias2808/Tec-MAS" target="_blank">TecMAS</a> sin embargo esta versión:
+
+* Permite visualizar todos los artículos dados de alta en la plataforma de wordpress de forma "paginada" 
+* Se incorpora un lector pdf para el calendario, ya no es simplemente un webview a una vista de google docs.
+* Es posible visualizar los artículos y navegar entre hipervínculos (a excepción de aquellos que requieren abrir una nueva pestaña, esos no están permitidos por flutter hasta el momento).
+
+Por el momento se siguen utilizando los plugins de lado de servidor:
+
+- ```
+  Wordpress Rest API v2
+  ```
+
+- ```
+  Better REST API Featured Images
+  ```
+
+Las peticiones se siguen procesando en formato JSON.
+
+A su vez incorpora ya un sistema de seguridad en el backend, esto utilizando el plugin:
 
 - ```
   WordPress REST API Authentication
