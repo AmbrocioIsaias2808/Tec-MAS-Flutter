@@ -30,7 +30,9 @@ class NotificationSystem{
     OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult result) {
 
       print("Opened notification: \n${result.notification.jsonRepresentation().replaceAll("\\n", "\n")}");
-      //navigatorKey.currentState.pushNamed('/Mapa');
+      main();
+      navigatorKey.currentState.pushNamed('/Mapa');
+
     });
 
   }
