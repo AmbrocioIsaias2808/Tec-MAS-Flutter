@@ -72,6 +72,7 @@ class _Widget_CalendarioState extends State<Widget_Calendario> {
       drawer: BarraDeNavegacion(),
       appBar: AppBar(
         title: Text("Calendario Escolar"),
+        backgroundColor:BaseThemeAppBarColor,
         actions: <Widget>[
           Padding(
             padding: EdgeInsets.all(10),

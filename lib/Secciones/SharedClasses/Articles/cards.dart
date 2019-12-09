@@ -4,6 +4,7 @@ import 'package:tecmas/Secciones/Estructures/Articles.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:tecmas/Secciones/SharedClasses/Articles/ArticleViewer.dart';
 import 'package:tecmas/Secciones/SharedClasses/NetworkImageBox.dart';
+import 'package:tecmas/Temas/BaseTheme.dart';
 
 
 
@@ -17,7 +18,7 @@ class cards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
+      color: BaseThemeColor_LightGray,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5.0),
       ),
@@ -45,7 +46,10 @@ class cards extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: Container(
-                  color:Colors.black,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                    color: Colors.black,
+                  ),
                   child: NetworkImageBox(URL: articulo.image.toString()),
                 )
               ),

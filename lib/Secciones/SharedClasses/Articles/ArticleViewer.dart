@@ -29,8 +29,10 @@ class _ArticleViewerState extends State<ArticleViewer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       drawer: BarraDeNavegacion(),
       appBar: AppBar(title: Text(title),
+      backgroundColor: BaseThemeAppBarColor,
       actions: <Widget>[
         Padding(
           child: InkWell(child: (Icon(Icons.arrow_back_ios)),onTap: ()async{
@@ -53,13 +55,19 @@ class _ArticleViewerState extends State<ArticleViewer> {
           padding: EdgeInsets.fromLTRB(0,10,10,10),),
       ],),
       body:Container(
-          child: WebView(
-            javascriptMode: JavascriptMode.unrestricted,
-            onWebViewCreated: (WebViewController controller){
-              webController=controller;
-              _loadHTMLfromAssets();
-            },
-          )
+          decoration: BoxDecoration(
+            borderRadius:BorderRadius.only(topLeft: Radius.circular(75.0)),
+          ),
+        child:
+
+              WebView(
+                javascriptMode: JavascriptMode.unrestricted,
+                onWebViewCreated: (WebViewController controller){
+                  webController=controller;
+                  _loadHTMLfromAssets();
+                },
+              ),
+
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: BaseThemeColor_DarkBlue,
@@ -78,7 +86,7 @@ class _ArticleViewerState extends State<ArticleViewer> {
   }
 
   _loadHTMLfromAssets() async{
-    String fileHTMLContents = await rootBundle.loadString(filePath)+ArticleContent+'</body></html>';
+    String fileHTMLContents = await rootBundle.loadString(filePath)+ArticleContent+'</div></body></html>';
     webController.loadUrl(
         Uri.dataFromString(fileHTMLContents,mimeType: 'text/html',
           encoding: Encoding.getByName('utf-8'),

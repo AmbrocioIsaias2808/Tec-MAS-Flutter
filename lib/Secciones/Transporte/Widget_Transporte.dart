@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:tecmas/Secciones/SharedClasses/NetworkImageBox.dart';
 import 'package:tecmas/Secciones/SharedClasses/ZoomableImage.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:tecmas/Temas/BaseTheme.dart';
 
 
 class Widget_Transporte extends StatefulWidget {
@@ -27,35 +28,38 @@ class _Widget_TransporteState extends State<Widget_Transporte> {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
+        backgroundColor: BaseThemeColor_DarkBlue,
         floatingActionButton: Builder(
-        // Create an inner BuildContext so that the onPressed methods
-        // can refer to the Scaffold with Scaffold.of().
-        builder: (BuildContext context) {
-      return FloatingActionButton(
-        child: Icon(Icons.refresh),
-        onPressed: (){
-          setState(() {
-            isReloadFired=true;
-          });
-          for(int i=0; i<ruta.length;i++){
-            setState(() {
-              DefaultCacheManager().removeFile(ruta[i]);
-            });
-          }
-          setState((){
+          // Create an inner BuildContext so that the onPressed methods
+          // can refer to the Scaffold with Scaffold.of().
+            builder: (BuildContext context) {
+              return FloatingActionButton(
+                child: Icon(Icons.refresh),
+                onPressed: (){
+                  setState(() {
+                    isReloadFired=true;
+                  });
+                  for(int i=0; i<ruta.length;i++){
+                    setState(() {
+                      DefaultCacheManager().removeFile(ruta[i]);
+                    });
+                  }
+                  setState((){
 
-            isReloadFired = false;
+                    isReloadFired = false;
 
-          });
+                  });
 
-          final snack = SnackBar(content: Text("Se han Actualizado los Datos"),);
-          Scaffold.of(context).showSnackBar(snack);
+                  final snack = SnackBar(content: Text("Se han Actualizado los Datos"),);
+                  Scaffold.of(context).showSnackBar(snack);
 
 
-        },
-      );}),
+                },
+              );}),
         appBar: AppBar(
+          backgroundColor: BaseThemeAppBarColor,
           bottom: TabBar(
+            indicatorColor: Colors.purple,
             isScrollable: true,
             tabs: [
               Tab(child:Text("Ruta 1")),
@@ -118,6 +122,5 @@ class _Widget_TransporteState extends State<Widget_Transporte> {
   }
 
 }
-
 
 

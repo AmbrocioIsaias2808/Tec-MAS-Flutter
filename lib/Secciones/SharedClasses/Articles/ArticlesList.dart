@@ -63,11 +63,11 @@ class _ArticlesListState extends State<ArticlesList> {
             },
       );
 
-      print(response.headers);
+      //print(response.headers);
 
 
 
-      return Future.delayed(Duration(milliseconds: 500),(){
+      return Future.delayed(Duration(milliseconds: 20),(){
         print("Response: "+response.statusCode.toString());
         if (response.statusCode == 200) {
           // If the call to the server was successful, parse the JSON.
@@ -150,8 +150,6 @@ class _ArticlesListState extends State<ArticlesList> {
       ));
 
     }
-
-    print(articulos.length);
     setState(() {
       isRefreshing=false;
     });
@@ -215,7 +213,7 @@ class _ArticlesListState extends State<ArticlesList> {
           Refresh(); return ServerCall();
         }else{
           return Future.delayed(Duration(milliseconds: 30),(){
-            print("Feature disable");
+            //print("Feature disable");
         });
         }
 
@@ -225,7 +223,7 @@ class _ArticlesListState extends State<ArticlesList> {
             FutureBuilder(
               future: GetArticlesFromServer,
               builder: (BuildContext context, AsyncSnapshot snapshot){
-                print(snapshot.data);
+                //print(snapshot.data);
 
                 return (snapshot.connectionState == ConnectionState.done) //Si la conexión a terminado y
                     ? snapshot.hasData &&  networkError==false//Se han obtenido datos de la consulta
@@ -239,7 +237,7 @@ class _ArticlesListState extends State<ArticlesList> {
                               try{
                                 return cards(articulo: snapshot.data[index]);
                               }on RangeError{
-                                print("Error: desplazamiento al final de lista antes de finalizar el refresh");
+                                //print("Error: desplazamiento al final de lista antes de finalizar el refresh");
                               }
                             },
                           )
@@ -312,7 +310,7 @@ class _ArticlesListState extends State<ArticlesList> {
           // Provide an optional curve to make the animation feel smoother.
           curve: Curves.fastOutSlowIn,
           child: ShowMoreLoadingAnimation ? Center(child: Padding(padding: EdgeInsets.all(4),child: CircularProgressIndicator(),),) : FlatButton(
-            child: isAllArticlesDisplayed ? Text("Estos son todos los Articulos") : Text('Cargar Mas'),
+            child: isAllArticlesDisplayed ? Text("Estos son todos los Articulos", style: BaseThemeText_whiteBold1) : Text('Cargar Mas', style: BaseThemeText_whiteBold1),
             onPressed: (){
               if(isAllArticlesDisplayed==false && isRefreshing==false){
                 Pagina++;
