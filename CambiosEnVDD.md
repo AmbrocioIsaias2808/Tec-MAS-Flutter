@@ -1,0 +1,1 @@
+La presente versión incorpora pequeños cambios en el diseño y en el sistema de petición de contenido, es decir, esta versión primero verifica la conectividad de internet antes de pedir solicitudes al servidor.

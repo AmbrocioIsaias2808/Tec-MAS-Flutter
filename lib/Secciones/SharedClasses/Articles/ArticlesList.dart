@@ -67,7 +67,7 @@ class _ArticlesListState extends State<ArticlesList> {
 
 
 
-      return Future.delayed(Duration(milliseconds: 20),(){
+      return Future.delayed(Duration(milliseconds: 10),(){
         print("Response: "+response.statusCode.toString());
         if (response.statusCode == 200) {
           // If the call to the server was successful, parse the JSON.
@@ -197,26 +197,39 @@ class _ArticlesListState extends State<ArticlesList> {
   bool isRefreshing=false;
 
   void Refresh(){
-    articulos.clear(); Pagina=1; isAllArticlesDisplayed=false;
+      articulos.clear(); Pagina=1; isAllArticlesDisplayed=false;
   }
 
+  Future networkConnectionCkeck() async{
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        return 1;
+      }
+    } on SocketException catch (_) {
+      setState(() {
+        networkError=true;
+      });
+      return 0;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: (){
-        if(MoreIsVisible==false && ShowMoreLoadingAnimation==false){
+      onRefresh: ()async{
 
-          setState(() {
-            isRefreshing=true;
-          });
-          Refresh(); return ServerCall();
-        }else{
-          return Future.delayed(Duration(milliseconds: 30),(){
-            //print("Feature disable");
-        });
-        }
+                    if(MoreIsVisible==false && ShowMoreLoadingAnimation==false && await networkConnectionCkeck()==1){
 
+                      setState(() {
+                        isRefreshing=true;
+                      });
+                      Refresh(); return ServerCall();
+                    }else{
+                      return Future.delayed(Duration(milliseconds: 5),(){
+                        print("Feature disable or network connection error");
+                      });
+                    }
       },
        child: Column(
           children: <Widget>[
@@ -225,9 +238,9 @@ class _ArticlesListState extends State<ArticlesList> {
               builder: (BuildContext context, AsyncSnapshot snapshot){
                 //print(snapshot.data);
 
-                return (snapshot.connectionState == ConnectionState.done) //Si la conexión a terminado y
-                    ? snapshot.hasData &&  networkError==false//Se han obtenido datos de la consulta
-                    ? /* Y la peticion fue satisfactoria*/
+                return (snapshot.connectionState == ConnectionState.done) ? //Si la conexión a terminado y
+                    (snapshot.hasData &&  networkError==false) || (snapshot.hasData==false && articulos.length!=0) || (articulos.length!=0) ?//Se han obtenido datos de la consulta
+                     /* Y la peticion fue satisfactoria*/
                        /*Despliega el sig elemento*/
                         Expanded(child:
                           ListView.builder(
@@ -309,13 +322,14 @@ class _ArticlesListState extends State<ArticlesList> {
           duration: Duration(milliseconds: 500),
           // Provide an optional curve to make the animation feel smoother.
           curve: Curves.fastOutSlowIn,
-          child: ShowMoreLoadingAnimation ? Center(child: Padding(padding: EdgeInsets.all(4),child: CircularProgressIndicator(),),) : FlatButton(
-            child: isAllArticlesDisplayed ? Text("Estos son todos los Articulos", style: BaseThemeText_whiteBold1) : Text('Cargar Mas', style: BaseThemeText_whiteBold1),
-            onPressed: (){
-              if(isAllArticlesDisplayed==false && isRefreshing==false){
+          child: ShowMoreLoadingAnimation && networkError==false? Center(child: Padding(padding: EdgeInsets.all(4),child: CircularProgressIndicator(),),) : FlatButton(
+            child: isAllArticlesDisplayed ? Text("Estos son todos los Articulos", style: BaseThemeText_whiteBold1) : networkError ? Text("Error de Red", style: BaseThemeText_whiteBold1,) : Text('Cargar Mas', style: BaseThemeText_whiteBold1),
+            onPressed: ()async {
+              if((isAllArticlesDisplayed==false && isRefreshing==false) && await networkConnectionCkeck()==1){
                 Pagina++;
                 funcReset();
               }
+
             },
           ),
         )
