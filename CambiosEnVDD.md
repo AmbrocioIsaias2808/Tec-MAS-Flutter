@@ -1,1 +1,3 @@
-La presente versión incorpora pequeños cambios en el diseño y en el sistema de petición de contenido, es decir, esta versión primero verifica la conectividad de internet antes de pedir solicitudes al servidor.
+Versión Experimental:
+
+Esta versión combina el uso de la base de datos en SQLITE y de variables en ejecución para desplegar el contenido de las tarjetas de los artículos que aparecen en ciertas secciones de la aplicación.

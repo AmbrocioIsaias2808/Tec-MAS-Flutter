@@ -51,7 +51,7 @@ class _ArticlesListState extends State<ArticlesList> {
 
 
 
-  Future ServerCall() async {
+  Future<List<Articles>> ServerCall() async {
 
     try {
       //Base URL format: https://wordpresspruebas210919.000webhostapp.com/wp-json/wp/v2/posts?categories=CATEGORY&per_page=5&page=Pagina
@@ -128,9 +128,10 @@ class _ArticlesListState extends State<ArticlesList> {
 
   }
 
+  List<Articles> articulos=[];
 
   dynamic GetArticles(var jsonData){
-
+    DB.deleteALL();
 
 
     for(var object in jsonData){
@@ -151,27 +152,29 @@ class _ArticlesListState extends State<ArticlesList> {
         category: 1,
       );
 
+      articulos.add(a);
       DB.insert(a);
     }
     setState(() {
       isRefreshing=false;
-
     });
-    GetArticlesFromServer=DB.getArticulos();
-    return 1;
+    print(DB.getArticulos());
+    database=DB.getArticulos();
+    return articulos;
 
   }
 
 
 
   Future<List<Articles>> GetArticlesFromServer;
+  Future<List<Articles>> database;
   final scrollController= ScrollController();
 
   @override
   void initState() {
 
-    ServerCall();
-    GetArticlesFromServer=DB.getArticulos();
+    GetArticlesFromServer = ServerCall();
+
     scrollController.addListener((){
       if((scrollController.offset >= scrollController.position.maxScrollExtent && !scrollController.position.outOfRange) && MoreIsVisible==false){
          setState(() {
@@ -204,7 +207,8 @@ class _ArticlesListState extends State<ArticlesList> {
   bool isRefreshing=false;
 
   void Refresh(){
-      DB.deleteALL(); Pagina=1; isAllArticlesDisplayed=false;
+
+      articulos.clear(); Pagina=1; isAllArticlesDisplayed=false;
   }
 
   Future networkConnectionCkeck() async{
@@ -241,12 +245,12 @@ class _ArticlesListState extends State<ArticlesList> {
        child: Column(
           children: <Widget>[
             FutureBuilder(
-              future: GetArticlesFromServer,
+              future: database,
               builder: (BuildContext context, AsyncSnapshot snapshot){
                 //print(snapshot.data);
 
                 return (snapshot.connectionState == ConnectionState.done) ? //Si la conexión a terminado y
-                    (snapshot.hasData &&  networkError==false) || (snapshot.hasData==false && DB.getArticulos()!=null) || (DB.getArticulos()!=null) ?//Se han obtenido datos de la consulta
+                    (snapshot.hasData &&  networkError==false) || (snapshot.hasData==false && articulos.length!=0) || (articulos.length!=0) ?//Se han obtenido datos de la consulta
                      /* Y la peticion fue satisfactoria*/
                        /*Despliega el sig elemento*/
                         Expanded(child:
