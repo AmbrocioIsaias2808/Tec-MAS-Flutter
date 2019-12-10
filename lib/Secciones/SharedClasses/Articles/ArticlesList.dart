@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:tecmas/Secciones/Estructures/Articles.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:tecmas/Secciones/Estructures/Databases/DBHelper.dart';
 import 'package:tecmas/Secciones/SharedClasses/Messeges/Errors/MSG_NetworkConnectionError.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
 import 'dart:convert';
@@ -32,6 +33,7 @@ class _ArticlesListState extends State<ArticlesList> {
   final String ApiKey="wFx01QuHh9ybSx82rzZvypurEs1HQpWy"; //Server
   //final String ApiKey="eeOpx2D5gHJdPzmjF15UY2JBZgcDsBaj"; //Local
   final String URL;
+  var DB = DBHelper();
 
   _ArticlesListState(this.URL){
 
@@ -49,7 +51,7 @@ class _ArticlesListState extends State<ArticlesList> {
 
 
 
-  Future<List<Articles>> ServerCall() async {
+  Future ServerCall() async {
 
     try {
       //Base URL format: https://wordpresspruebas210919.000webhostapp.com/wp-json/wp/v2/posts?categories=CATEGORY&per_page=5&page=Pagina
@@ -126,7 +128,6 @@ class _ArticlesListState extends State<ArticlesList> {
 
   }
 
-  List<Articles> articulos=[];
 
   dynamic GetArticles(var jsonData){
 
@@ -142,18 +143,22 @@ class _ArticlesListState extends State<ArticlesList> {
         image="http://4.bp.blogspot.com/-p3mTTSmKMp8/Uy8UOe2P2YI/AAAAAAAAKLk/6Ewj_FPUXqs/s1600/probando.jpg";
       }
 
-      articulos.add(Articles(
-          id: object['id'],
-          title:object['title']['rendered'],
-          image: image,
-          content: object['content']['rendered'],
-      ));
+      Articles a = Articles(
+        id: object['id'],
+        title:object['title']['rendered'],
+        image: image,
+        content: object['content']['rendered'],
+        category: 1,
+      );
 
+      DB.insert(a);
     }
     setState(() {
       isRefreshing=false;
+
     });
-    return articulos;
+    GetArticlesFromServer=DB.getArticulos();
+    return 1;
 
   }
 
@@ -164,7 +169,9 @@ class _ArticlesListState extends State<ArticlesList> {
 
   @override
   void initState() {
-    GetArticlesFromServer = ServerCall();
+
+    ServerCall();
+    GetArticlesFromServer=DB.getArticulos();
     scrollController.addListener((){
       if((scrollController.offset >= scrollController.position.maxScrollExtent && !scrollController.position.outOfRange) && MoreIsVisible==false){
          setState(() {
@@ -197,7 +204,7 @@ class _ArticlesListState extends State<ArticlesList> {
   bool isRefreshing=false;
 
   void Refresh(){
-      articulos.clear(); Pagina=1; isAllArticlesDisplayed=false;
+      DB.deleteALL(); Pagina=1; isAllArticlesDisplayed=false;
   }
 
   Future networkConnectionCkeck() async{
@@ -239,7 +246,7 @@ class _ArticlesListState extends State<ArticlesList> {
                 //print(snapshot.data);
 
                 return (snapshot.connectionState == ConnectionState.done) ? //Si la conexión a terminado y
-                    (snapshot.hasData &&  networkError==false) || (snapshot.hasData==false && articulos.length!=0) || (articulos.length!=0) ?//Se han obtenido datos de la consulta
+                    (snapshot.hasData &&  networkError==false) || (snapshot.hasData==false && DB.getArticulos()!=null) || (DB.getArticulos()!=null) ?//Se han obtenido datos de la consulta
                      /* Y la peticion fue satisfactoria*/
                        /*Despliega el sig elemento*/
                         Expanded(child:

@@ -7,9 +7,9 @@ class Articles{
   String image;
   String title;
   String content;
-  String category;
+  int category;
 
-  Articles({@required this.id,@required this.image,@required this.title, this.content});
+  Articles({@required this.id,@required this.image,@required this.title, @required this.content, this.category});
 
   Map<String, dynamic> toMap(){
     var map= <String, dynamic> {'id':id, "title":title,'content':content, 'image':image, 'category':category};
@@ -22,7 +22,6 @@ class Articles{
     content=map["content"];
     image=map["image"];
     category=map["category"];
-
   }
 
 
