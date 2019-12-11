@@ -10,8 +10,9 @@ class Widget_Articles extends StatelessWidget {
 
   final String URL;
   final String SeccionTitle;
+  final int Category;
 
-  Widget_Articles({@required this.SeccionTitle,@required this.URL});
+  Widget_Articles({@required this.SeccionTitle,@required this.URL, @required this.Category});
 
 
   @override
@@ -23,7 +24,7 @@ class Widget_Articles extends StatelessWidget {
         backgroundColor: BaseThemeAppBarColor,
       ),
       drawer: BarraDeNavegacion(),
-      body: ArticlesList(URL:URL),
+      body: ArticlesList(URL:URL, Category: Category,),
     );
   }
 }

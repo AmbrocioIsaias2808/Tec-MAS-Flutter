@@ -54,11 +54,11 @@ class _AppState extends State<App> {
 
       initialRoute: '/',
       routes: {
-        '/':(context)=>Widget_Articles(SeccionTitle: "Inicio",URL:Api_Request_URL+'2'),
-        '/Becas':(context)=>Widget_Articles(SeccionTitle:"Becas",URL:Api_Request_URL+'3'),
+        '/':(context)=>Widget_Articles(SeccionTitle: "Inicio",URL:Api_Request_URL, Category: 2,),
+        '/Becas':(context)=>Widget_Articles(SeccionTitle:"Becas",URL:Api_Request_URL, Category: 3,),
         '/Calendario':(context)=>Widget_Calendario(URL: "http://www.itmatamoros.edu.mx/wp-content/themes/tecnologico/pdf/Calendario_agosto_diciembre_2019",),
         '/Transporte': (context)=>Widget_Transporte(),
-        '/Emergencias':(context)=>Widget_Articles(SeccionTitle:"Emergencias", URL:Api_Request_URL+'4'),
+        '/Emergencias':(context)=>Widget_Articles(SeccionTitle:"Emergencias", URL:Api_Request_URL, Category: 4,),
         '/Mapa':(context)=>Scaffold(appBar: AppBar(title: Text('Mapa'),),drawer: BarraDeNavegacion(),body:Center(child: Text("Mapa Interactivo", style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),),),
       },
 

@@ -41,7 +41,7 @@ class DBHelper{
   }
 
   _onCreate(Database db, int version) async{
-    await db.execute("CREATE TABLE $T_Articulos ($ID INTEGER PRIMARY KEY, $NUM TEXT,$TITLE TEXT, $CONTENT TEXT, $IMAGE TEXT, $CATEGORY INTEGER)");
+    await db.execute("CREATE TABLE $T_Articulos ($ID INTEGER PRIMARY KEY, $NUM INTEGER,$TITLE TEXT, $CONTENT TEXT, $IMAGE TEXT, $CATEGORY INTEGER)");
   }
 
   Future<Articles> insert (Articles articulos) async{
@@ -66,10 +66,11 @@ class DBHelper{
     });
   }
 
-  Future<List<Articles>> getArticulos() async{
+  Future<List<Articles>> getArticulos(int category) async{
     var dbClient=await db;
+    String Category=category.toString();
     //List<Map> maps = await dbClient.query(TABLE,columns:[ID,NAME]);
-    List<Map> maps= await dbClient.rawQuery("SELECT * FROM $T_Articulos ORDER BY $NUM DESC");
+    List<Map> maps= await dbClient.rawQuery("SELECT * FROM $T_Articulos WHERE $CATEGORY=$Category ORDER BY $NUM DESC");
     List<Articles> articulos=[];
     if(maps.length>0){
       for (int i=0; i<maps.length;i++){
@@ -81,10 +82,10 @@ class DBHelper{
 
   }
 
-  Future<int> delete(int id) async{
+  Future<int> deleteAllByCategory(int category) async{
 
     var dbClient = await db;
-    return await dbClient.delete(T_Articulos, where : "$ID=?", whereArgs: [id]);
+    return await dbClient.delete(T_Articulos, where : "$CATEGORY=?", whereArgs: [category]);
   }
 
 

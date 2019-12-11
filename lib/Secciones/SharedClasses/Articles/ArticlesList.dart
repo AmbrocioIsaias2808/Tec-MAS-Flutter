@@ -15,11 +15,12 @@ import 'cards.dart';
 class ArticlesList extends StatefulWidget {
 
   final String URL;
+  final int Category;
   _ArticlesListState State;
 
 
-  ArticlesList({@required this.URL}){
-    State= new _ArticlesListState(URL);
+  ArticlesList({@required this.URL, @required this.Category}){
+    State= new _ArticlesListState(URL, Category);
   }
 
   @override
@@ -33,9 +34,10 @@ class _ArticlesListState extends State<ArticlesList> {
   final String ApiKey="wFx01QuHh9ybSx82rzZvypurEs1HQpWy"; //Server
   //final String ApiKey="eeOpx2D5gHJdPzmjF15UY2JBZgcDsBaj"; //Local
   final String URL;
+  final int Category;
   var DB = DBHelper();
 
-  _ArticlesListState(this.URL){
+  _ArticlesListState(this.URL, this.Category){
 
   }
 
@@ -56,7 +58,7 @@ class _ArticlesListState extends State<ArticlesList> {
     try {
       //Base URL format: https://wordpresspruebas210919.000webhostapp.com/wp-json/wp/v2/posts?categories=CATEGORY&per_page=5&page=Pagina
 
-      final response = await http.get(URL+"&per_page=5&page="+Pagina.toString(),
+      final response = await http.get(URL+Category.toString()+"&per_page=5&page="+Pagina.toString(),
 
           headers:{
              'Authorization':'Bearer '+ApiKey,
@@ -147,12 +149,12 @@ class _ArticlesListState extends State<ArticlesList> {
       }
 
       Articles a = Articles(
-        ID:int.parse('1'+object["id"].toString()),
+        ID:int.parse(Category.toString()+object["id"].toString()),
         num: object['id'],
         title:object['title']['rendered'],
         image: image,
         content: object['content']['rendered'],
-        category: 1,
+        category: Category,
       );
 
       articulos.add(a);
@@ -161,8 +163,8 @@ class _ArticlesListState extends State<ArticlesList> {
     setState(() {
       isRefreshing=false;
     });
-    //print(DB.getArticulos());
-    //database=DB.getArticulos();
+    //print(DB.getArticulos(Category));
+    //database=DB.getArticulos(Category);
     print("DatabaseLoad state: "+databaseload.toString()+" and Articulos: "+articulos.length.toString());
     return articulos;
 
@@ -202,12 +204,12 @@ class _ArticlesListState extends State<ArticlesList> {
   void InitialDataSource() async{
         if(await networkConnectionCkeck()==1) {
           print("Loading from internet");
-          DB.deleteALL();// por ahora
+          DB.deleteAllByCategory(Category);// por ahora
           GetArticlesFromServer = ServerCall();
         }else{
           setState(() {
             print("Loading from database");
-            database=DB.getArticulos();
+            database=DB.getArticulos(Category);
             print(database);
             databaseload=true;
           });
@@ -226,7 +228,8 @@ class _ArticlesListState extends State<ArticlesList> {
   bool databaseload=false;
 
   void Refresh(){
-      DB.deleteALL();
+      DB.deleteAllByCategory(Category);
+      //DB.deleteALL();
       articulos.clear(); Pagina=1; isAllArticlesDisplayed=false;
   }
 
