@@ -50,7 +50,7 @@ class DBHelper{
     //return empleados;
 
     await dbClient.transaction((txn) async{
-      var query = "INSERT INTO $T_Articulos ($ID, $NUM, $TITLE, $CONTENT, $IMAGE, $CATEGORY) VALUES ("+articulos.ID.toString()+","+articulos.num.toString()+",'Desde la BD','"+articulos.content+"','"+articulos.image+"',"+articulos.category.toString()+")";
+      var query = "INSERT INTO $T_Articulos ($ID, $NUM, $TITLE, $CONTENT, $IMAGE, $CATEGORY) VALUES ("+articulos.ID.toString()+","+articulos.num.toString()+",'"+articulos.title+"','"+articulos.content+"','"+articulos.image+"',"+articulos.category.toString()+")";
       return await txn.rawInsert(query);
     });
   }

@@ -5,8 +5,9 @@ import 'package:tecmas/Temas/BaseTheme.dart';
 import 'dart:convert';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../CommonlyUsedFunctions.dart';
 
-class ArticleViewer extends StatefulWidget {
+class ArticleViewer extends StatelessWidget {
 
   final String ArticleContent;
   final String title;
@@ -14,15 +15,53 @@ class ArticleViewer extends StatefulWidget {
   ArticleViewer({@required this.ArticleContent, @required this.title});
 
   @override
-  _ArticleViewerState createState() => _ArticleViewerState(ArticleContent:this.ArticleContent, title:this.title);
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: ArticlePage(ArticleContent: ArticleContent, title: title),
+    );
+  }
 }
 
-class _ArticleViewerState extends State<ArticleViewer> {
+
+class ArticlePage extends StatefulWidget {
+
   final String ArticleContent;
   final String title;
 
+  ArticlePage({@required this.ArticleContent, @required this.title});
 
-  _ArticleViewerState({@required this.ArticleContent, @required this.title});
+  @override
+  _ArticlePageState createState() => _ArticlePageState(ArticleContent:this.ArticleContent, title:this.title);
+}
+
+class _ArticlePageState extends State<ArticlePage> {
+  final String ArticleContent;
+  final String title;
+
+  void networkConnectionCkeck() async{
+    int netState = await NetworkConnectionCkeck();
+    if(netState==0){
+      setState(() {
+
+        Future.delayed(Duration(milliseconds: 1200),(){
+          final MSG = SnackBar(backgroundColor: BaseThemeColor_DarkBlue,
+            content: Text("Lo siento, no he podido conectarme a Internet. Es posible que algunos elementos no se visualicen correctamente.",
+            style: TextStyle(fontWeight: FontWeight.bold),textAlign: TextAlign.justify,));
+          Scaffold.of(context).showSnackBar(MSG);
+
+        });
+
+      });
+    }
+  }
+
+  @override
+  void initState(){
+    networkConnectionCkeck();
+  }
+
+
+  _ArticlePageState({@required this.ArticleContent, @required this.title});
   WebViewController webController;
 
   String filePath='assets/ArticleViewer/base.html';

@@ -6,6 +6,7 @@ import 'package:tecmas/Secciones/Estructures/Articles.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:tecmas/Secciones/Estructures/Databases/DBHelper.dart';
+import 'package:tecmas/Secciones/SharedClasses/CommonlyUsedFunctions.dart';
 import 'package:tecmas/Secciones/SharedClasses/Messeges/Errors/MSG_NetworkConnectionError.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
 import 'dart:convert';
@@ -71,7 +72,7 @@ class _ArticlesListState extends State<ArticlesList> {
 
 
 
-      return Future.delayed(Duration(milliseconds: 10),(){
+      return Future.delayed(Duration(milliseconds: 5),(){
         print("Response: "+response.statusCode.toString());
         if (response.statusCode == 200) {
           // If the call to the server was successful, parse the JSON.
@@ -165,7 +166,7 @@ class _ArticlesListState extends State<ArticlesList> {
     });
     //print(DB.getArticulos(Category));
     //database=DB.getArticulos(Category);
-    print("DatabaseLoad state: "+databaseload.toString()+" and Articulos: "+articulos.length.toString());
+    //print("DatabaseLoad state: "+databaseload.toString()+" and Articulos: "+articulos.length.toString());
     return articulos;
 
   }
@@ -212,6 +213,10 @@ class _ArticlesListState extends State<ArticlesList> {
             database=DB.getArticulos(Category);
             print(database);
             databaseload=true;
+            Future.delayed(Duration(milliseconds: 1000),(){
+              Scaffold.of(context).showSnackBar(MSG_MostrandoBD);
+            });
+
           });
 
         }
@@ -226,6 +231,24 @@ class _ArticlesListState extends State<ArticlesList> {
   bool networkError=false;
   bool isRefreshing=false;
   bool databaseload=false;
+  bool intent=false;
+  final MSG_MostrandoBD = SnackBar(backgroundColor: BaseThemeColor_DarkBlue,content: Text("Lo siento, no he podido contactar al servidor. Estoy mostrando los resultados mas recientes guardados en memoria.",
+                          style: TextStyle(fontWeight: FontWeight.bold),textAlign: TextAlign.justify,));
+
+
+  void AnimacionDeIntentoDeConexion(){
+    setState((){
+      intent=true;
+      print(intent);
+    });
+
+    Future.delayed(Duration(milliseconds: 500),(){
+      setState(() {
+        intent=false;
+        print(intent);
+      });
+    });
+  }
 
   void Refresh(){
       DB.deleteAllByCategory(Category);
@@ -233,7 +256,7 @@ class _ArticlesListState extends State<ArticlesList> {
       articulos.clear(); Pagina=1; isAllArticlesDisplayed=false;
   }
 
-  Future networkConnectionCkeck() async{
+  /*Future networkConnectionCkeck() async{
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
@@ -245,6 +268,16 @@ class _ArticlesListState extends State<ArticlesList> {
       });
       return 0;
     }
+  }*/
+
+  Future networkConnectionCkeck() async{
+    int netState = await NetworkConnectionCkeck();
+    if(netState==0){
+      setState(() {
+        networkError=true;
+      });
+    }
+    return netState;
   }
 
   @override
@@ -260,7 +293,8 @@ class _ArticlesListState extends State<ArticlesList> {
                       Refresh(); if(databaseload==true){InitialDataSource();}else{return ServerCall();}
                     }else{
                       return Future.delayed(Duration(milliseconds: 5),(){
-                        print("Feature disable or network connection error");
+                        Scaffold.of(context).showSnackBar(MSG_MostrandoBD);
+                        //print("Feature disable or network connection error");
                       });
                     }
       },
@@ -297,7 +331,7 @@ class _ArticlesListState extends State<ArticlesList> {
 
                         child:FloatingActionButton.extended(
                         icon: Icon(Icons.network_check),
-                        label:Text("Fallo de conexión a Internet"),
+                        label:Text("Error Inesperado ¿Reintentar?"),
                         onPressed: () => setState(() {
                           initState();
                         })
@@ -355,16 +389,19 @@ class _ArticlesListState extends State<ArticlesList> {
           duration: Duration(milliseconds: 500),
           // Provide an optional curve to make the animation feel smoother.
           curve: Curves.fastOutSlowIn,
-          child: ShowMoreLoadingAnimation && networkError==false? Center(child: Padding(padding: EdgeInsets.all(4),child: CircularProgressIndicator(),),) : FlatButton(
-            child: isAllArticlesDisplayed ? Text("Estos son todos los Articulos", style: BaseThemeText_whiteBold1) : networkError ? Text("Error de Red", style: BaseThemeText_whiteBold1,) : Text('Cargar Mas', style: BaseThemeText_whiteBold1),
+          child: (ShowMoreLoadingAnimation && networkError==false) || intent? Center(child: Padding(padding: EdgeInsets.all(4),child: CircularProgressIndicator(),),) : FlatButton(
+            child: isAllArticlesDisplayed ? Text("Estos son todos los Articulos", style: BaseThemeText_whiteBold1) : networkError ? Text("Error de Red ¿Reintentar?", style: BaseThemeText_whiteBold1,) : Text('Cargar Mas', style: BaseThemeText_whiteBold1),
             onPressed: ()async {
               if((isAllArticlesDisplayed==false && isRefreshing==false) && await networkConnectionCkeck()==1){
                   if(databaseload==true){
+                    AnimacionDeIntentoDeConexion();
                     InitialDataSource();
                   }else{
                     Pagina++;
                     funcReset();
                   }
+              }else{
+                    AnimacionDeIntentoDeConexion();
               }
 
             },
