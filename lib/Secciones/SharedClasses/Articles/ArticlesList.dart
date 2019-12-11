@@ -77,10 +77,12 @@ class _ArticlesListState extends State<ArticlesList> {
             networkError=false;
             MoreHeigh=0;
             ShowMoreLoadingAnimation=false;
+            databaseload=false;
 
 
 
           });
+
           return GetArticles(json.decode(response.body));
         } else {
           // If that call was not successful, throw an error.
@@ -131,7 +133,7 @@ class _ArticlesListState extends State<ArticlesList> {
   List<Articles> articulos=[];
 
   dynamic GetArticles(var jsonData){
-    DB.deleteALL();
+
 
 
     for(var object in jsonData){
@@ -159,8 +161,9 @@ class _ArticlesListState extends State<ArticlesList> {
     setState(() {
       isRefreshing=false;
     });
-    print(DB.getArticulos());
-    database=DB.getArticulos();
+    //print(DB.getArticulos());
+    //database=DB.getArticulos();
+    print("DatabaseLoad state: "+databaseload.toString()+" and Articulos: "+articulos.length.toString());
     return articulos;
 
   }
@@ -172,10 +175,8 @@ class _ArticlesListState extends State<ArticlesList> {
   final scrollController= ScrollController();
 
   @override
-  void initState() {
-
-    GetArticlesFromServer = ServerCall();
-
+  void initState(){
+    InitialDataSource();
     scrollController.addListener((){
       if((scrollController.offset >= scrollController.position.maxScrollExtent && !scrollController.position.outOfRange) && MoreIsVisible==false){
          setState(() {
@@ -198,6 +199,22 @@ class _ArticlesListState extends State<ArticlesList> {
 
   }
 
+  void InitialDataSource() async{
+        if(await networkConnectionCkeck()==1) {
+          print("Loading from internet");
+          DB.deleteALL();// por ahora
+          GetArticlesFromServer = ServerCall();
+        }else{
+          setState(() {
+            print("Loading from database");
+            database=DB.getArticulos();
+            print(database);
+            databaseload=true;
+          });
+
+        }
+  }
+
   bool MoreIsVisible=false;
   String MoreText;
   double MoreHeigh=0;
@@ -206,9 +223,10 @@ class _ArticlesListState extends State<ArticlesList> {
   bool isAllArticlesDisplayed=false;
   bool networkError=false;
   bool isRefreshing=false;
+  bool databaseload=false;
 
   void Refresh(){
-
+      DB.deleteALL();
       articulos.clear(); Pagina=1; isAllArticlesDisplayed=false;
   }
 
@@ -228,7 +246,7 @@ class _ArticlesListState extends State<ArticlesList> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
+    return RefreshIndicator (
       onRefresh: ()async{
 
                     if(MoreIsVisible==false && ShowMoreLoadingAnimation==false && await networkConnectionCkeck()==1){
@@ -236,7 +254,7 @@ class _ArticlesListState extends State<ArticlesList> {
                       setState(() {
                         isRefreshing=true;
                       });
-                      Refresh(); return ServerCall();
+                      Refresh(); if(databaseload==true){InitialDataSource();}else{return ServerCall();}
                     }else{
                       return Future.delayed(Duration(milliseconds: 5),(){
                         print("Feature disable or network connection error");
@@ -246,12 +264,12 @@ class _ArticlesListState extends State<ArticlesList> {
        child: Column(
           children: <Widget>[
             FutureBuilder(
-              future: GetArticlesFromServer,
+              future: databaseload ? database : GetArticlesFromServer,
               builder: (BuildContext context, AsyncSnapshot snapshot){
                 //print(snapshot.data);
 
                 return (snapshot.connectionState == ConnectionState.done) ? //Si la conexión a terminado y
-                    (snapshot.hasData &&  networkError==false) || (snapshot.hasData==false && articulos.length!=0) || (articulos.length!=0) ?//Se han obtenido datos de la consulta
+                    (snapshot.hasData &&  (networkError==false || databaseload==true)) || (snapshot.hasData==false && articulos.length!=0) || (articulos.length!=0) ?//Se han obtenido datos de la consulta
                      /* Y la peticion fue satisfactoria*/
                        /*Despliega el sig elemento*/
                         Expanded(child:
@@ -338,8 +356,12 @@ class _ArticlesListState extends State<ArticlesList> {
             child: isAllArticlesDisplayed ? Text("Estos son todos los Articulos", style: BaseThemeText_whiteBold1) : networkError ? Text("Error de Red", style: BaseThemeText_whiteBold1,) : Text('Cargar Mas', style: BaseThemeText_whiteBold1),
             onPressed: ()async {
               if((isAllArticlesDisplayed==false && isRefreshing==false) && await networkConnectionCkeck()==1){
-                Pagina++;
-                funcReset();
+                  if(databaseload==true){
+                    InitialDataSource();
+                  }else{
+                    Pagina++;
+                    funcReset();
+                  }
               }
 
             },

@@ -1,3 +1,3 @@
 Versión Experimental:
 
-Esta versión combina el uso de la base de datos en SQLITE y de variables en ejecución para desplegar el contenido de las tarjetas de los artículos que aparecen en ciertas secciones de la aplicación.
+Esta versión ya es capaz de cargar el contenido ya sea desde el servidor o de la base de datos "inteligentemente" acorde a si existe conexión a internet. Sin embargo falta ajustar ciertas cosas en base a las consultas tipo SELECT
