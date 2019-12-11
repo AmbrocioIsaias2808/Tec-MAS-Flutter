@@ -27,7 +27,7 @@ class cards extends StatelessWidget {
         focusColor: Colors.red,
         splashColor: Colors.blue,
         onTap: () {
-          print(articulo.id.toString());
+          print(articulo.num.toString());
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => ArticleViewer(title:articulo.title.toString(),ArticleContent:articulo.content)),

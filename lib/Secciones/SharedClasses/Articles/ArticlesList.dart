@@ -145,7 +145,8 @@ class _ArticlesListState extends State<ArticlesList> {
       }
 
       Articles a = Articles(
-        id: object['id'],
+        ID:int.parse('1'+object["id"].toString()),
+        num: object['id'],
         title:object['title']['rendered'],
         image: image,
         content: object['content']['rendered'],
@@ -245,7 +246,7 @@ class _ArticlesListState extends State<ArticlesList> {
        child: Column(
           children: <Widget>[
             FutureBuilder(
-              future: database,
+              future: GetArticlesFromServer,
               builder: (BuildContext context, AsyncSnapshot snapshot){
                 //print(snapshot.data);
 
