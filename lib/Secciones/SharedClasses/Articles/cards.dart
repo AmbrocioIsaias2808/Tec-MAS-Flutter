@@ -9,21 +9,23 @@ import 'package:tecmas/Temas/BaseTheme.dart';
 
 class cards extends StatefulWidget {
   Articles articulo;
+  bool likeEnable;
 
-  cards({@required this.articulo});
+  cards({@required this.articulo, @required this.likeEnable});
 
   @override
-  _CardsState createState() => _CardsState(articulo: articulo);
+  _CardsState createState() => _CardsState(articulo: articulo, likeEnable: likeEnable);
 }
 
 class _CardsState extends State<cards> {
 
 
   Articles articulo;
+  bool likeEnable;
   bool _isSaved=false;
   var DB = DBHelper();
 
-  _CardsState({@required this.articulo});
+  _CardsState({@required this.articulo, @required this.likeEnable});
 
   void isSavedCheck() async{
     //Nota: ver si es necesario poner un delay para tener una carga mas fluida
@@ -86,7 +88,8 @@ class _CardsState extends State<cards> {
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width-60,145, 15, 0),
-                    child: FloatingActionButton(
+                    child: likeEnable ?
+                    FloatingActionButton(
                       heroTag: articulo.ID.toString(),
                       child: Icon(Icons.favorite,color: Colors.white,),
                       elevation: 20.0,
@@ -100,10 +103,11 @@ class _CardsState extends State<cards> {
                           setState(() {_isSaved=false;});
                         }else{
                           setState(() {_isSaved=true;});
-                          DB.saveArticle(articulo);
+                          DB.saveArticle(Articles.CreateAndSave(num: articulo.num, image: articulo.image, title: articulo.title, content: articulo.content, date: "20"));
                         }
-                        },
-                    ),
+                      },
+                    )
+                        : null,
                   )
 
                 ],

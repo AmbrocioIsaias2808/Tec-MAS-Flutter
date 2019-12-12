@@ -312,7 +312,7 @@ class _ArticlesListState extends State<ArticlesList> {
                             itemCount: snapshot.data.length,
                             itemBuilder: (BuildContext context, int index) {
                               try{
-                                return cards(articulo: snapshot.data[index]);
+                                return cards(articulo: snapshot.data[index], likeEnable: true);
                               }on RangeError{
                                 //print("Error: desplazamiento al final de lista antes de finalizar el refresh");
                               }

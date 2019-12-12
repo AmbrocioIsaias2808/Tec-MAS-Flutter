@@ -20,15 +20,9 @@ class _SavedArticlesState extends State<SavedArticles> {
 
   var DB = DBHelper();
 
-  Future<List<Articles>> LoadFromDatabase() async {
-    setState(() {
-      savedArticles = DB.getSavedArticulos();
-    });
-  }
-
   @override
   void initState(){
-    LoadFromDatabase();
+    savedArticles = DB.getSavedArticulos();
     scrollController.addListener((){
       if((scrollController.offset >= scrollController.position.maxScrollExtent && !scrollController.position.outOfRange) && MoreIsVisible==false){
         setState(() {
@@ -58,10 +52,10 @@ class _SavedArticlesState extends State<SavedArticles> {
           FutureBuilder(
             future: savedArticles,
             builder: (BuildContext context, AsyncSnapshot snapshot){
-              //print(snapshot.data);
+              print("Snapshot here:"+snapshot.data.toString());
 
               return (snapshot.connectionState == ConnectionState.done) ? //Si la conexión a terminado y
-              (snapshot.hasData) ?//Se han obtenido datos de la consulta
+              snapshot.hasData ?//Se han obtenido datos de la consulta
               /* Y la peticion fue satisfactoria*/
               /*Despliega el sig elemento*/
               Expanded(child:
@@ -70,7 +64,7 @@ class _SavedArticlesState extends State<SavedArticles> {
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
                   try{
-                    return cards(articulo: snapshot.data[index]);
+                    return cards(articulo: snapshot.data[index], likeEnable: false);
                   }on RangeError{
                     //print("Error: desplazamiento al final de lista antes de finalizar el refresh");
                   }

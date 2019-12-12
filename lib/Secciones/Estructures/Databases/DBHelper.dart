@@ -22,7 +22,8 @@ class DBHelper{
   static const String CATEGORY="category";
   //Definimos la tabla de articulos guardados
   /*Se llama*/ static const String T_SavedArticulos="SavedArticulos";
-  //Para los campos, por ahora reciclaremos los mismos que la tabla T_Articulos
+  //Para los campos, por ahora reciclaremos los mismos que la tabla T_Articulos excepto a ID y agregamos
+  static const String DATE="date";
 
 
 
@@ -45,7 +46,7 @@ class DBHelper{
 
   _onCreate(Database db, int version) async{
     await db.execute("CREATE TABLE $T_Articulos ($ID INTEGER PRIMARY KEY, $NUM INTEGER,$TITLE TEXT, $CONTENT TEXT, $IMAGE TEXT, $CATEGORY INTEGER)");
-    await db.execute("CREATE TABLE $T_SavedArticulos ($ID INTEGER PRIMARY KEY, $NUM INTEGER,$TITLE TEXT, $CONTENT TEXT, $IMAGE TEXT, $CATEGORY INTEGER)");
+    await db.execute("CREATE TABLE $T_SavedArticulos ($NUM INTEGER PRIMARY KEY,$TITLE TEXT, $CONTENT TEXT, $IMAGE TEXT, $DATE TEXT)");
 
 
   }
@@ -118,11 +119,13 @@ class DBHelper{
     List<Articles> articulos=[];
     if(maps.length>0){
       for (int i=0; i<maps.length;i++){
-        articulos.add(Articles.fromMap(maps[i]));
+        articulos.add(Articles.savedFromMap(maps[i]));
       }
-
+      return articulos;
+    }else{
+      return null;
     }
-    return articulos;
+
 
   }
 
@@ -153,7 +156,7 @@ class DBHelper{
     }else{
       print("Guardando");
       await dbClient.transaction((txn) async{
-        var query = "INSERT INTO $T_SavedArticulos ($ID, $NUM, $TITLE, $CONTENT, $IMAGE, $CATEGORY) VALUES ("+articulos.ID.toString()+","+articulos.num.toString()+",'"+articulos.title+"','"+articulos.content+"','"+articulos.image+"',"+articulos.category.toString()+")";
+        var query = "INSERT INTO $T_SavedArticulos ($NUM, $TITLE, $CONTENT, $IMAGE, $DATE) VALUES ("+articulos.num.toString()+",'"+articulos.title+"','"+articulos.content+"','"+articulos.image+"','"+articulos.date+"')";
         return await txn.rawInsert(query);
       });
     }
