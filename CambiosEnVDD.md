@@ -1,3 +1,3 @@
 Versión Experimental:
 
-Esta versión ya es capaz de cargar el contenido ya sea desde el servidor o de la base de datos "inteligentemente" acorde a si existe conexión a internet. Ya es capas de reconocer en que parte de la aplicación nos encontramos y surtir el contenido adecuado acorde a su conectividad a internet.
+Esta versión incorpora un pageview en el "Widget_Articles" el cual conduce a una pantalla donde se muestran los articulos guardados por el usuario al dar click sobre el botón de Favorito. La presente versión aún presenta errores como el hecho de presentar una pantalla en negro al intentat abrir uno de estos articulos guardados.
