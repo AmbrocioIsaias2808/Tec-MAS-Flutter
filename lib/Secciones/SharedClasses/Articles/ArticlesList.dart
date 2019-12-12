@@ -20,12 +20,10 @@ class ArticlesList extends StatefulWidget {
   _ArticlesListState State;
 
 
-  ArticlesList({@required this.URL, @required this.Category}){
-    State= new _ArticlesListState(URL, Category);
-  }
+  ArticlesList({@required this.URL, @required this.Category});
 
   @override
-  _ArticlesListState createState() => State;
+  _ArticlesListState createState() => _ArticlesListState(URL, Category);
 
 
 }
@@ -223,7 +221,6 @@ class _ArticlesListState extends State<ArticlesList> {
   }
 
   bool MoreIsVisible=false;
-  String MoreText;
   double MoreHeigh=0;
   bool ShowMoreLoadingAnimation=false;
   int Pagina=1; //Variable de paginación de resultados
