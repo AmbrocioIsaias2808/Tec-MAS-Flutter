@@ -207,9 +207,6 @@ class _ArticlesListState extends State<ArticlesList> {
   }
 
   void InitialDataSource() async{
-        if(persistance==true){
-              loadFromDatabase();
-        }else{
                 if(await networkConnectionCkeck()==1) {
                   print("Loading from internet");
                   if(ShowMoreLoadingAnimation==false){
@@ -218,10 +215,10 @@ class _ArticlesListState extends State<ArticlesList> {
                   }
                   GetArticlesFromServer = ServerCall();
                 }else{
-                  lo
+                  loadFromDatabase();
 
                 }
-        }
+
   }
 
   bool MoreIsVisible=false;
@@ -269,6 +266,7 @@ class _ArticlesListState extends State<ArticlesList> {
     int netState = await NetworkConnectionCkeck();
     if(netState==0){
       setState(() {
+        isRefreshing=false;
         networkError=true;
       });
     }
@@ -402,7 +400,9 @@ class _ArticlesListState extends State<ArticlesList> {
           child: ShowMoreLoadingAnimation ? Center(child: Padding(padding: EdgeInsets.all(4),child: CircularProgressIndicator(),),) : FlatButton(
             child: isAllArticlesDisplayed ? Text("Estos son todos los Articulos", style: BaseThemeText_whiteBold1) : networkError ? Text("Error de Red ¿Reintentar?", style: BaseThemeText_whiteBold1,) : Text('Cargar Mas', style: BaseThemeText_whiteBold1),
             onPressed: ()async {
-              if((isAllArticlesDisplayed==false && isRefreshing==false) && await networkConnectionCkeck()==1){
+              int NetworkAvailable= await networkConnectionCkeck();
+              print("Network: "+ NetworkAvailable.toString()+" isAllArticlesDisplay: "+ isAllArticlesDisplayed.toString()+" isRefreshing: "+isRefreshing.toString());
+              if((isAllArticlesDisplayed==false && isRefreshing==false) && NetworkAvailable==1){
                   if(databaseload==true){
 
                     setState((){ShowMoreLoadingAnimation=true;});
@@ -420,6 +420,7 @@ class _ArticlesListState extends State<ArticlesList> {
                         });
                   }
               }else{
+                print("Lanzando aqui");
                     setState((){ShowMoreLoadingAnimation=true;});
                     Future.delayed(Duration(milliseconds: 500),(){
                       setState(() {ShowMoreLoadingAnimation=false;});
