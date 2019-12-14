@@ -16,7 +16,6 @@ final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 final NotificationSystem notification = new NotificationSystem();
 
 
-
 void main(){
   runApp(App());
 }

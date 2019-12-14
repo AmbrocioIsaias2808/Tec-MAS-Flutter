@@ -26,8 +26,26 @@ class _Widget_ArticlesState extends State<Widget_Articles> {
   final int Category;
 
   _Widget_ArticlesState({@required this.SeccionTitle,@required this.URL, @required this.Category});
+  PageController pagecontroller = PageController();
+  bool persistance=false;
+  var ActualPage; //Este valor incrementa o decrementa paulatinamiente al paginar en forma de un valor double. Por ejemplo: si estoy entre la pagina 1 y la pagina 2 el valor deberia dar algo como 1.5
 
 
+  @override
+  void initState() {
+    super.initState();
+    pagecontroller.addListener(() {
+      if(pagecontroller.page>0.5){
+        setPersistance(true);
+      }
+    });
+  }
+
+  void setPersistance(bool value){
+    setState(() {
+      persistance=value;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,8 +56,9 @@ class _Widget_ArticlesState extends State<Widget_Articles> {
         ),
         drawer: BarraDeNavegacion(),
           body: PageView(
+            controller: pagecontroller ,
             children: <Widget>[
-              ArticlesList(URL:URL, Category: Category,),
+              ArticlesList(URL:URL, Category: Category, persistance: persistance,),
               SavedArticles()
       ],
       ),

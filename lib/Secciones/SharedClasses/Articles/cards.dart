@@ -90,7 +90,7 @@ class _CardsState extends State<cards> {
                     padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width-60,145, 15, 0),
                     child: likeEnable ?
                     FloatingActionButton(
-                      heroTag: articulo.ID.toString(),
+                      heroTag: DateTime.now().millisecondsSinceEpoch.toString(),
                       child: Icon(Icons.favorite,color: Colors.white,),
                       elevation: 20.0,
                       backgroundColor: _isSaved ? Colors.red:Colors.blueGrey,

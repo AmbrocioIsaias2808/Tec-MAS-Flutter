@@ -52,8 +52,6 @@ class _SavedArticlesState extends State<SavedArticles> {
           FutureBuilder(
             future: savedArticles,
             builder: (BuildContext context, AsyncSnapshot snapshot){
-              print("Snapshot here:"+snapshot.data.toString());
-
               return (snapshot.connectionState == ConnectionState.done) ? //Si la conexión a terminado y
               snapshot.hasData ?//Se han obtenido datos de la consulta
               /* Y la peticion fue satisfactoria*/

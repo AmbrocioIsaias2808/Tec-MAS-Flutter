@@ -18,12 +18,14 @@ class ArticlesList extends StatefulWidget {
   final String URL;
   final int Category;
   _ArticlesListState State;
+  bool persistance;
 
 
-  ArticlesList({@required this.URL, @required this.Category});
+
+  ArticlesList({@required this.URL, @required this.Category, this.persistance=false});
 
   @override
-  _ArticlesListState createState() => _ArticlesListState(URL, Category);
+  _ArticlesListState createState() => _ArticlesListState(URL, Category, persistance);
 
 
 }
@@ -34,22 +36,12 @@ class _ArticlesListState extends State<ArticlesList> {
   //final String ApiKey="eeOpx2D5gHJdPzmjF15UY2JBZgcDsBaj"; //Local
   final String URL;
   final int Category;
+  bool persistance;
   var DB = DBHelper();
 
-  _ArticlesListState(this.URL, this.Category){
+  _ArticlesListState(this.URL, this.Category, this.persistance){
 
   }
-
-
-  dynamic funcReset(){
-    setState(() {
-      ShowMoreLoadingAnimation=true;
-      ServerCall();
-    });
-
-  }
-
-
 
 
   Future<List<Articles>> ServerCall() async {
@@ -70,7 +62,7 @@ class _ArticlesListState extends State<ArticlesList> {
 
 
 
-      return Future.delayed(Duration(milliseconds: 5),(){
+      return Future.delayed(Duration(milliseconds: 5),()async{
         print("Response: "+response.statusCode.toString());
         if (response.statusCode == 200) {
           // If the call to the server was successful, parse the JSON.
@@ -84,7 +76,7 @@ class _ArticlesListState extends State<ArticlesList> {
 
           });
 
-          return GetArticles(json.decode(response.body));
+          return await GetArticles(json.decode(response.body));
         } else {
           // If that call was not successful, throw an error.
           if(response.statusCode==400){
@@ -133,11 +125,11 @@ class _ArticlesListState extends State<ArticlesList> {
 
   List<Articles> articulos=[];
 
-  dynamic GetArticles(var jsonData){
+  dynamic GetArticles(var jsonData) async{
 
+  var object;
 
-
-    for(var object in jsonData){
+    for(object in jsonData){
 
       String image;
       try{
@@ -156,9 +148,12 @@ class _ArticlesListState extends State<ArticlesList> {
         category: Category,
       );
 
-      articulos.add(a);
-      DB.insert(a);
+      articulos.add(await DB.insert(a));
+
+
     }
+
+
     setState(() {
       isRefreshing=false;
     });
@@ -172,7 +167,6 @@ class _ArticlesListState extends State<ArticlesList> {
 
 
   Future<List<Articles>> GetArticlesFromServer;
-  Future<List<Articles>> database;
   final scrollController= ScrollController();
 
   @override
@@ -200,23 +194,33 @@ class _ArticlesListState extends State<ArticlesList> {
 
   }
 
+  void loadFromDatabase(){
+    setState(() {
+              print("Loading from database");
+              GetArticlesFromServer=DB.getArticulos(Category);
+              print(GetArticlesFromServer);
+              databaseload=true;
+              Future.delayed(Duration(milliseconds: 1000),(){
+                Scaffold.of(context).showSnackBar(MSG_MostrandoBD);
+              });
+    });
+  }
+
   void InitialDataSource() async{
-        if(await networkConnectionCkeck()==1) {
-          print("Loading from internet");
-          DB.deleteAllByCategory(Category);// por ahora
-          GetArticlesFromServer = ServerCall();
+        if(persistance==true){
+              loadFromDatabase();
         }else{
-          setState(() {
-            print("Loading from database");
-            database=DB.getArticulos(Category);
-            print(database);
-            databaseload=true;
-            Future.delayed(Duration(milliseconds: 1000),(){
-              Scaffold.of(context).showSnackBar(MSG_MostrandoBD);
-            });
+                if(await networkConnectionCkeck()==1) {
+                  print("Loading from internet");
+                  if(ShowMoreLoadingAnimation==false){
+                    articulos.clear(); Pagina=1; isAllArticlesDisplayed=false;
+                    await DB.deleteAllByCategory(Category);// por ahora
+                  }
+                  GetArticlesFromServer = ServerCall();
+                }else{
+                  lo
 
-          });
-
+                }
         }
   }
 
@@ -228,30 +232,24 @@ class _ArticlesListState extends State<ArticlesList> {
   bool networkError=false;
   bool isRefreshing=false;
   bool databaseload=false;
-  bool intent=false;
   final MSG_MostrandoBD = SnackBar(backgroundColor: BaseThemeColor_DarkBlue,content: Text("Lo siento, no he podido contactar al servidor. Estoy mostrando los resultados mas recientes guardados en memoria.",
                           style: TextStyle(fontWeight: FontWeight.bold),textAlign: TextAlign.justify,));
 
 
-  void AnimacionDeIntentoDeConexion(){
+  /*void ShowMoreLoadingAnimationManualControl(){
     setState((){
-      intent=true;
-      print(intent);
+      print(ShowMoreLoadingAnimation);
+     ShowMoreLoadingAnimation=true;
     });
 
     Future.delayed(Duration(milliseconds: 500),(){
       setState(() {
-        intent=false;
-        print(intent);
+        ShowMoreLoadingAnimation=false;
+        print(ShowMoreLoadingAnimation);
       });
     });
-  }
+  }*/
 
-  void Refresh(){
-      DB.deleteAllByCategory(Category);
-      //DB.deleteALL();
-      articulos.clear(); Pagina=1; isAllArticlesDisplayed=false;
-  }
 
   /*Future networkConnectionCkeck() async{
     try {
@@ -282,14 +280,14 @@ class _ArticlesListState extends State<ArticlesList> {
     return RefreshIndicator (
       onRefresh: ()async{
 
-                    if(MoreIsVisible==false && ShowMoreLoadingAnimation==false && await networkConnectionCkeck()==1){
+                    setState(() {
+                      isRefreshing=true;
+                    });
 
-                      setState(() {
-                        isRefreshing=true;
-                      });
-                      Refresh(); if(databaseload==true){InitialDataSource();}else{return ServerCall();}
+                    if(MoreIsVisible==false && ShowMoreLoadingAnimation==false && await networkConnectionCkeck()==1){
+                     await InitialDataSource();
                     }else{
-                      return Future.delayed(Duration(milliseconds: 5),(){
+                      return Future.delayed(Duration(milliseconds: 500),(){
                         Scaffold.of(context).showSnackBar(MSG_MostrandoBD);
                         //print("Feature disable or network connection error");
                       });
@@ -298,12 +296,12 @@ class _ArticlesListState extends State<ArticlesList> {
        child: Column(
           children: <Widget>[
             FutureBuilder(
-              future: databaseload ? database : GetArticlesFromServer,
+              future: GetArticlesFromServer,
               builder: (BuildContext context, AsyncSnapshot snapshot){
                 //print(snapshot.data);
 
                 return (snapshot.connectionState == ConnectionState.done) ? //Si la conexión a terminado y
-                    (snapshot.hasData &&  (networkError==false || databaseload==true)) || (snapshot.hasData==false && articulos.length!=0) || (articulos.length!=0) ?//Se han obtenido datos de la consulta
+                    snapshot.hasData  || articulos.length!=0 ?//Se han obtenido datos de la consulta
                      /* Y la peticion fue satisfactoria*/
                        /*Despliega el sig elemento*/
                         Expanded(child:
@@ -343,7 +341,22 @@ class _ArticlesListState extends State<ArticlesList> {
                 Expanded(child:
                         Container(
                             child: Center(
-                              child: CircularProgressIndicator(),
+                              child: SizedBox(
+                                height: 100,
+                                child: Stack(
+                                  children: <Widget>[
+                                        Center(
+                                          child: Container(
+                                            height: 100,width: 100,
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        ),
+                                    Center(child:
+                                      Text("Cargando", style: BaseThemeText_whiteBold1,),
+                                    )
+                                  ],
+                                ),
+                              ),
                             )
                         )
                         );
@@ -386,19 +399,31 @@ class _ArticlesListState extends State<ArticlesList> {
           duration: Duration(milliseconds: 500),
           // Provide an optional curve to make the animation feel smoother.
           curve: Curves.fastOutSlowIn,
-          child: (ShowMoreLoadingAnimation && networkError==false) || intent? Center(child: Padding(padding: EdgeInsets.all(4),child: CircularProgressIndicator(),),) : FlatButton(
+          child: ShowMoreLoadingAnimation ? Center(child: Padding(padding: EdgeInsets.all(4),child: CircularProgressIndicator(),),) : FlatButton(
             child: isAllArticlesDisplayed ? Text("Estos son todos los Articulos", style: BaseThemeText_whiteBold1) : networkError ? Text("Error de Red ¿Reintentar?", style: BaseThemeText_whiteBold1,) : Text('Cargar Mas', style: BaseThemeText_whiteBold1),
             onPressed: ()async {
               if((isAllArticlesDisplayed==false && isRefreshing==false) && await networkConnectionCkeck()==1){
                   if(databaseload==true){
-                    AnimacionDeIntentoDeConexion();
-                    InitialDataSource();
+
+                    setState((){ShowMoreLoadingAnimation=true;});
+                    await InitialDataSource();
+                    Future.delayed(Duration(milliseconds: 500),(){
+                      setState(() {ShowMoreLoadingAnimation=false;});
+                    });
+
                   }else{
-                    Pagina++;
-                    funcReset();
+                        //Aumento la paginación y solicito los datos al servidor
+                        Pagina++;
+                        setState(() {
+                          ShowMoreLoadingAnimation=true;
+                          ServerCall();
+                        });
                   }
               }else{
-                    AnimacionDeIntentoDeConexion();
+                    setState((){ShowMoreLoadingAnimation=true;});
+                    Future.delayed(Duration(milliseconds: 500),(){
+                      setState(() {ShowMoreLoadingAnimation=false;});
+                    });
               }
 
             },

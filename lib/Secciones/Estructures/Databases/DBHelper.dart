@@ -45,7 +45,7 @@ class DBHelper{
   }
 
   _onCreate(Database db, int version) async{
-    await db.execute("CREATE TABLE $T_Articulos ($ID INTEGER PRIMARY KEY, $NUM INTEGER,$TITLE TEXT, $CONTENT TEXT, $IMAGE TEXT, $CATEGORY INTEGER)");
+    await db.execute("CREATE TABLE $T_Articulos ($ID INTEGER PRIMARY KEY AUTOINCREMENT, $NUM INTEGER,$TITLE TEXT, $CONTENT TEXT, $IMAGE TEXT, $CATEGORY INTEGER)");
     await db.execute("CREATE TABLE $T_SavedArticulos ($NUM INTEGER PRIMARY KEY,$TITLE TEXT, $CONTENT TEXT, $IMAGE TEXT, $DATE TEXT)");
 
 
@@ -53,13 +53,13 @@ class DBHelper{
 
   Future<Articles> insert (Articles articulos) async{
     var dbClient = await db;
-    // empleados.id =  await dbClient.insert(TABLE, empleados.toMap());
-    //return empleados;
+    articulos.ID =  await dbClient.insert(T_Articulos, articulos.toMap());
+    return articulos;
 
-    await dbClient.transaction((txn) async{
+    /*await dbClient.transaction((txn) async{
       var query = "INSERT INTO $T_Articulos ($ID, $NUM, $TITLE, $CONTENT, $IMAGE, $CATEGORY) VALUES ("+articulos.ID.toString()+","+articulos.num.toString()+",'"+articulos.title+"','"+articulos.content+"','"+articulos.image+"',"+articulos.category.toString()+")";
       return await txn.rawInsert(query);
-    });
+    });*/
   }
 
   /*Future deleteALL () async{
@@ -92,6 +92,7 @@ class DBHelper{
   Future<int> deleteAllByCategory(int category) async{
 
     var dbClient = await db;
+    print("Se borro esto");
     return await dbClient.delete(T_Articulos, where : "$CATEGORY=?", whereArgs: [category]);
   }
 
@@ -137,10 +138,10 @@ class DBHelper{
     //List<Map> maps = await dbClient.query(TABLE,columns:[ID,NAME]);
     List<Map> maps= await dbClient.rawQuery("SELECT * FROM $T_SavedArticulos WHERE $NUM=$key ORDER BY $NUM DESC");
     if(maps.length>0){
-      print("Articulo guardado en favoritos");
+      //print("Articulo guardado en favoritos");
       return true;
     }else{
-      print("Articulo no guardado en favoritos");
+      //print("Articulo no guardado en favoritos");
       return false;
     }
 
