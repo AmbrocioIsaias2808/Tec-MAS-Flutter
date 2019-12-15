@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tecmas/BarraDeNavegacion/Drawer.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:tecmas/Secciones/SharedClasses/CommonlyUsed.dart';
 import 'package:tecmas/Secciones/SharedClasses/NetworkImageBox.dart';
 import 'package:tecmas/Secciones/SharedClasses/ZoomableImage.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -35,23 +36,29 @@ class _Widget_TransporteState extends State<Widget_Transporte> {
             builder: (BuildContext context) {
               return FloatingActionButton(
                 child: Icon(Icons.refresh),
-                onPressed: (){
+                onPressed: ()async {
                   setState(() {
                     isReloadFired=true;
                   });
-                  for(int i=0; i<ruta.length;i++){
-                    setState(() {
-                      DefaultCacheManager().removeFile(ruta[i]);
-                    });
+
+                  //
+                  if(await NetworkConnectionCkeck()==1){
+                      for(int i=0; i<ruta.length;i++){
+                        setState(() {
+                          DefaultCacheManager().removeFile(ruta[i]);
+                        });
+                      }
+                      ShowSnackWithDelay(context, 500, BasicSnack("Se han Actualizado los Datos"));
+                  }else{
+                    ShowSnackWithDelay(context, 1000, BasicSnack("No es posible conectar con el servidor"));
                   }
+
+                  //
                   setState((){
 
                     isReloadFired = false;
 
                   });
-
-                  final snack = SnackBar(content: Text("Se han Actualizado los Datos"),);
-                  Scaffold.of(context).showSnackBar(snack);
 
 
                 },

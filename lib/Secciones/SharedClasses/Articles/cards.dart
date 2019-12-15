@@ -107,7 +107,7 @@ class _CardsState extends State<cards> {
 
                         }else{
                           setState(() {_isSaved=true;});
-                          await DB.saveArticle(Articles.CreateAndSave(num: articulo.num, image: articulo.image, title: articulo.title, content: articulo.content, date: "20"));
+                          await DB.saveArticle(Articles.CreateAndSave(num: articulo.num, image: articulo.image, title: articulo.title, content: articulo.content, date: DateTime.now().millisecondsSinceEpoch ));
                           ShowSnackWithDelay(context, 1000, BasicSnack("Elemento guardado en tu lista de favoritos"));
 
                         }

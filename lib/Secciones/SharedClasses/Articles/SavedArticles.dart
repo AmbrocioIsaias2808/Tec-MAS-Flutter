@@ -10,7 +10,7 @@ class SavedArticles extends StatefulWidget {
   _SavedArticlesState createState() => _SavedArticlesState();
 }
 
-class _SavedArticlesState extends State<SavedArticles> {
+class _SavedArticlesState extends State<SavedArticles> with AutomaticKeepAliveClientMixin<SavedArticles>{
 
   Future<List<Articles>> savedArticles;
 
@@ -47,6 +47,7 @@ class _SavedArticlesState extends State<SavedArticles> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Column(
         children: <Widget>[
           FutureBuilder(
@@ -150,4 +151,7 @@ class _SavedArticlesState extends State<SavedArticles> {
         ]
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

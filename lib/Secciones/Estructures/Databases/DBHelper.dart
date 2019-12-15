@@ -46,7 +46,7 @@ class DBHelper{
 
   _onCreate(Database db, int version) async{
     await db.execute("CREATE TABLE $T_Articulos ($ID INTEGER PRIMARY KEY AUTOINCREMENT, $NUM INTEGER,$TITLE TEXT, $CONTENT TEXT, $IMAGE TEXT, $CATEGORY INTEGER)");
-    await db.execute("CREATE TABLE $T_SavedArticulos ($NUM INTEGER PRIMARY KEY,$TITLE TEXT, $CONTENT TEXT, $IMAGE TEXT, $DATE TEXT)");
+    await db.execute("CREATE TABLE $T_SavedArticulos ($NUM INTEGER PRIMARY KEY,$TITLE TEXT, $CONTENT TEXT, $IMAGE TEXT, $DATE INTEGER)");
 
 
   }
@@ -116,7 +116,7 @@ class DBHelper{
 
   Future<List<Articles>> getSavedArticulos() async{
     var dbClient=await db;
-    List<Map> maps= await dbClient.rawQuery("SELECT * FROM $T_SavedArticulos ORDER BY $NUM DESC");
+    List<Map> maps= await dbClient.rawQuery("SELECT * FROM $T_SavedArticulos ORDER BY $DATE DESC");
     List<Articles> articulos=[];
     if(maps.length>0){
       for (int i=0; i<maps.length;i++){
@@ -136,7 +136,7 @@ class DBHelper{
     var dbClient=await db;
     int key=id;
     //List<Map> maps = await dbClient.query(TABLE,columns:[ID,NAME]);
-    List<Map> maps= await dbClient.rawQuery("SELECT * FROM $T_SavedArticulos WHERE $NUM=$key ORDER BY $NUM DESC");
+    List<Map> maps= await dbClient.rawQuery("SELECT * FROM $T_SavedArticulos WHERE $NUM=$key");
     if(maps.length>0){
       //print("Articulo guardado en favoritos");
       return true;
@@ -157,7 +157,7 @@ class DBHelper{
     }else{
       print("Guardando");
       await dbClient.transaction((txn) async{
-        var query = "INSERT INTO $T_SavedArticulos ($NUM, $TITLE, $CONTENT, $IMAGE, $DATE) VALUES ("+articulos.num.toString()+",'"+articulos.title+"','"+articulos.content+"','"+articulos.image+"','"+articulos.date+"')";
+        var query = "INSERT INTO $T_SavedArticulos ($NUM, $TITLE, $CONTENT, $IMAGE, $DATE) VALUES ("+articulos.num.toString()+",'"+articulos.title+"','"+articulos.content+"','"+articulos.image+"',"+articulos.date.toString()+")";
         return await txn.rawInsert(query);
       });
     }

@@ -9,7 +9,7 @@ class Articles{
   String title;// title: titulo del mismo
   String content; //content: contenido
   int category; //category: categoria a la que pertenece (inicio=2, becas=3, emergencias=4, etc)
-  String date; //date: campo unicamente usado en la tabla de articulos Guardados, en lo demas no es usado, este sirve para saver cuando el usuario guardo el articulo
+  int date; //date: campo unicamente usado en la tabla de articulos Guardados, en lo demas no es usado, este sirve para saver cuando el usuario guardo el articulo
 
 
   Articles({@required this.ID,@required this.num,@required this.image,@required this.title, @required this.content, this.category});
