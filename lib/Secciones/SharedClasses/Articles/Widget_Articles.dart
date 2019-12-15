@@ -19,7 +19,7 @@ Widget_Articles({@required this.SeccionTitle,@required this.URL, @required this.
   _Widget_ArticlesState createState() => _Widget_ArticlesState(URL: URL, SeccionTitle: SeccionTitle, Category: Category);
 }
 
-class _Widget_ArticlesState extends State<Widget_Articles> {
+class _Widget_ArticlesState extends State<Widget_Articles> with AutomaticKeepAliveClientMixin<Widget_Articles>{
 
   final String URL;
   final String SeccionTitle;
@@ -27,27 +27,19 @@ class _Widget_ArticlesState extends State<Widget_Articles> {
 
   _Widget_ArticlesState({@required this.SeccionTitle,@required this.URL, @required this.Category});
   PageController pagecontroller = PageController();
-  bool persistance=false;
+
   var ActualPage; //Este valor incrementa o decrementa paulatinamiente al paginar en forma de un valor double. Por ejemplo: si estoy entre la pagina 1 y la pagina 2 el valor deberia dar algo como 1.5
 
 
   @override
   void initState() {
     super.initState();
-    pagecontroller.addListener(() {
-      if(pagecontroller.page>0.5){
-        setPersistance(true);
-      }
-    });
+    
   }
 
-  void setPersistance(bool value){
-    setState(() {
-      persistance=value;
-    });
-  }
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
         backgroundColor: BaseThemeColor_DarkBlue,
         appBar: AppBar(
@@ -56,12 +48,14 @@ class _Widget_ArticlesState extends State<Widget_Articles> {
         ),
         drawer: BarraDeNavegacion(),
           body: PageView(
-            controller: pagecontroller ,
             children: <Widget>[
-              ArticlesList(URL:URL, Category: Category, persistance: persistance,),
+              ArticlesList(URL:URL, Category: Category),
               SavedArticles()
       ],
       ),
     );
       }
+
+  @override
+  bool get wantKeepAlive => true;
 }

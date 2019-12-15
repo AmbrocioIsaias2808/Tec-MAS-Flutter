@@ -6,6 +6,8 @@ import 'package:tecmas/Secciones/SharedClasses/Articles/ArticleViewer.dart';
 import 'package:tecmas/Secciones/SharedClasses/NetworkImageBox.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
 
+import '../CommonlyUsed.dart';
+
 
 class cards extends StatefulWidget {
   Articles articulo;
@@ -99,11 +101,15 @@ class _CardsState extends State<cards> {
                         print(articulo.title);
 
                         if(_isSaved){
-                          DB.deleteSavedArticle(articulo.num); //Borra por el num de articulo en wordpress no el id en nuestra base de datos
+                          await DB.deleteSavedArticle(articulo.num); //Borra por el num de articulo en wordpress no el id en nuestra base de datos
                           setState(() {_isSaved=false;});
+                          ShowSnackWithDelay(context, 1000, BasicSnack("Elemento eliminado de tu lista de favoritos"));
+
                         }else{
                           setState(() {_isSaved=true;});
-                          DB.saveArticle(Articles.CreateAndSave(num: articulo.num, image: articulo.image, title: articulo.title, content: articulo.content, date: "20"));
+                          await DB.saveArticle(Articles.CreateAndSave(num: articulo.num, image: articulo.image, title: articulo.title, content: articulo.content, date: "20"));
+                          ShowSnackWithDelay(context, 1000, BasicSnack("Elemento guardado en tu lista de favoritos"));
+
                         }
                       },
                     )

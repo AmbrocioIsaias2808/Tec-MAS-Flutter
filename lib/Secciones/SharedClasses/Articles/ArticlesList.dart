@@ -6,7 +6,7 @@ import 'package:tecmas/Secciones/Estructures/Articles.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:tecmas/Secciones/Estructures/Databases/DBHelper.dart';
-import 'package:tecmas/Secciones/SharedClasses/CommonlyUsedFunctions.dart';
+import 'package:tecmas/Secciones/SharedClasses/CommonlyUsed.dart';
 import 'package:tecmas/Secciones/SharedClasses/Messeges/Errors/MSG_NetworkConnectionError.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
 import 'dart:convert';
@@ -18,28 +18,27 @@ class ArticlesList extends StatefulWidget {
   final String URL;
   final int Category;
   _ArticlesListState State;
-  bool persistance;
 
 
 
-  ArticlesList({@required this.URL, @required this.Category, this.persistance=false});
+  ArticlesList({@required this.URL, @required this.Category});
 
   @override
-  _ArticlesListState createState() => _ArticlesListState(URL, Category, persistance);
+  _ArticlesListState createState() => _ArticlesListState(URL, Category);
 
 
 }
 
-class _ArticlesListState extends State<ArticlesList> {
+class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClientMixin<ArticlesList>{
 
   final String ApiKey="wFx01QuHh9ybSx82rzZvypurEs1HQpWy"; //Server
   //final String ApiKey="eeOpx2D5gHJdPzmjF15UY2JBZgcDsBaj"; //Local
   final String URL;
   final int Category;
-  bool persistance;
+  bool hasData;
   var DB = DBHelper();
 
-  _ArticlesListState(this.URL, this.Category, this.persistance){
+  _ArticlesListState(this.URL, this.Category){
 
   }
 
@@ -156,6 +155,7 @@ class _ArticlesListState extends State<ArticlesList> {
 
     setState(() {
       isRefreshing=false;
+      hasData=true;
     });
     //print(DB.getArticulos(Category));
     //database=DB.getArticulos(Category);
@@ -200,19 +200,18 @@ class _ArticlesListState extends State<ArticlesList> {
               GetArticlesFromServer=DB.getArticulos(Category);
               print(GetArticlesFromServer);
               databaseload=true;
-              Future.delayed(Duration(milliseconds: 1000),(){
-                Scaffold.of(context).showSnackBar(MSG_MostrandoBD);
-              });
+              ShowSnackWithDelay(context, 1000, BasicSnack(MSG_MostrandoBD));
     });
   }
 
   void InitialDataSource() async{
                 if(await networkConnectionCkeck()==1) {
                   print("Loading from internet");
-                  if(ShowMoreLoadingAnimation==false){
+                    setState(() {
+                      hasData=false;
+                    });
                     articulos.clear(); Pagina=1; isAllArticlesDisplayed=false;
                     await DB.deleteAllByCategory(Category);// por ahora
-                  }
                   GetArticlesFromServer = ServerCall();
                 }else{
                   loadFromDatabase();
@@ -229,8 +228,7 @@ class _ArticlesListState extends State<ArticlesList> {
   bool networkError=false;
   bool isRefreshing=false;
   bool databaseload=false;
-  final MSG_MostrandoBD = SnackBar(backgroundColor: BaseThemeColor_DarkBlue,content: Text("Lo siento, no he podido contactar al servidor. Estoy mostrando los resultados mas recientes guardados en memoria.",
-                          style: TextStyle(fontWeight: FontWeight.bold),textAlign: TextAlign.justify,));
+  final String MSG_MostrandoBD = "Lo siento, no he podido contactar al servidor.";
 
 
   /*void ShowMoreLoadingAnimationManualControl(){
@@ -275,6 +273,7 @@ class _ArticlesListState extends State<ArticlesList> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return RefreshIndicator (
       onRefresh: ()async{
 
@@ -285,10 +284,7 @@ class _ArticlesListState extends State<ArticlesList> {
                     if(MoreIsVisible==false && ShowMoreLoadingAnimation==false && await networkConnectionCkeck()==1){
                      await InitialDataSource();
                     }else{
-                      return Future.delayed(Duration(milliseconds: 500),(){
-                        Scaffold.of(context).showSnackBar(MSG_MostrandoBD);
-                        //print("Feature disable or network connection error");
-                      });
+                      return  ShowSnackWithDelay(context, 1000, BasicSnack(MSG_MostrandoBD));
                     }
       },
        child: Column(
@@ -299,7 +295,7 @@ class _ArticlesListState extends State<ArticlesList> {
                 //print(snapshot.data);
 
                 return (snapshot.connectionState == ConnectionState.done) ? //Si la conexión a terminado y
-                    snapshot.hasData  || articulos.length!=0 ?//Se han obtenido datos de la consulta
+                    snapshot.hasData && articulos.isNotEmpty ?//Se han obtenido datos de la consulta
                      /* Y la peticion fue satisfactoria*/
                        /*Despliega el sig elemento*/
                         Expanded(child:
@@ -323,10 +319,10 @@ class _ArticlesListState extends State<ArticlesList> {
                     Container(
 
                         child:FloatingActionButton.extended(
-                        icon: Icon(Icons.network_check),
-                        label:Text("Error Inesperado ¿Reintentar?"),
+                        icon: articulos.isEmpty && isRefreshing? Icon(Icons.airplay):Icon(Icons.network_check),
+                        label: articulos.isEmpty && isRefreshing?Text("Conectando al servidor"):Text("Error Inesperado ¿Reintentar?"),
                         onPressed: () => setState(() {
-                          initState();
+                          articulos.isEmpty && isRefreshing==false?initState():null;
                         })
                     ))
                   ],),
@@ -444,4 +440,7 @@ class _ArticlesListState extends State<ArticlesList> {
     );
 
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

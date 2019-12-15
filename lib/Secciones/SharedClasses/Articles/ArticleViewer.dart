@@ -5,7 +5,7 @@ import 'package:tecmas/Temas/BaseTheme.dart';
 import 'dart:convert';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../CommonlyUsedFunctions.dart';
+import '../CommonlyUsed.dart';
 
 class ArticleViewer extends StatelessWidget {
 
@@ -43,14 +43,7 @@ class _ArticlePageState extends State<ArticlePage> {
     if(netState==0){
       setState(() {
 
-        Future.delayed(Duration(milliseconds: 1200),(){
-          final MSG = SnackBar(backgroundColor: BaseThemeColor_DarkBlue,
-            content: Text("Lo siento, no he podido conectarme a Internet. Es posible que algunos elementos no se visualicen correctamente.",
-            style: TextStyle(fontWeight: FontWeight.bold),textAlign: TextAlign.justify,));
-          Scaffold.of(context).showSnackBar(MSG);
-
-        });
-
+        ShowSnackWithDelay(context, 1200, BasicSnack("Lo siento, no he podido conectarme a Internet. Es posible que algunos elementos no se visualicen correctamente."));
       });
     }
   }

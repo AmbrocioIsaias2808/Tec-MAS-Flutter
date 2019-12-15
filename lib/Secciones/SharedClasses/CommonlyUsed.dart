@@ -10,6 +10,22 @@
 * */
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:tecmas/Temas/BaseTheme.dart';
+
+
+ dynamic ShowSnackWithDelay(dynamic context, int delay, Widget snack){
+   return Future.delayed(Duration(milliseconds: 500),(){
+     Scaffold.of(context).showSnackBar(snack);
+     //print("Feature disable or network connection error");
+   });
+ }
+
+Widget BasicSnack(String MSG){
+  return SnackBar(backgroundColor: BaseThemeColor_DarkBlue,content: Text(MSG,
+    style: TextStyle(fontWeight: FontWeight.bold),textAlign: TextAlign.justify,));
+}
+
 Future NetworkConnectionCkeck() async{
   try {
     final result = await InternetAddress.lookup('google.com');
