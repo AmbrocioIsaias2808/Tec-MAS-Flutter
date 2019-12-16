@@ -15,7 +15,7 @@ import 'package:tecmas/Temas/BaseTheme.dart';
 
 
  dynamic ShowSnackWithDelay(dynamic context, int delay, Widget snack){
-   return Future.delayed(Duration(milliseconds: 500),(){
+   return Future.delayed(Duration(milliseconds: delay),(){
      Scaffold.of(context).removeCurrentSnackBar();
      Scaffold.of(context).showSnackBar(snack);
      //print("Feature disable or network connection error");

@@ -115,10 +115,11 @@ class DBHelper{
 
   int NumOfArticlesSaved;
 
-  Future<List<Articles>> getSavedArticulos() async{
+  Future<List<Map>> getSavedArticulos() async{
     var dbClient=await db;
     List<Map> maps= await dbClient.rawQuery("SELECT * FROM $T_SavedArticulos ORDER BY $DATE DESC");
-    List<Articles> articulos=[];
+    return maps;
+    /*List<Articles> articulos=[];
     NumOfArticlesSaved=maps.length;
     if(NumOfArticlesSaved>0){
       for (int i=0; i<maps.length;i++){
@@ -128,7 +129,7 @@ class DBHelper{
     }else{
       print("No hay articulos");
       return null;
-    }
+    }*/
 
 
   }

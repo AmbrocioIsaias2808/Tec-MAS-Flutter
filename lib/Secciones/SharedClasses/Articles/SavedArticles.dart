@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:tecmas/Secciones/Estructures/Articles.dart';
 import 'package:tecmas/Secciones/Estructures/Databases/DBHelper.dart';
+import 'package:tecmas/Secciones/SharedClasses/CommonlyUsed.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
 
 import 'cards.dart';
@@ -12,11 +13,10 @@ class SavedArticles extends StatefulWidget {
   _SavedArticlesState createState() => _SavedArticlesState();
 }
 
-class _SavedArticlesState extends State<SavedArticles> with AutomaticKeepAliveClientMixin<SavedArticles>{
+class _SavedArticlesState extends State<SavedArticles>{
 
-  Future<List<Articles>> savedArticles;
-  Future <Articles> check;
-  int numArticles;
+  List<Map> maps;
+  int numOfArticles=-1;
 
   List<Articles> articulos=[];
 
@@ -26,19 +26,21 @@ class _SavedArticlesState extends State<SavedArticles> with AutomaticKeepAliveCl
 
   var DB = DBHelper();
 
-  void articleDelete(Articles article) async{
-    await DB.deleteSavedArticle(article.num);
-   savedArticles=DB.getSavedArticulos();
-  }
+  void getArticulos()async{
+    maps=await DB.getSavedArticulos();
 
-  void getSavedArticulos()async{
-    savedArticles = DB.getSavedArticulos();
+    for (int i=0; i<maps.length;i++){
+      articulos.add(Articles.savedFromMap(maps[i]));
+    }
+    setState(() {
+      numOfArticles=maps.length;
+    });
   }
 
 
   @override
   void initState(){
-    getSavedArticulos();
+    getArticulos();
     scrollController.addListener((){
       if((scrollController.offset >= scrollController.position.maxScrollExtent && !scrollController.position.outOfRange) && MoreIsVisible==false){
         setState(() {
@@ -61,111 +63,50 @@ class _SavedArticlesState extends State<SavedArticles> with AutomaticKeepAliveCl
 
   }
 
+  dynamic _key= UniqueKey();
+
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Scaffold(
       appBar: AppBar(
-
+        key: _key,
         title: Text("Artículos Guardados"),
       ),
       body: Column(
           children: <Widget>[
-            FutureBuilder(
-              future: savedArticles,
-              builder: (BuildContext context, AsyncSnapshot snapshot){
-
-                return (snapshot.connectionState == ConnectionState.done) ? //Si la conexión a terminado y
-                snapshot.hasData && (DB.NumOfArticlesSaved>0)?//Se han obtenido datos de la consulta
-                /* Y la peticion fue satisfactoria*/
-                /*Despliega el sig elemento*/
-                Expanded(child:
-                ListView.builder(
-                  controller: scrollController,
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    try{
-                      return Dismissible(
-                        key: Key(snapshot.data[index].toString()),
-                        background: Container(
-                          alignment: Alignment.centerRight,
-                          padding: EdgeInsets.only(right: 20.0),
-                          color: Colors.redAccent,
-                          child: Icon(Icons.delete, color: Colors.white),
-                        ),
-                        direction: DismissDirection.endToStart,
-                        child: cards(articulo: snapshot.data[index], likeEnable: false),
-                        onDismissed: (direction){
-                          articleDelete(snapshot.data[index]);
-                        },
-                      );
-
-
-
-                    }on RangeError{
-                      //print("Error: desplazamiento al final de lista antes de finalizar el refresh");
-                    }
-                  },
-                )
-                )
-                    : /*Si sucesido algun error despliega el siguiente elemento*/
-
-                Expanded(child: Center(
-                  child:Column(children: <Widget>[
-                    SizedBox(height: 200, width: double.infinity,),
-                    Container(
-
-                        child:FloatingActionButton.extended(
-                            icon: Icon(Icons.refresh),
-                            label:Text("Tu lista esta vacía"),
-                            onPressed: () => setState(() {
-                              initState();
-                            })
-                        ))
-                  ],),
-                ) ,)
-
-
-
-
-                    : /*Si no tengo información y la conexion no ha terminado entonces muestro el icono de loading*/
-                Expanded(child:
-                Container(
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    )
-                )
-                );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            Expanded(child: numOfArticles == -1
+                ? Center(child: Text("Hola Mundo"),)
+                : numOfArticles > 0 ?
+            ListView.builder(
+              controller: scrollController,
+              itemCount: numOfArticles,
+              itemBuilder: (BuildContext context, int index) {
+                try {
+                  return Dismissible(
+                    key: UniqueKey(),
+                    background: Container(
+                      alignment: Alignment.centerRight,
+                      padding: EdgeInsets.only(right: 20.0),
+                      color: Colors.redAccent,
+                      child: Icon(Icons.delete, color: Colors.white),
+                    ),
+                    direction: DismissDirection.endToStart,
+                    child: cards(articulo: articulos[index], likeEnable: false),
+                    onDismissed: (direction) {
+                      articulos.removeAt(index);
+                      setState(() {});
+                    },
+                  );
+                } on RangeError {
+                  //print("Error: desplazamiento al final de lista antes de finalizar el refresh");
+                }
               },
+            ) : Center(child: Text("No hay nada que mostrar"),),
             ),
             AnimatedContainer(
               // Use the properties stored in the State class.
               width: double.infinity,
-              height:MoreHeigh,
+              height: MoreHeigh,
 
               decoration: BoxDecoration(
                 //color: Color.fromRGBO(27, 55, 94,1),
@@ -176,21 +117,14 @@ class _SavedArticlesState extends State<SavedArticles> with AutomaticKeepAliveCl
               // Provide an optional curve to make the animation feel smoother.
               curve: Curves.fastOutSlowIn,
               child: FlatButton(
-                child: Text("Estos son todos los Articulos", style: BaseThemeText_whiteBold1),
+                child: Text("Estos son todos los Articulos",
+                    style: BaseThemeText_whiteBold1),
               ),
             )
-
-
-
-
-
 
 
           ]
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }
