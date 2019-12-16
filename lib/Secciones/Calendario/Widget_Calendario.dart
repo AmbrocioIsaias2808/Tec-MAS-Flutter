@@ -73,25 +73,19 @@ class _Widget_CalendarioState extends State<Widget_Calendario> with AutomaticKee
       drawer: BarraDeNavegacion(),
       appBar: AppBar(
         title: Text("Calendario Escolar"),
-        backgroundColor:BaseThemeAppBarColor,
         actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(10),
-              child: FlatButton(
-                  color: BaseThemeColor_DarkBlue,
-                  shape: CircleBorder(),
-                  child: Icon(Icons.refresh, color: Colors.white,),
-                  onPressed: (){
-                    DefaultCacheManager().removeFile(fromURL);
-                    Future.delayed(Duration(milliseconds: 100),(){
-                      setState(() {
-                        _isLoading=true;
-                      });
-                      loadDocument();
-                    }
-                    );
-                  }
-              )
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: (){
+              DefaultCacheManager().removeFile(fromURL);
+              Future.delayed(Duration(milliseconds: 100),(){
+                setState(() {
+                  _isLoading=true;
+                });
+                loadDocument();
+              }
+              );
+            },
           )
         ],
       ),

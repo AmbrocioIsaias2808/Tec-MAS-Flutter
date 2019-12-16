@@ -29,7 +29,6 @@ class _Widget_TransporteState extends State<Widget_Transporte> {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
-        backgroundColor: BaseThemeColor_DarkBlue,
         floatingActionButton: Builder(
           // Create an inner BuildContext so that the onPressed methods
           // can refer to the Scaffold with Scaffold.of().
@@ -64,9 +63,7 @@ class _Widget_TransporteState extends State<Widget_Transporte> {
                 },
               );}),
         appBar: AppBar(
-          backgroundColor: BaseThemeAppBarColor,
           bottom: TabBar(
-            indicatorColor: Colors.purple,
             isScrollable: true,
             tabs: [
               Tab(child:Text("Ruta 1")),

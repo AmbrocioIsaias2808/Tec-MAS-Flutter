@@ -36,10 +36,8 @@ class _Widget_ArticlesState extends State<Widget_Articles> with AutomaticKeepAli
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-        backgroundColor: BaseThemeColor_DarkBlue,
         appBar: AppBar(
           title: Text(SeccionTitle),
-          backgroundColor: BaseThemeAppBarColor,
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.folder_special),

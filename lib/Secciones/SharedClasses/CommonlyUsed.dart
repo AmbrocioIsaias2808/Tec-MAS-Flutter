@@ -16,14 +16,14 @@ import 'package:tecmas/Temas/BaseTheme.dart';
 
  dynamic ShowSnackWithDelay(dynamic context, int delay, Widget snack){
    return Future.delayed(Duration(milliseconds: 500),(){
+     Scaffold.of(context).removeCurrentSnackBar();
      Scaffold.of(context).showSnackBar(snack);
      //print("Feature disable or network connection error");
    });
  }
 
 Widget BasicSnack(String MSG){
-  return SnackBar(backgroundColor: BaseThemeColor_DarkBlue,content: Text(MSG,
-    style: TextStyle(fontWeight: FontWeight.bold),textAlign: TextAlign.justify,));
+  return SnackBar(content: Text(MSG,textAlign: TextAlign.justify,));
 }
 
 Future NetworkConnectionCkeck() async{

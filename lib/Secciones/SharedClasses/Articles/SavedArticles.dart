@@ -65,11 +65,9 @@ class _SavedArticlesState extends State<SavedArticles> with AutomaticKeepAliveCl
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      backgroundColor: BaseThemeColor_DarkBlue,
       appBar: AppBar(
 
         title: Text("Artículos Guardados"),
-          backgroundColor: BaseThemeAppBarColor
       ),
       body: Column(
           children: <Widget>[
