@@ -25,6 +25,10 @@ dependencies:
   cupertino_icons: ^0.1.2
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.7.3"
+
+
+
   flutter_test:
     sdk: flutter
 
@@ -37,6 +41,8 @@ dev_dependencies:
   flutter_plugin_pdf_viewer: ^1.0.7
   flutter_cache_manager: ^1.1.3
 
+
+
   #For management of SQLite Databases:
   sqflite: ^1.1.7+3
   path_provider: ^1.5.0
@@ -45,7 +51,12 @@ dev_dependencies:
   url_launcher: ^5.2.5
   flutter_slidable: ^0.5.4
 
-
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/Resources/AppLogo/logo.png"
+  adaptive_icon_foreground: "assets/Resources/AppLogo/background.png"
+  adaptive_icon_background: "assets/Resources/AppLogo/background.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
