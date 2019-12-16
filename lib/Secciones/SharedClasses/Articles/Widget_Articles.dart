@@ -26,25 +26,10 @@ class _Widget_ArticlesState extends State<Widget_Articles> with AutomaticKeepAli
   final int Category;
 
   _Widget_ArticlesState({@required this.SeccionTitle,@required this.URL, @required this.Category});
-  PageController pagecontroller = PageController();
-  String title;
-  var ActualPage; //Este valor incrementa o decrementa paulatinamiente al paginar en forma de un valor double. Por ejemplo: si estoy entre la pagina 1 y la pagina 2 el valor deberia dar algo como 1.5
-
 
   @override
   void initState() {
     super.initState();
-    title=SeccionTitle;
-    pagecontroller.addListener(() {
-      setState(() {
-        if(pagecontroller.page>=0.7){
-          title="Articulos Guardados";
-        }
-        if(pagecontroller.page<0.7){
-          title=SeccionTitle;
-        }
-      });
-    });
   }
 
   @override
@@ -53,17 +38,19 @@ class _Widget_ArticlesState extends State<Widget_Articles> with AutomaticKeepAli
     return Scaffold(
         backgroundColor: BaseThemeColor_DarkBlue,
         appBar: AppBar(
-          title: Text(title),
+          title: Text(SeccionTitle),
           backgroundColor: BaseThemeAppBarColor,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.folder_special),
+              onPressed: () {
+                Navigator.pushNamed(context, '/Favoritos');
+              },
+            ),
+          ],
         ),
         drawer: BarraDeNavegacion(),
-          body: PageView(
-            controller: pagecontroller,
-            children: <Widget>[
-              ArticlesList(URL:URL, Category: Category),
-              SavedArticles()
-      ],
-      ),
+          body: ArticlesList(URL:URL, Category: Category),
     );
       }
 

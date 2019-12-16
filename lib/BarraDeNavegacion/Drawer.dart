@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 
+import '../main.dart';
 import 'Cabecera.dart';
 import 'Seccion.dart';
 
@@ -8,6 +9,11 @@ class BarraDeNavegacion extends StatelessWidget {
 
 
   BarraDeNavegacion();
+
+  void ChangePage(dynamic context,int page){
+    Navigator.pop(context);NavigateTo.jumpToPage(page);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +29,12 @@ class BarraDeNavegacion extends StatelessWidget {
               child: Cabecera(),
             ),
 
-            Seccion(SectionIcon: Icons.home,SectionText: "Inicio",color:Colors.black,accion: (){Navigator.pushNamed(context, '/');},),
-            Seccion(SectionIcon: Icons.account_balance,SectionText: "Becas",color:Colors.black,accion: (){Navigator.pushNamed(context, '/Becas');},),
-            Seccion(SectionIcon: Icons.calendar_today,SectionText: "Calendario",color:Colors.black,accion:(){Navigator.pushNamed(context, '/Calendario');} ,),
-            Seccion(SectionIcon: Icons.airport_shuttle,SectionText: "Transporte",color:Colors.black,accion:(){Navigator.pushNamed(context, '/Transporte');}),
-            Seccion(SectionIcon: Icons.local_hospital,SectionText: "Emergencias",color:Colors.black,accion:(){Navigator.pushNamed(context, '/Emergencias');}),
-            Seccion(SectionIcon: Icons.map,SectionText: "Mapa Interactivo",color:Colors.black,accion:(){Navigator.pushNamed(context, '/Mapa');}),
+            Seccion(SectionIcon: Icons.home,SectionText: "Inicio",color:Colors.black,accion: (){ChangePage(context,0);},),
+            Seccion(SectionIcon: Icons.account_balance,SectionText: "Becas",color:Colors.black,accion: (){ChangePage(context,1);},),
+            Seccion(SectionIcon: Icons.calendar_today,SectionText: "Calendario",color:Colors.black,accion:(){ChangePage(context,2);} ,),
+            Seccion(SectionIcon: Icons.airport_shuttle,SectionText: "Transporte",color:Colors.black,accion:(){ChangePage(context,3);}),
+            Seccion(SectionIcon: Icons.local_hospital,SectionText: "Emergencias",color:Colors.black,accion:(){ChangePage(context,4);}),
+            Seccion(SectionIcon: Icons.map,SectionText: "Mapa Interactivo",color:Colors.black,accion:(){ChangePage(context,5);}),
             // Seccion(SectionIcon: Icons.book,SectionText: "SII",color:Colors.black,accion: ()=> funcSeccionActual(7.0,context)),
 
           ],

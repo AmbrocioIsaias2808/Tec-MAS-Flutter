@@ -18,7 +18,7 @@ class Widget_Calendario extends StatefulWidget {
 
 }
 
-class _Widget_CalendarioState extends State<Widget_Calendario> {
+class _Widget_CalendarioState extends State<Widget_Calendario> with AutomaticKeepAliveClientMixin<Widget_Calendario>{
 
 
   bool _isLoading=true;
@@ -68,6 +68,7 @@ class _Widget_CalendarioState extends State<Widget_Calendario> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       drawer: BarraDeNavegacion(),
       appBar: AppBar(
@@ -101,6 +102,9 @@ class _Widget_CalendarioState extends State<Widget_Calendario> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 

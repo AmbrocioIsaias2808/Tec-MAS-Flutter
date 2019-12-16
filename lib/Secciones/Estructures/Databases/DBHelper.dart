@@ -113,17 +113,20 @@ class DBHelper{
   /*--------------------------------------------------------------------------------------------------------*/
   //Begin: Funciones para administrar los articulos guardados desde la base de datos en el apartado de "SavedArticles")
 
+  int NumOfArticlesSaved;
 
   Future<List<Articles>> getSavedArticulos() async{
     var dbClient=await db;
     List<Map> maps= await dbClient.rawQuery("SELECT * FROM $T_SavedArticulos ORDER BY $DATE DESC");
     List<Articles> articulos=[];
-    if(maps.length>0){
+    NumOfArticlesSaved=maps.length;
+    if(NumOfArticlesSaved>0){
       for (int i=0; i<maps.length;i++){
         articulos.add(Articles.savedFromMap(maps[i]));
       }
       return articulos;
     }else{
+      print("No hay articulos");
       return null;
     }
 

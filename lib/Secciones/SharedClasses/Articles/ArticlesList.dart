@@ -48,6 +48,10 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
     try {
       //Base URL format: https://wordpresspruebas210919.000webhostapp.com/wp-json/wp/v2/posts?categories=CATEGORY&per_page=5&page=Pagina
 
+      Future.delayed(Duration(milliseconds: 30000),(){
+        networkConnectionCkeck();
+      });
+
       final response = await http.get(URL+Category.toString()+"&per_page=5&page="+Pagina.toString(),
 
           headers:{
