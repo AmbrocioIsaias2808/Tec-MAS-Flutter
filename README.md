@@ -119,7 +119,7 @@ De la rama TecMAS-19-11-18-(Lector-de-Articulos) a las anteriores necesito agreg
 
 **APK liberado:**
 
-<a href="" target="_blank">Descargar aquí</a>
+<a href="https://raw.githubusercontent.com/AmbrocioIsaias2808/Tec-MAS-Flutter/TecMAS-19.12.16-(BugFix-SavedArticles)/ReadmeFiles/19.12.17.apk" target="_blank">Descargar aquí</a>
 
 ### Mapa Interactivo:
 
