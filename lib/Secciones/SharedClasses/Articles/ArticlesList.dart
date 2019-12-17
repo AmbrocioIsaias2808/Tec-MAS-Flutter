@@ -13,6 +13,15 @@ import 'dart:convert';
 
 import 'cards.dart';
 
+dynamic _ListArticlesContext; /*Variable que almacena el context de esta vista necesaria para cerrar los snackbars antes de pasar
+ a la ventana de SavedArticles o articulos guardados ("favoritos")*/
+
+dynamic getArticlesListContext(){
+  return _ListArticlesContext; //Como debe ser una varianble privada la regreso con este getter
+
+  //A su vez, el el initState de  _ArticlesListState debo inicializar esta variable.
+}
+
 class ArticlesList extends StatefulWidget {
 
   final String URL;
@@ -43,12 +52,13 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
   }
 
 
+
   Future<List<Articles>> ServerCall() async {
 
     try {
       //Base URL format: https://wordpresspruebas210919.000webhostapp.com/wp-json/wp/v2/posts?categories=CATEGORY&per_page=5&page=Pagina
 
-      Future.delayed(Duration(milliseconds: 30000),(){
+      Future.delayed(Duration(milliseconds: 15000),(){
         networkConnectionCkeck();
       });
 
@@ -175,6 +185,7 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
 
   @override
   void initState(){
+    _ListArticlesContext=context; //Incializo el contexto para hacer ciertas operaciones en el widget padre
     InitialDataSource();
     scrollController.addListener((){
       if((scrollController.offset >= scrollController.position.maxScrollExtent && !scrollController.position.outOfRange) && MoreIsVisible==false){

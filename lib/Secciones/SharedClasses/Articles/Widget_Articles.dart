@@ -42,6 +42,7 @@ class _Widget_ArticlesState extends State<Widget_Articles> with AutomaticKeepAli
             IconButton(
               icon: Icon(Icons.folder_special),
               onPressed: () {
+                Scaffold.of(getArticlesListContext()).removeCurrentSnackBar();
                 Navigator.pushNamed(context, '/Favoritos');
               },
             ),

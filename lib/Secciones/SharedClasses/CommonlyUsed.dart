@@ -23,7 +23,7 @@ import 'package:tecmas/Temas/BaseTheme.dart';
  }
 
 Widget BasicSnack(String MSG){
-  return SnackBar(content: Text(MSG,textAlign: TextAlign.justify,));
+  return SnackBar(content: Text(MSG,textAlign: TextAlign.justify));
 }
 
 Future NetworkConnectionCkeck() async{

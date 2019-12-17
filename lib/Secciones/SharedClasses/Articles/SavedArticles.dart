@@ -38,6 +38,16 @@ class _SavedArticlesState extends State<SavedArticles>{
   }
 
 
+  void onDelete(dynamic context,int index)async{
+    await DB.deleteSavedArticle(articulos[index].num);
+    ShowSnackWithDelay(context,0,BasicSnack("Elemento borrado correctamente."));
+    articulos.removeAt(index);
+    setState(() {
+      numOfArticles--;
+    });
+  }
+
+
   @override
   void initState(){
     getArticulos();
@@ -93,17 +103,16 @@ class _SavedArticlesState extends State<SavedArticles>{
                     direction: DismissDirection.endToStart,
                     child: cards(articulo: articulos[index], likeEnable: false),
                     onDismissed: (direction) {
-                      articulos.removeAt(index);
-                      setState(() {});
+                      onDelete(context, index);
                     },
                   );
                 } on RangeError {
                   //print("Error: desplazamiento al final de lista antes de finalizar el refresh");
                 }
               },
-            ) : Center(child: Text("No hay nada que mostrar"),),
+            ) : Center(child: Text("Nada que mostrar aún",style: BaseThemeText_whiteBold1 ),),
             ),
-            AnimatedContainer(
+            numOfArticles >0 ?AnimatedContainer(
               // Use the properties stored in the State class.
               width: double.infinity,
               height: MoreHeigh,
@@ -120,7 +129,7 @@ class _SavedArticlesState extends State<SavedArticles>{
                 child: Text("Estos son todos los Articulos",
                     style: BaseThemeText_whiteBold1),
               ),
-            )
+            ):SizedBox(),
 
 
           ]
