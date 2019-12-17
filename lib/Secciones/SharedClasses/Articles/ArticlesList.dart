@@ -183,9 +183,11 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
   Future<List<Articles>> GetArticlesFromServer;
   final scrollController= ScrollController();
 
+  int NumOfArticlesOnDatabase;
   @override
   void initState(){
     _ListArticlesContext=context; //Incializo el contexto para hacer ciertas operaciones en el widget padre
+    NumOfArticlesOnDatabase=0;
     InitialDataSource();
     scrollController.addListener((){
       if((scrollController.offset >= scrollController.position.maxScrollExtent && !scrollController.position.outOfRange) && MoreIsVisible==false){
@@ -230,6 +232,11 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
                   GetArticlesFromServer = ServerCall();
                 }else{
                   loadFromDatabase();
+                  int num=await DB.CountOfArticlesSavedOnDB(Category);
+                  setState((){
+                    NumOfArticlesOnDatabase = num;
+                  });
+                  print("Loading from Database count: "+NumOfArticlesOnDatabase.toString());
 
                 }
 
@@ -307,10 +314,10 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
             FutureBuilder(
               future: GetArticlesFromServer,
               builder: (BuildContext context, AsyncSnapshot snapshot){
-                //print(snapshot.data);
+                print("Enter Builder: "+NumOfArticlesOnDatabase.toString());
 
                 return (snapshot.connectionState == ConnectionState.done) ? //Si la conexión a terminado y
-                    snapshot.hasData && articulos.isNotEmpty ?//Se han obtenido datos de la consulta
+                (snapshot.hasData && articulos.isNotEmpty) || (databaseload==true && NumOfArticlesOnDatabase!=0) ?//Se han obtenido datos de la consulta
                      /* Y la peticion fue satisfactoria*/
                        /*Despliega el sig elemento*/
                         Expanded(child:

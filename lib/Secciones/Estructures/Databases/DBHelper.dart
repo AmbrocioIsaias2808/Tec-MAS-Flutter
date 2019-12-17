@@ -72,6 +72,19 @@ class DBHelper{
       return await txn.rawInsert(query);
     });
   }*/
+  int _ArticlesSavedOnDB=0;
+
+  int getNumOfSavedArticles(){
+    return _ArticlesSavedOnDB;
+  }
+
+  Future <int> CountOfArticlesSavedOnDB(int category) async{
+    var dbClient=await db;
+    String Category=category.toString();
+    //List<Map> maps = await dbClient.query(TABLE,columns:[ID,NAME]);
+    List<Map> maps= await dbClient.rawQuery("SELECT * FROM $T_Articulos WHERE $CATEGORY=$Category");
+    return maps.length;
+  }
 
   Future<List<Articles>> getArticulos(int category) async{
     var dbClient=await db;
@@ -79,7 +92,9 @@ class DBHelper{
     //List<Map> maps = await dbClient.query(TABLE,columns:[ID,NAME]);
     List<Map> maps= await dbClient.rawQuery("SELECT * FROM $T_Articulos WHERE $CATEGORY=$Category ORDER BY $NUM DESC");
     List<Articles> articulos=[];
-    if(maps.length>0){
+    _ArticlesSavedOnDB=maps.length;
+    print("Processs in database:"+_ArticlesSavedOnDB.toString());
+    if(_ArticlesSavedOnDB>0){
       for (int i=0; i<maps.length;i++){
         articulos.add(Articles.fromMap(maps[i]));
       }
@@ -112,8 +127,6 @@ class DBHelper{
 
   /*--------------------------------------------------------------------------------------------------------*/
   //Begin: Funciones para administrar los articulos guardados desde la base de datos en el apartado de "SavedArticles")
-
-  int NumOfArticlesSaved;
 
   Future<List<Map>> getSavedArticulos() async{
     var dbClient=await db;
