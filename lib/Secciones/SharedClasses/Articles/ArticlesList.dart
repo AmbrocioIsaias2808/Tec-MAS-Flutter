@@ -344,7 +344,8 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
                         icon: articulos.isEmpty && isRefreshing? Icon(Icons.airplay):Icon(Icons.network_check),
                         label: articulos.isEmpty && isRefreshing?Text("Conectando al servidor"):Text("Error Inesperado ¿Reintentar?"),
                         onPressed: () => setState(() {
-                          articulos.isEmpty && isRefreshing==false?initState():null;
+                          print("articulos: "+articulos.isEmpty.toString()+" Refreshing: "+isRefreshing.toString()+" databaseload: "+databaseload.toString());
+                          (articulos.isEmpty || databaseload==false) && isRefreshing==false?initState():null;
                         })
                     ))
                   ],),
