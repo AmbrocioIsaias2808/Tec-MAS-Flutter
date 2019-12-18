@@ -149,7 +149,7 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
       image=object['better_featured_image']['source_url'];
       }
       catch(error){
-        image="http://4.bp.blogspot.com/-p3mTTSmKMp8/Uy8UOe2P2YI/AAAAAAAAKLk/6Ewj_FPUXqs/s1600/probando.jpg";
+        image="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRBZNpdaxzwE4Tehk16HHWNFRSxwXzKjhptSz-JrSwkIGD2QO68";
       }
 
       Articles a = Articles(
