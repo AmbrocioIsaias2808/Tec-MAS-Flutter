@@ -111,13 +111,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.7"
-  flutter_slidable:
-    dependency: "direct dev"
-    description:
-      name: flutter_slidable
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.4"
   flutter_svg:
     dependency: transitive
     description:
@@ -130,6 +123,20 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_user_agent:
+    dependency: "direct dev"
+    description:
+      name: flutter_user_agent
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.1"
+  flutter_webview_plugin:
+    dependency: "direct main"
+    description:
+      name: flutter_webview_plugin
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.10"
   http:
     dependency: "direct dev"
     description:
@@ -351,7 +358,7 @@ packages:
       name: url_launcher_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.4"
+    version: "1.0.5"
   uuid:
     dependency: transitive
     description:
@@ -366,13 +373,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.8"
-  webview_flutter:
-    dependency: "direct main"
-    description:
-      name: webview_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.17"
   xml:
     dependency: transitive
     description:

@@ -5,7 +5,6 @@ import 'package:tecmas/Secciones/SharedClasses/CommonlyUsed.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
 
 import 'cards.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 
 class SavedArticles extends StatefulWidget {

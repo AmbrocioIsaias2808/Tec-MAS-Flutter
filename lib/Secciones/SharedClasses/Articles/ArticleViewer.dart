@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:tecmas/BarraDeNavegacion/Drawer.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
 import 'dart:convert';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_user_agent/flutter_user_agent.dart';
+//import 'package:webview_flutter/webview_flutter.dart';
 
 import '../CommonlyUsed.dart';
+
+
 
 class ArticleViewer extends StatelessWidget {
 
@@ -37,6 +41,8 @@ class ArticlePage extends StatefulWidget {
 class _ArticlePageState extends State<ArticlePage> {
   final String ArticleContent;
   final String title;
+  String SiteInfo="";
+  String _webUserAgent="<unknown>";
 
   void networkConnectionCkeck() async{
     int netState = await NetworkConnectionCkeck();
@@ -50,80 +56,62 @@ class _ArticlePageState extends State<ArticlePage> {
 
   @override
   void initState(){
+    super.initState();
+    initUserAgentState();
+    loadHTMLfromAssets();
     networkConnectionCkeck();
   }
 
+  void loadHTMLfromAssets() async{
+    SiteInfo = await rootBundle.loadString(filePath)+ArticleContent+'</div></body></html>';
+    setState(() {
+
+    });
+  }
 
   _ArticlePageState({@required this.ArticleContent, @required this.title});
-  WebViewController webController;
+
+
+
+  Future<void> initUserAgentState() async {
+    String webViewUserAgent;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      await FlutterUserAgent.init();
+      webViewUserAgent = FlutterUserAgent.webViewUserAgent;
+      print("UserAgent: "+webViewUserAgent);
+    } on PlatformException {
+      webViewUserAgent = '<error>';
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      _webUserAgent = webViewUserAgent;
+    });
+  }
 
   String filePath='assets/ArticleViewer/base.html';
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      drawer: BarraDeNavegacion(),
-      appBar: AppBar(title: Text(title),
-      backgroundColor: BaseThemeAppBarColor,
-      actions: <Widget>[
-        Padding(
-          child: InkWell(child: (Icon(Icons.arrow_back_ios)),onTap: ()async{
-            if (await webController.canGoBack()) {
-            print("onwill goback");
-            webController.goBack();
-            }
-
-
-          },),
-          padding: EdgeInsets.fromLTRB(0,10,10,10),),
-        SizedBox(width: 10,),
-        Padding(
-          child: InkWell(child: (Icon(Icons.arrow_forward_ios)),onTap: ()async{
-            if (await webController.canGoForward()) {
-            print("onwill goback");
-            webController.goForward();
-            }
-          },),
-          padding: EdgeInsets.fromLTRB(0,10,10,10),),
-      ],),
-      body:Container(
-          decoration: BoxDecoration(
-            borderRadius:BorderRadius.only(topLeft: Radius.circular(75.0)),
-          ),
-        child:
-
-              WebView(
-                javascriptMode: JavascriptMode.unrestricted,
-                onWebViewCreated: (WebViewController controller){
-                  webController=controller;
-                  _loadHTMLfromAssets();
-                },
-              ),
-
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: BaseThemeColor_DarkBlue,
-        mini: true,
-        child: Icon(Icons.refresh),
-        onPressed: (){
-
-          setState(() {
-            webController.reload();
-          });
-
-
-        },
-      ),
-    );
-  }
-
-  _loadHTMLfromAssets() async{
-    String fileHTMLContents = await rootBundle.loadString(filePath)+ArticleContent+'</div></body></html>';
-    webController.loadUrl(
-        Uri.dataFromString(fileHTMLContents,mimeType: 'text/html',
-          encoding: Encoding.getByName('utf-8'),
-        ).toString()
+    return WebviewScaffold(
+      allowFileURLs: true,
+      userAgent: _webUserAgent,
+      supportMultipleWindows: true,
+        persistentFooterButtons: <Widget>[
+          Container(child: Text("Hola mundo"),),
+        ],
+        appBar: AppBar(title: Text(title),
+        backgroundColor: BaseThemeAppBarColor),
+        url: Uri.dataFromString(SiteInfo, mimeType: 'text/html',  encoding: Encoding.getByName('utf-8')).toString(),
+        withJavascript: true,
+        withZoom: true,
     );
 
   }
+
+
 }
