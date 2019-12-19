@@ -11,6 +11,7 @@ import 'package:tecmas/Secciones/SharedClasses/Messeges/Errors/MSG_NetworkConnec
 import 'package:tecmas/Temas/BaseTheme.dart';
 import 'dart:convert';
 
+import '../LoadingWidget.dart';
 import 'cards.dart';
 
 dynamic _ListArticlesContext; /*Variable que almacena el context de esta vista necesaria para cerrar los snackbars antes de pasar
@@ -355,28 +356,7 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
 
 
                     : /*Si no tengo información y la conexion no ha terminado entonces muestro el icono de loading*/
-                Expanded(child:
-                        Container(
-                            child: Center(
-                              child: SizedBox(
-                                height: 100,
-                                child: Stack(
-                                  children: <Widget>[
-                                        Center(
-                                          child: Container(
-                                            height: 100,width: 100,
-                                            child: CircularProgressIndicator(),
-                                          ),
-                                        ),
-                                    Center(child:
-                                      Text("Cargando", style: BaseThemeText_whiteBold1,),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            )
-                        )
-                        );
+                Expanded(child:LoadingWidget());
 
 
 

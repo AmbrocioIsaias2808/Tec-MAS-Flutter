@@ -36,7 +36,7 @@ ThemeData BaseTheme(){
 
   IconThemeData _IconTheme(IconThemeData tema){
     return tema.copyWith(
-      color: Colors.red,
+      color: Colors.white,
     );
   }
 

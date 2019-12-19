@@ -1,3 +1,3 @@
 Versión experimental:
 
-Esta versión solamente corrige bugs relevantes al widget ArticleView, el bug es relevante a la incapacidad de poder ver imágenes en las versiones de android 9 en adelante. Se necesita dejar una pantalla bien hecha de esta sección, esta versión es experimental.
+Esta versión se finaliza del diseño del nuevo visor de artículos que se ha estado desarrollando desde la versión 19.12.18-(BugFix-Articleview). A partir de aquí se realizará una nueva rama de desarrollo para tratar de separar el widget creado para el visor. Este anterior debido a que el widget ArticleViewer esta enteramente basado en un webview y con las nuevas mejoras pretendo crear un widget tipo Browser (Navegador) autonomo, de esta manera poder usarlo para revivir la descartada idea del apartado del SII. <- Si no me expliqué ya se entendera en futuras versiones.

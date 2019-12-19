@@ -1,47 +1,13 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-import 'package:tecmas/BarraDeNavegacion/Drawer.dart';
-import 'package:tecmas/Temas/BaseTheme.dart';
-import 'dart:convert';
-import 'package:flutter_user_agent/flutter_user_agent.dart';
-//import 'package:webview_flutter/webview_flutter.dart';
 
 import '../CommonlyUsed.dart';
-import '../LoadingWidget.dart';
-
-
-
-class ArticleViewer extends StatelessWidget {
-
-  final String ArticleContent;
-  final String title;
-
-  ArticleViewer({@required this.ArticleContent, @required this.title});
-
+/* Apartado en desarrollo
+class CustomWebview extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: ArticlePage(ArticleContent: ArticleContent, title: title),
-    );
-  }
+  _CustomWebviewState createState() => _CustomWebviewState();
 }
 
-
-class ArticlePage extends StatefulWidget {
-
-  final String ArticleContent;
-  final String title;
-
-  ArticlePage({@required this.ArticleContent, @required this.title});
-
-  @override
-  _ArticlePageState createState() => _ArticlePageState(ArticleContent:this.ArticleContent, title:this.title);
-}
-
-class _ArticlePageState extends State<ArticlePage> {
+class _CustomWebviewState extends State<CustomWebview> {
   final String ArticleContent;
   final String title;
   String SiteInfo="";
@@ -52,7 +18,7 @@ class _ArticlePageState extends State<ArticlePage> {
     if(netState==0){
       setState(() {
         MSG_Height=40;
-       });
+      });
 
       Future.delayed(Duration(milliseconds: 3000),(){setState(() {MSG_Height=0;});});
     }
@@ -130,41 +96,41 @@ class _ArticlePageState extends State<ArticlePage> {
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context).size;
     return WebviewScaffold(
-        appBar: AppBar(
-            title: Text(title),
-        ),
-        initialChild: LoadingWidget(),
-        url: Uri.dataFromString(SiteInfo, mimeType: 'text/html',  encoding: Encoding.getByName('utf-8')).toString(),
-        withJavascript: true,
-        withZoom: true,
-        allowFileURLs: true,
-        withOverviewMode: true,
-        useWideViewPort: true,
-        userAgent: _webUserAgent,
-        supportMultipleWindows: true,
-        bottomNavigationBar: Stack(
-          children: <Widget>[
-            BarraDeNavegacion(isloading: isloading, loadingAnimation: loadingAnimation, controlladorDeWebview: controllerOfWebView,),
-            AnimatedContainer(
-              // Use the properties stored in the State class.
-              width: media.width-2,
-              height:MSG_Height,
-              color: BaseThemeColor_DarkLightBlue,
-              // Define how long the animation should take.
-              duration: Duration(milliseconds: MSG_timing),
-              // Provide an optional curve to make the animation feel smoother.
-              curve: Curves.fastOutSlowIn,
-              child: Center(
-                child: FlatButton(
-                  child: Text("No he podido conectarme a Internet. Es posible que algunos elementos no se visualicen correctamente.", style: BaseThemeText_whiteBold1) ,
-                  onPressed: (){setState(() {
-                    MSG_Height=0;
-                  });},
-                ),
+      appBar: AppBar(
+        title: Text(title),
+      ),
+      initialChild: LoadingWidget(),
+      url: Uri.dataFromString(SiteInfo, mimeType: 'text/html',  encoding: Encoding.getByName('utf-8')).toString(),
+      withJavascript: true,
+      withZoom: true,
+      allowFileURLs: true,
+      withOverviewMode: true,
+      useWideViewPort: true,
+      userAgent: _webUserAgent,
+      supportMultipleWindows: true,
+      bottomNavigationBar: Stack(
+        children: <Widget>[
+          BarraDeNavegacion(isloading: isloading, loadingAnimation: loadingAnimation, controlladorDeWebview: controllerOfWebView,),
+          AnimatedContainer(
+            // Use the properties stored in the State class.
+            width: media.width-2,
+            height:MSG_Height,
+            color: BaseThemeColor_DarkLightBlue,
+            // Define how long the animation should take.
+            duration: Duration(milliseconds: MSG_timing),
+            // Provide an optional curve to make the animation feel smoother.
+            curve: Curves.fastOutSlowIn,
+            child: Center(
+              child: FlatButton(
+                child: Text("No he podido conectarme a Internet. Es posible que algunos elementos no se visualicen correctamente.", style: BaseThemeText_whiteBold1) ,
+                onPressed: (){setState(() {
+                  MSG_Height=0;
+                });},
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
+      ),
     );
 
   }
@@ -251,3 +217,5 @@ class BotonRefresh extends StatelessWidget {
   }
 }
 
+
+*/
