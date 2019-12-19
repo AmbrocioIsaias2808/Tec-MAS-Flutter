@@ -64,9 +64,7 @@ class _ArticlePageState extends State<ArticlePage> {
 
   void loadHTMLfromAssets() async{
     SiteInfo = await rootBundle.loadString(filePath)+ArticleContent+'</div></body></html>';
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   _ArticlePageState({@required this.ArticleContent, @required this.title});
@@ -79,7 +77,7 @@ class _ArticlePageState extends State<ArticlePage> {
     try {
       await FlutterUserAgent.init();
       webViewUserAgent = FlutterUserAgent.webViewUserAgent;
-      print("UserAgent: "+webViewUserAgent);
+      print("\n\n\nUserAgent: "+webViewUserAgent);
     } on PlatformException {
       webViewUserAgent = '<error>';
     }
@@ -99,6 +97,8 @@ class _ArticlePageState extends State<ArticlePage> {
   Widget build(BuildContext context) {
     return WebviewScaffold(
       allowFileURLs: true,
+      withOverviewMode: true,
+      useWideViewPort: true,
       userAgent: _webUserAgent,
       supportMultipleWindows: true,
         persistentFooterButtons: <Widget>[
