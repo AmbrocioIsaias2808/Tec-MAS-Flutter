@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tecmas/BarraDeNavegacion/Drawer.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:tecmas/Notifications/OneSignal/OneSignal.dart';
+import 'package:tecmas/Secciones/SII/Widget_SII.dart';
 import 'package:tecmas/Secciones/SharedClasses/Articles/SavedArticles.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
 //import 'package:tecmas/Notifications/OneSignal/OneSignal.dart';
@@ -56,6 +57,7 @@ class _AppState extends State<App> {
       title:"Tec-MAS Develop",
         routes: {
           '/Favoritos':(context)=>SavedArticles(),
+          '/SII':(context)=>Widget_SII(),
         },
       home:PageView(
         controller: NavigateTo,

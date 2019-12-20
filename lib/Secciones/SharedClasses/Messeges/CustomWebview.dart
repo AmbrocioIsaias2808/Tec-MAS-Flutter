@@ -1,34 +1,112 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:tecmas/Temas/BaseTheme.dart';
+import 'package:flutter_user_agent/flutter_user_agent.dart';
 
 import '../CommonlyUsed.dart';
-/* Apartado en desarrollo
+import '../LoadingWidget.dart';
+
 class CustomWebview extends StatefulWidget {
+
+  String SITE;
+  final String PATH_FROMLOCALFILE;
+  final String HTMLString;
+  final String title;
+  bool LoadingFromAssets;
+  bool LoadingFromHTMLString;
+  bool CombineFileAndHTMLBODY;
+  bool clearCache;
+  bool clearCookies;
+  bool AlertMessege;
+
+  CustomWebview({this.SITE="",this.PATH_FROMLOCALFILE="", this.title="", this.LoadingFromAssets=false, this.HTMLString="", this.LoadingFromHTMLString=false, this.CombineFileAndHTMLBODY=false, this.clearCache=false, this.clearCookies=false, this.AlertMessege=false});
+
   @override
-  _CustomWebviewState createState() => _CustomWebviewState();
+  _CustomWebviewState createState() => _CustomWebviewState(SITE: SITE, PATH_FROMLOCALFILE: PATH_FROMLOCALFILE, title: title, LoadingFromAssets: LoadingFromAssets, HTMLString: HTMLString, LoadingFromHTMLString: LoadingFromHTMLString, CombineFileAndHTMLBODY: CombineFileAndHTMLBODY, clearCache: clearCache, clearCookies: clearCookies, AlertMessege: AlertMessege);
 }
 
 class _CustomWebviewState extends State<CustomWebview> {
-  final String ArticleContent;
-  final String title;
-  String SiteInfo="";
-  String _webUserAgent="<unknown>";
 
+  String SITE;
+  final String PATH_FROMLOCALFILE;
+  final String HTMLString;
+  final String title;
+  String _webUserAgent="<unknown>";
+  bool LoadingFromAssets;
+  bool LoadingFromHTMLString;
+  bool CombineFileAndHTMLBODY;
+  bool clearCache;
+  bool clearCookies;
+  static const String error='<!DOCTYPE><html><head><style>p{font-size:30px}</style></head><body><p>Estas haciendo algo mal, checa los parametros y los valores</p><p>You Are Doing Something Wrong, Check the parameters and Values</p></body></html>';
+  bool AlertMessege;
+  _CustomWebviewState({this.SITE="",this.PATH_FROMLOCALFILE="", this.title="", this.LoadingFromAssets=false, this.HTMLString="", this.LoadingFromHTMLString=false, this.CombineFileAndHTMLBODY=false, this.clearCache=false, this.clearCookies=false, this.AlertMessege=false});
+
+
+  int netState;
   void networkConnectionCkeck() async{
     int netState = await NetworkConnectionCkeck();
-    if(netState==0){
-      setState(() {
-        MSG_Height=40;
-      });
-
-      Future.delayed(Duration(milliseconds: 3000),(){setState(() {MSG_Height=0;});});
+    if(netState==0 && AlertMessege==false){
+      Messege("No he podido conectarme a Internet. Es posible que algunos elementos no se visualicen correctamente.");
+    }else if(netState==1 && AlertMessege==true){
+      Messege("Como medida de seguridad te recomendamos cerrar sesión cuando termines tu cosulta");
+    }else if(netState==0 && AlertMessege==true){
+      Messege("No he podido conectarme a Internet");
     }
+  }
+
+  String AlertMessegeString="";
+  void Messege(String MSG){
+    setState(() {
+      AlertMessegeString=MSG;
+      MSG_Height=40;
+    });
+
+    Future.delayed(Duration(milliseconds: 3000),(){setState(() {MSG_Height=0;});});
+  }
+
+  void loadFrom() async{
+    String from='';
+    print("FromASSETS: "+LoadingFromAssets.toString()+" fromString: "+LoadingFromHTMLString.toString()+" Combinado: "+CombineFileAndHTMLBODY.toString());
+    if(LoadingFromAssets==true && LoadingFromHTMLString==false && CombineFileAndHTMLBODY==false){
+      //Entonces se cargara desde un archivo
+      print("Loading From A FILE");
+      from = await rootBundle.loadString(PATH_FROMLOCALFILE);
+    }else if(LoadingFromAssets==false && LoadingFromHTMLString==true && CombineFileAndHTMLBODY==false){
+      //Se renderizara una cadena con texto en codigo HTML
+      from = HTMLString;
+      print("Loading From HTML");
+    }else if(LoadingFromAssets==false && LoadingFromHTMLString==false && CombineFileAndHTMLBODY==true){
+      //Cargaremos contenido desde un archivo pero el body del mismo sera cargado desde una cadena html
+      from = await rootBundle.loadString(PATH_FROMLOCALFILE)+HTMLString+'</div></body></html>';
+      print("Loading From A FILE AND HTML");
+    }else{
+
+      if(SITE.length!=0){
+        from=SITE;
+        print("Loading INTERNET:"+from);
+      }
+      else{
+        print("Loading INTERNET:"+from);
+        LoadingFromHTMLString=true;
+        from=error;
+      }
+    }
+      //Si todo lo anterior falla significa que estaremos cargado una pagina web normal y corriente desde internet, por lo tanto SITE debe contener una URL
+
+    setState(() {
+      SITE=from;
+    });
   }
 
   @override
   void initState(){
     super.initState();
+    loadFrom();
     initUserAgentState();
-    loadHTMLfromAssets();
     networkConnectionCkeck();
     _onchanged = controllerOfWebView.onStateChanged.listen((WebViewStateChanged state) {
       if (mounted) {
@@ -42,13 +120,6 @@ class _CustomWebviewState extends State<CustomWebview> {
       }
     });
   }
-
-  void loadHTMLfromAssets() async{
-    SiteInfo = await rootBundle.loadString(filePath)+ArticleContent+'</div></body></html>';
-    setState(() {});
-  }
-
-  _ArticlePageState({@required this.ArticleContent, @required this.title});
 
   final controllerOfWebView = new FlutterWebviewPlugin();
 
@@ -91,7 +162,7 @@ class _CustomWebviewState extends State<CustomWebview> {
   StreamSubscription<WebViewStateChanged> _onchanged;
   bool isloading=false;
 
-  String filePath='assets/ArticleViewer/base.html';
+
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context).size;
@@ -100,10 +171,11 @@ class _CustomWebviewState extends State<CustomWebview> {
         title: Text(title),
       ),
       initialChild: LoadingWidget(),
-      url: Uri.dataFromString(SiteInfo, mimeType: 'text/html',  encoding: Encoding.getByName('utf-8')).toString(),
+      url: (LoadingFromAssets==true || LoadingFromHTMLString==true || CombineFileAndHTMLBODY==true)? Uri.dataFromString(SITE, mimeType: 'text/html',  encoding: Encoding.getByName('utf-8')).toString():SITE,
       withJavascript: true,
       withZoom: true,
-      allowFileURLs: true,
+      clearCache: clearCache,
+      clearCookies: clearCookies,
       withOverviewMode: true,
       useWideViewPort: true,
       userAgent: _webUserAgent,
@@ -122,7 +194,7 @@ class _CustomWebviewState extends State<CustomWebview> {
             curve: Curves.fastOutSlowIn,
             child: Center(
               child: FlatButton(
-                child: Text("No he podido conectarme a Internet. Es posible que algunos elementos no se visualicen correctamente.", style: BaseThemeText_whiteBold1) ,
+                child: Text(AlertMessegeString, style: BaseThemeText_whiteBold1) ,
                 onPressed: (){setState(() {
                   MSG_Height=0;
                 });},
@@ -218,4 +290,3 @@ class BotonRefresh extends StatelessWidget {
 }
 
 
-*/
