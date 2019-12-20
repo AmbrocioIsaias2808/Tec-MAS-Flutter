@@ -288,6 +288,7 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
     if(netState==0){
       setState(() {
         isRefreshing=false;
+        ShowMoreLoadingAnimation=false;
         networkError=true;
       });
     }
