@@ -5,6 +5,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:tecmas/Notifications/OneSignal/OneSignal.dart';
 import 'package:tecmas/Secciones/SII/Widget_SII.dart';
 import 'package:tecmas/Secciones/SharedClasses/Articles/SavedArticles.dart';
+import 'package:tecmas/Secciones/pol.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
 //import 'package:tecmas/Notifications/OneSignal/OneSignal.dart';
 
@@ -58,6 +59,7 @@ class _AppState extends State<App> {
         routes: {
           '/Favoritos':(context)=>SavedArticles(),
           '/SII':(context)=>Widget_SII(),
+          '/pol':(context)=>pol(),
         },
       home:PageView(
         controller: NavigateTo,

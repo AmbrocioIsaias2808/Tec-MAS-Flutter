@@ -174,7 +174,9 @@ class _CustomWebviewState extends State<CustomWebview> {
       url: (LoadingFromAssets==true || LoadingFromHTMLString==true || CombineFileAndHTMLBODY==true)? Uri.dataFromString(SITE, mimeType: 'text/html',  encoding: Encoding.getByName('utf-8')).toString():SITE,
       withJavascript: true,
       withZoom: true,
+      enableAppScheme: true, //?????
       clearCache: clearCache,
+      withLocalStorage: true,
       clearCookies: clearCookies,
       withOverviewMode: true,
       useWideViewPort: true,

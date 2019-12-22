@@ -14,6 +14,29 @@ class BarraDeNavegacion extends StatelessWidget {
     Navigator.pop(context);NavigateTo.jumpToPage(page);
   }
 
+  void _showDialog(dynamic context) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Version: 19.12.19"),
+          content: new Text("Developer: Ambrocio Isaías Laureano Castro"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +59,8 @@ class BarraDeNavegacion extends StatelessWidget {
             Seccion(SectionIcon: Icons.local_hospital,SectionText: "Emergencias",color:Colors.black,accion:(){ChangePage(context,4);}),
             Seccion(SectionIcon: Icons.map,SectionText: "Mapa Interactivo",color:Colors.black,accion:(){ChangePage(context,5);}),
             Seccion(SectionIcon: Icons.book,SectionText: "SII",color:Colors.black,accion: (){Scaffold.of(context).removeCurrentSnackBar();Navigator.pushNamed(context, '/SII');}),
+            //Seccion(SectionIcon: Icons.book,SectionText: "pol",color:Colors.black,accion: (){Scaffold.of(context).removeCurrentSnackBar();Navigator.pushNamed(context, '/pol');}),
+            Seccion(SectionIcon: Icons.info,SectionText: "More Info",color:Colors.black,accion: (){_showDialog(context);}),
 
           ],
         ),
