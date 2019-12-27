@@ -34,6 +34,7 @@ class _Widget_TransporteState extends State<Widget_Transporte> {
           // can refer to the Scaffold with Scaffold.of().
             builder: (BuildContext context) {
               return FloatingActionButton(
+                heroTag: UniqueKey(),
                 child: Icon(Icons.refresh),
                 onPressed: ()async {
                   setState(() {
