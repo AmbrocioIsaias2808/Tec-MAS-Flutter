@@ -34,10 +34,8 @@ class NotificationSystem{
     OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult result) {
 
       print("Opened notification: \n${result.notification.jsonRepresentation().replaceAll("\\n", "\n")}");
-      //main();
-      //navigatorKey.currentState.pushNamed('/Mapa');
-      //call();
-
+      //NavigateTo.jumpToPage(5);
+      MaterialPageRoute(builder: (context) => Widget_Transporte());
 
     });
 

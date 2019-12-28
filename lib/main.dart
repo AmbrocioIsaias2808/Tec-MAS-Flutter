@@ -26,6 +26,7 @@ void main(){
 }
 
 
+dynamic Appcontext;
 class App extends StatefulWidget {
   @override
   _AppState createState() => _AppState();
@@ -47,6 +48,7 @@ class _AppState extends State<App> {
     super.initState();
     notification.setNavigator(navigatorKey);
     notification.init();
+    Appcontext=context;
 
   }
 
