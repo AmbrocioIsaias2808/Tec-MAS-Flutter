@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:tecmas/Secciones/SharedClasses/Articles/NotificationArticleViewer.dart';
+import 'package:tecmas/Secciones/SharedClasses/CustomAppBar.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
 import 'package:flutter_user_agent/flutter_user_agent.dart';
 
@@ -191,9 +192,7 @@ class _CustomWebviewState extends State<CustomWebview> {
         return false;
       },
       child: WebviewScaffold(
-        appBar: AppBar(
-          title: Text(title),
-        ),
+        appBar: CustomAppBar(title: title,),
         initialChild: LoadingWidget(),
         url: (LoadingFromAssets==true || LoadingFromHTMLString==true || CombineFileAndHTMLBODY==true)? Uri.dataFromString(SITE, mimeType: 'text/html',  encoding: Encoding.getByName('utf-8')).toString():SITE,
         withJavascript: true,

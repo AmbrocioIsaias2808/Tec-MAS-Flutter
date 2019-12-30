@@ -1,1 +1,1 @@
-Esta versión trae consigo la incorporación de los logos de aplicación y splashscreen (pantalla de carga de la aplicación).
+Esta versión trae cambios en la AppBar o la barra de la aplicación y además se implementan mejoras en la estructura del widget de transporte. 

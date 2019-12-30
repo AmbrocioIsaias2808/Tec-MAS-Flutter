@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_plugin_pdf_viewer/flutter_plugin_pdf_viewer.dart';
 import 'package:tecmas/BarraDeNavegacion/Drawer.dart';
+import 'package:tecmas/Secciones/SharedClasses/CustomAppBar.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
@@ -71,8 +72,8 @@ class _Widget_CalendarioState extends State<Widget_Calendario> with AutomaticKee
     super.build(context);
     return Scaffold(
       drawer: BarraDeNavegacion(),
-      appBar: AppBar(
-        title: Text("Calendario Escolar"),
+      appBar: CustomAppBar(
+        title: "Calendario Escolar",
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.refresh),

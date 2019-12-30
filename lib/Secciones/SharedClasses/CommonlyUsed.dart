@@ -18,7 +18,6 @@ import 'package:tecmas/Temas/BaseTheme.dart';
    return Future.delayed(Duration(milliseconds: delay),(){
      Scaffold.of(context).removeCurrentSnackBar();
      Scaffold.of(context).showSnackBar(snack);
-     //print("Feature disable or network connection error");
    });
  }
 

@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import 'package:tecmas/Secciones/Estructures/Articles.dart';
 import 'package:tecmas/Secciones/Estructures/Databases/DBHelper.dart';
 import 'package:tecmas/Secciones/SharedClasses/CommonlyUsed.dart';
+import 'package:tecmas/Secciones/SharedClasses/CustomAppBar.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
 
 import 'cards.dart';
@@ -77,9 +78,9 @@ class _SavedArticlesState extends State<SavedArticles>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppBar(
         key: _key,
-        title: Text("Artículos Guardados"),
+        title: "Artículos Guardados",
       ),
       body: Column(
           children: <Widget>[

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tecmas/BarraDeNavegacion/Drawer.dart';
 import 'package:tecmas/Secciones/Calendario/Widget_Calendario.dart';
 import 'package:tecmas/Secciones/SharedClasses/Articles/SavedArticles.dart';
+import 'package:tecmas/Secciones/SharedClasses/CustomAppBar.dart';
 import 'package:tecmas/Secciones/Transporte/Widget_Transporte.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
 
@@ -33,21 +34,21 @@ class _Widget_ArticlesState extends State<Widget_Articles> with AutomaticKeepAli
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
     return Scaffold(
-        appBar: AppBar(
-          title: Text(SeccionTitle),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.folder_special),
-              onPressed: () {
-                Scaffold.of(getArticlesListContext()).removeCurrentSnackBar();
-                Navigator.pushNamed(context, '/Favoritos');
-              },
-            ),
-          ],
-        ),
-        drawer: BarraDeNavegacion(),
-          body: ArticlesList(Category: Category),
+      appBar: CustomAppBar(title: SeccionTitle, actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.folder_special),
+          onPressed: () {
+            Scaffold.of(getArticlesListContext()).removeCurrentSnackBar();
+            Navigator.pushNamed(context, '/Favoritos');
+          },
+        )
+      ],
+      ),
+      extendBodyBehindAppBar: true,
+      drawer: BarraDeNavegacion(),
+      body: ArticlesList(Category: Category),
     );
       }
 

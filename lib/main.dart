@@ -6,6 +6,7 @@ import 'package:tecmas/Notifications/OneSignal/OneSignal.dart';
 import 'package:tecmas/Secciones/SII/Widget_SII.dart';
 import 'package:tecmas/Secciones/SharedClasses/Articles/NotificationArticleViewer.dart';
 import 'package:tecmas/Secciones/SharedClasses/Articles/SavedArticles.dart';
+import 'package:tecmas/Secciones/SharedClasses/CustomAppBar.dart';
 import 'package:tecmas/Secciones/SharedClasses/ServerSettings.dart';
 import 'package:tecmas/Secciones/pol.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
@@ -67,7 +68,7 @@ class _AppState extends State<App> {
           /*Pagina 2:*/ Widget_Calendario(URL: "http://www.itmatamoros.edu.mx/wp-content/themes/tecnologico/pdf/Calendario_agosto_diciembre_2019",),
           /*Pagina 3:*/ Widget_Transporte(),
           /*Pagina 4:*/ Widget_Articles(SeccionTitle:"Emergencias", Category: 4,),
-          /*Pagina 5:*/ Scaffold(appBar: AppBar(title: Text('Mapa'),),drawer: BarraDeNavegacion(),body:Center(child: Text("Mapa Interactivo", style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),),),
+          /*Pagina 5:*/ Scaffold(appBar: CustomAppBar(title: "Mapa",),drawer: BarraDeNavegacion(),body:Center(child: Text("Mapa Interactivo", style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),),),
         ],
       )
 
