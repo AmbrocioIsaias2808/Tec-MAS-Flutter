@@ -1,1 +1,1 @@
-Cambio de versiòn, rama base oficial (Menciono este archivo como bandera, por que creo existen 2 ramas con exactamente el mismo nombre, este es el bueno)
+Esta versiòn incorpora satisfactoriamente el sistema de notificaciones de onesignal, a su vez se han implementado ciertas mejoras, correcciòn de mas bugs y uno que otro cambio de aspecto. Se guarda este proyecto como copia de seguridad del proyecto.

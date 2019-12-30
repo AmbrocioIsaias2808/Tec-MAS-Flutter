@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tecmas/Secciones/SharedClasses/Messeges/CustomWebview.dart';
+import 'package:tecmas/Secciones/SharedClasses/CustomWebview.dart';
 
 class Widget_SII extends StatelessWidget {
   @override

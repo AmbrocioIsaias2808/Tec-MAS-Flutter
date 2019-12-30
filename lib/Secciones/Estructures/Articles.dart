@@ -16,6 +16,7 @@ class Articles{
 
   Articles.CreateAndSave({@required this.num,@required this.image,@required this.title, @required this.content, @required this.date});
 
+
   Map<String, dynamic> toMap(){
     var map= <String, dynamic> {'ID':ID,'num':num, "title":title,'content':content, 'image':image, 'category':category};
     return map;

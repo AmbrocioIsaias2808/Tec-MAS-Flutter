@@ -4,11 +4,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:tecmas/Secciones/SharedClasses/Articles/NotificationArticleViewer.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
 import 'package:flutter_user_agent/flutter_user_agent.dart';
 
-import '../CommonlyUsed.dart';
-import '../LoadingWidget.dart';
+import 'CommonlyUsed.dart';
+import 'LoadingWidget.dart';
 
 class CustomWebview extends StatefulWidget {
 
@@ -22,11 +23,12 @@ class CustomWebview extends StatefulWidget {
   bool clearCache;
   bool clearCookies;
   bool AlertMessege;
+  int Mode; // 1: Modo normal, 2: Modo de visualizador de Notificaciones
 
-  CustomWebview({this.SITE="",this.PATH_FROMLOCALFILE="", this.title="", this.LoadingFromAssets=false, this.HTMLString="", this.LoadingFromHTMLString=false, this.CombineFileAndHTMLBODY=false, this.clearCache=false, this.clearCookies=false, this.AlertMessege=false});
+  CustomWebview({this.SITE="",this.PATH_FROMLOCALFILE="", this.title="", this.LoadingFromAssets=false, this.HTMLString="", this.LoadingFromHTMLString=false, this.CombineFileAndHTMLBODY=false, this.clearCache=false, this.clearCookies=false, this.AlertMessege=false, this.Mode=1});
 
   @override
-  _CustomWebviewState createState() => _CustomWebviewState(SITE: SITE, PATH_FROMLOCALFILE: PATH_FROMLOCALFILE, title: title, LoadingFromAssets: LoadingFromAssets, HTMLString: HTMLString, LoadingFromHTMLString: LoadingFromHTMLString, CombineFileAndHTMLBODY: CombineFileAndHTMLBODY, clearCache: clearCache, clearCookies: clearCookies, AlertMessege: AlertMessege);
+  _CustomWebviewState createState() => _CustomWebviewState(SITE: SITE, PATH_FROMLOCALFILE: PATH_FROMLOCALFILE, title: title, LoadingFromAssets: LoadingFromAssets, HTMLString: HTMLString, LoadingFromHTMLString: LoadingFromHTMLString, CombineFileAndHTMLBODY: CombineFileAndHTMLBODY, clearCache: clearCache, clearCookies: clearCookies, AlertMessege: AlertMessege, Mode: this.Mode);
 }
 
 class _CustomWebviewState extends State<CustomWebview> {
@@ -43,19 +45,21 @@ class _CustomWebviewState extends State<CustomWebview> {
   bool clearCookies;
   static const String error='<!DOCTYPE><html><head><style>p{font-size:30px}</style></head><body><p>Estas haciendo algo mal, checa los parametros y los valores</p><p>You Are Doing Something Wrong, Check the parameters and Values</p></body></html>';
   bool AlertMessege;
-  _CustomWebviewState({this.SITE="",this.PATH_FROMLOCALFILE="", this.title="", this.LoadingFromAssets=false, this.HTMLString="", this.LoadingFromHTMLString=false, this.CombineFileAndHTMLBODY=false, this.clearCache=false, this.clearCookies=false, this.AlertMessege=false});
+  int Mode; // 1: Modo normal, 2: Modo de visualizador de Notificaciones
+  _CustomWebviewState({this.SITE="",this.PATH_FROMLOCALFILE="", this.title="", this.LoadingFromAssets=false, this.HTMLString="", this.LoadingFromHTMLString=false, this.CombineFileAndHTMLBODY=false, this.clearCache=false, this.clearCookies=false, this.AlertMessege=false, this.Mode});
 
 
   int netState;
   void networkConnectionCkeck() async{
     int netState = await NetworkConnectionCkeck();
-    if(netState==0 && AlertMessege==false){
+    if(netState==0 && AlertMessege==false && Mode==1){
       Messege("No he podido conectarme a Internet. Es posible que algunos elementos no se visualicen correctamente.");
     }else if(netState==1 && AlertMessege==true){
       Messege("Como medida de seguridad te recomendamos cerrar sesión cuando termines tu cosulta");
     }else if(netState==0 && AlertMessege==true){
       Messege("No he podido conectarme a Internet");
     }
+
   }
 
   String AlertMessegeString="";
@@ -82,7 +86,6 @@ class _CustomWebviewState extends State<CustomWebview> {
     }else if(LoadingFromAssets==false && LoadingFromHTMLString==false && CombineFileAndHTMLBODY==true){
       //Cargaremos contenido desde un archivo pero el body del mismo sera cargado desde una cadena html
       from = await rootBundle.loadString(PATH_FROMLOCALFILE)+HTMLString+'</div></body></html>';
-      print("Loading From A FILE AND HTML");
     }else{
 
       if(SITE.length!=0){
@@ -94,12 +97,15 @@ class _CustomWebviewState extends State<CustomWebview> {
         LoadingFromHTMLString=true;
         from=error;
       }
+
+
     }
       //Si todo lo anterior falla significa que estaremos cargado una pagina web normal y corriente desde internet, por lo tanto SITE debe contener una URL
 
     setState(() {
       SITE=from;
     });
+
   }
 
   @override
@@ -111,6 +117,7 @@ class _CustomWebviewState extends State<CustomWebview> {
     _onchanged = controllerOfWebView.onStateChanged.listen((WebViewStateChanged state) {
       if (mounted) {
         if(state.type== WebViewState.finishLoad){ // if the full website page loaded
+          controllerOfWebView.evalJavascript("var links = document.getElementsByTagName('a');for (var i = 0, l = links.length; i < l; i++) {links[i].target = '_self';}");
           setState(() {isloading=false;});
         } else if(state.type== WebViewState.startLoad){ // if the url started loading
           setState(() {isloading=true;});
@@ -162,48 +169,66 @@ class _CustomWebviewState extends State<CustomWebview> {
   StreamSubscription<WebViewStateChanged> _onchanged;
   bool isloading=false;
 
-
   @override
   Widget build(BuildContext context) {
+    //print("SITE: "+SITE+" title: "+title);
     var media = MediaQuery.of(context).size;
-    return WebviewScaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-      initialChild: LoadingWidget(),
-      url: (LoadingFromAssets==true || LoadingFromHTMLString==true || CombineFileAndHTMLBODY==true)? Uri.dataFromString(SITE, mimeType: 'text/html',  encoding: Encoding.getByName('utf-8')).toString():SITE,
-      withJavascript: true,
-      withZoom: true,
-      enableAppScheme: true, //?????
-      clearCache: clearCache,
-      withLocalStorage: true,
-      clearCookies: clearCookies,
-      withOverviewMode: true,
-      useWideViewPort: true,
-      userAgent: _webUserAgent,
-      supportMultipleWindows: true,
-      bottomNavigationBar: Stack(
-        children: <Widget>[
-          BarraDeNavegacion(isloading: isloading, loadingAnimation: loadingAnimation, controlladorDeWebview: controllerOfWebView,),
-          AnimatedContainer(
-            // Use the properties stored in the State class.
-            width: media.width-2,
-            height:MSG_Height,
-            color: BaseThemeColor_DarkLightBlue,
-            // Define how long the animation should take.
-            duration: Duration(milliseconds: MSG_timing),
-            // Provide an optional curve to make the animation feel smoother.
-            curve: Curves.fastOutSlowIn,
-            child: Center(
-              child: FlatButton(
-                child: Text(AlertMessegeString, style: BaseThemeText_whiteBold1) ,
-                onPressed: (){setState(() {
-                  MSG_Height=0;
-                });},
+    return WillPopScope(
+      onWillPop: () async{
+        if(Mode==1) {
+          print("Normal mode close");
+          Navigator.pop(context);
+          controllerOfWebView.dispose();
+        }else if(Mode==2){
+          print("Notifier mode close");
+          for(int i=getNotfViewsToPop(); i>0 ; i--){
+            print("Pop notf view");
+            controllerOfWebView.dispose();
+            decNotfViewsToPop(context);
+          }
+          resetNotfViewsToPop();
+        }
+        return false;
+      },
+      child: WebviewScaffold(
+        appBar: AppBar(
+          title: Text(title),
+        ),
+        initialChild: LoadingWidget(),
+        url: (LoadingFromAssets==true || LoadingFromHTMLString==true || CombineFileAndHTMLBODY==true)? Uri.dataFromString(SITE, mimeType: 'text/html',  encoding: Encoding.getByName('utf-8')).toString():SITE,
+        withJavascript: true,
+        withZoom: true,
+        enableAppScheme: true, //?????
+        clearCache: clearCache,
+        withLocalStorage: true,
+        clearCookies: clearCookies,
+        withOverviewMode: true,
+        useWideViewPort: true,
+        userAgent: _webUserAgent,
+        supportMultipleWindows: true,
+        bottomNavigationBar: Stack(
+          children: <Widget>[
+            BarraDeNavegacion(isloading: isloading, loadingAnimation: loadingAnimation, controlladorDeWebview: controllerOfWebView,),
+            AnimatedContainer(
+              // Use the properties stored in the State class.
+              width: media.width-2,
+              height:MSG_Height,
+              color: BaseThemeColor_DarkLightBlue,
+              // Define how long the animation should take.
+              duration: Duration(milliseconds: MSG_timing),
+              // Provide an optional curve to make the animation feel smoother.
+              curve: Curves.fastOutSlowIn,
+              child: Center(
+                child: FlatButton(
+                  child: Text(AlertMessegeString, style: BaseThemeText_whiteBold1) ,
+                  onPressed: (){setState(() {
+                    MSG_Height=0;
+                  });},
+                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
 
@@ -226,7 +251,7 @@ class BarraDeNavegacion extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 40,
-      color:BaseThemeColor_DarkLightBlue,
+      color: Colors.white,
       child: Material(
         borderRadius: BorderRadius.circular(50),
         type: MaterialType.transparency,
@@ -234,7 +259,7 @@ class BarraDeNavegacion extends StatelessWidget {
         child: Row(
           children: <Widget>[
             Expanded(child: IconButton(
-              icon: Icon(Icons.arrow_back_ios, color: Colors.white,),
+              icon: Icon(Icons.arrow_back_ios, color: Colors.black,),
               splashColor: BaseThemeColor_DarkBlue,
               onPressed: (){
                 print("Going back");
@@ -242,7 +267,7 @@ class BarraDeNavegacion extends StatelessWidget {
               },),),
             Expanded(child: Padding(padding: EdgeInsets.all(3.1),child:BotonRefresh(loading: isloading, GestorDeAnimacion: loadingAnimation),)),
             Expanded(child: IconButton(
-              icon: Icon(Icons.arrow_forward_ios, color: Colors.white),
+              icon: Icon(Icons.arrow_forward_ios, color: Colors.black),
               splashColor: BaseThemeColor_DarkBlue,
               onPressed: (){
                 print("Foward");
@@ -274,7 +299,7 @@ class BotonRefresh extends StatelessWidget {
           children: <Widget>[
             Center(
               child: Container(
-                child: loading ? CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white)):null,
+                child: loading ? CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(BaseThemeColor_DarkLightBlue)):null,
               ),
             ),
             Center(child:

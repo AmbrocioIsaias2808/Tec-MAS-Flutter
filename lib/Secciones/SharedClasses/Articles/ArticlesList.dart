@@ -7,8 +7,8 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:tecmas/Secciones/Estructures/Databases/DBHelper.dart';
 import 'package:tecmas/Secciones/SharedClasses/CommonlyUsed.dart';
-import 'package:tecmas/Secciones/SharedClasses/Messeges/Errors/MSG_NetworkConnectionError.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
+import 'package:tecmas/main.dart';
 import 'dart:convert';
 
 import '../LoadingWidget.dart';
@@ -25,33 +25,36 @@ dynamic getArticlesListContext(){
 
 class ArticlesList extends StatefulWidget {
 
-  final String URL;
   final int Category;
   _ArticlesListState State;
 
 
 
-  ArticlesList({@required this.URL, @required this.Category});
+  ArticlesList({@required this.Category});
 
   @override
-  _ArticlesListState createState() => _ArticlesListState(URL, Category);
+  _ArticlesListState createState() => _ArticlesListState(Category);
 
 
 }
 
 class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClientMixin<ArticlesList>{
 
-  final String ApiKey="wFx01QuHh9ybSx82rzZvypurEs1HQpWy"; //Server
-  //final String ApiKey="eeOpx2D5gHJdPzmjF15UY2JBZgcDsBaj"; //Local
-  final String URL;
   final int Category;
   bool hasData;
   var DB = DBHelper();
 
-  _ArticlesListState(this.URL, this.Category){
+  _ArticlesListState(this.Category){
 
   }
 
+  void StopLoadingProcess(){
+    setState(() {
+      isRefreshing=false;
+      ShowMoreLoadingAnimation=false;
+      networkError=true;
+    });
+  }
 
 
   Future<List<Articles>> ServerCall() async {
@@ -60,17 +63,25 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
       //Base URL format: https://wordpresspruebas210919.000webhostapp.com/wp-json/wp/v2/posts?categories=CATEGORY&per_page=5&page=Pagina
 
       Future.delayed(Duration(milliseconds: 15000),(){
-        networkConnectionCkeck();
+        print("TimeOut for Connection");
+          networkConnectionCkeck();
       });
 
-      final response = await http.get(URL+Category.toString()+"&per_page=5&page="+Pagina.toString(),
+      final response = await http.get(serverSettings.PaginarPorCategoria(cantidadAMostrar: "5", NumDePagina: Pagina.toString(), categoriaAFiltrar: Category.toString()),
 
           headers:{
-             'Authorization':'Bearer '+ApiKey,
+             'Authorization':'Bearer '+serverSettings.getApiKey(),
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             },
-      );
+
+
+      ).timeout(Duration(seconds: 15), onTimeout: (){
+        print("TimeOutBloker: \n\n\n");
+        StopLoadingProcess();
+        //Pagina=Pagina-1; if(Pagina==0){Pagina=1;}
+        //print("Pagina: "+(Pagina-1).toString()+"but error happend so decressed: "+(Pagina).toString());
+      });
 
       //print(response.headers);
 
@@ -104,6 +115,9 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
               ShowMoreLoadingAnimation=false;
             });
           }
+          if(response.statusCode==404){
+            StopLoadingProcess();
+          }
 
           throw Exception("Error");
         }
@@ -122,7 +136,10 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
 
 
 
-    } on Exception catch(e) {
+    } on NoSuchMethodError catch(e){
+      print("Error: "+e.toString());
+      StopLoadingProcess();
+    }on Exception catch(e) {
       if (e.toString().contains('SocketException')) {
         setState(() {
           networkError=true;
@@ -162,7 +179,17 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
         category: Category,
       );
 
-      articulos.add(await DB.insert(a));
+      try {
+        articulos.add(await DB.insert(a));
+      }on Exception catch(e){
+        StopLoadingProcess();
+        print("Execption");
+        return articulos;
+      }catch(e){
+        print("Database error: "+e.toString());
+        StopLoadingProcess();
+        return articulos;
+      }
 
 
     }
@@ -286,11 +313,7 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
   Future networkConnectionCkeck() async{
     int netState = await NetworkConnectionCkeck();
     if(netState==0){
-      setState(() {
-        isRefreshing=false;
-        ShowMoreLoadingAnimation=false;
-        networkError=true;
-      });
+      StopLoadingProcess();
     }
     return netState;
   }

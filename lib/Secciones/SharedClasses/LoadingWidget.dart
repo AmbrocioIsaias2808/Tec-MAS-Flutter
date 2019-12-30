@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 import 'package:tecmas/Temas/BaseTheme.dart';
 
+import 'Articles/NotificationArticleViewer.dart';
+
 class LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -16,8 +18,7 @@ class LoadingWidget extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   ),
                 ),
-                Center(child:
-                Text("Cargando", style: BaseThemeText_whiteBold1,),
+                Center(child: Text("Cargando", style: BaseThemeText_whiteBold1,),
                 )
               ],
             ),

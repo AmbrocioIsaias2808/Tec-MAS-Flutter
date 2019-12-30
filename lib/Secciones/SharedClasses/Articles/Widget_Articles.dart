@@ -9,23 +9,21 @@ import 'ArticlesList.dart';
 
 class Widget_Articles extends StatefulWidget {
 
-final String URL;
 final String SeccionTitle;
 final int Category;
 
-Widget_Articles({@required this.SeccionTitle,@required this.URL, @required this.Category});
+Widget_Articles({@required this.SeccionTitle, @required this.Category});
 
   @override
-  _Widget_ArticlesState createState() => _Widget_ArticlesState(URL: URL, SeccionTitle: SeccionTitle, Category: Category);
+  _Widget_ArticlesState createState() => _Widget_ArticlesState(SeccionTitle: SeccionTitle, Category: Category);
 }
 
 class _Widget_ArticlesState extends State<Widget_Articles> with AutomaticKeepAliveClientMixin<Widget_Articles>{
 
-  final String URL;
   final String SeccionTitle;
   final int Category;
 
-  _Widget_ArticlesState({@required this.SeccionTitle,@required this.URL, @required this.Category});
+  _Widget_ArticlesState({@required this.SeccionTitle, @required this.Category});
 
   @override
   void initState() {
@@ -49,7 +47,7 @@ class _Widget_ArticlesState extends State<Widget_Articles> with AutomaticKeepAli
           ],
         ),
         drawer: BarraDeNavegacion(),
-          body: ArticlesList(URL:URL, Category: Category),
+          body: ArticlesList(Category: Category),
     );
       }
 
