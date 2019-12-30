@@ -8,7 +8,6 @@ import 'package:tecmas/Secciones/Transporte/Widget_Transporte.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../main.dart';
-import 'package:android_intent/android_intent.dart';
 import 'dart:io' show Platform;
 import 'dart:async';
 

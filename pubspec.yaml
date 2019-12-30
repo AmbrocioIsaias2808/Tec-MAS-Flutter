@@ -51,13 +51,12 @@ dev_dependencies:
   #In testing
   url_launcher: ^5.2.5
   flutter_user_agent: ^1.2.1
-  android_intent: ^0.3.4+8
 
 flutter_icons:
   android: true
   ios: true
   image_path: "assets/Resources/AppLogo/logo.png"
-  adaptive_icon_foreground: "assets/Resources/AppLogo/background.png"
+  adaptive_icon_foreground: "assets/Resources/AppLogo/logo.png"
   adaptive_icon_background: "assets/Resources/AppLogo/background.png"
 
 # For information on the generic Dart part of this file, see the

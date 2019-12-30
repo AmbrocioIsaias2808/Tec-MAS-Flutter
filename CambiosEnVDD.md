@@ -1,1 +1,1 @@
-Esta versiòn incorpora satisfactoriamente el sistema de notificaciones de onesignal, a su vez se han implementado ciertas mejoras, correcciòn de mas bugs y uno que otro cambio de aspecto. Se guarda este proyecto como copia de seguridad del proyecto.
+Esta versión trae consigo la incorporación de los logos de aplicación y splashscreen (pantalla de carga de la aplicación).
