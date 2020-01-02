@@ -5,21 +5,20 @@ class Seccion extends StatelessWidget {
 
   final SectionIcon;
   final String SectionText;
-  final Color color;
+  final Color iconColor;
   final Function accion;
 
 
-  Seccion({@required this.SectionText, @required this.SectionIcon, this.color=Colors.black, this.accion=null});
+  Seccion({@required this.SectionText, @required this.SectionIcon, this.iconColor=Colors.black, this.accion=null});
 
   @override
   Widget build(BuildContext context) {
     return Padding(padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-        child:Container(decoration: BoxDecoration(
+        child:Container(/*decoration: BoxDecoration(
             border: Border(bottom: BorderSide(color:BaseThemeColor_LightGray))
-        ),
+        ),*/
           child: InkWell(
-
-              splashColor: BaseThemeColor_LightGray,
+              splashColor: Colors.black38,
               onTap: accion,
               child: Container(
                 height: 40,
@@ -28,9 +27,9 @@ class Seccion extends StatelessWidget {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        Icon(SectionIcon,color: color,),
+                        Icon(SectionIcon,color: iconColor,),
                         Padding(padding: EdgeInsets.all(10.0),
-                          child:Text(SectionText,style: TextStyle(fontSize: 14.0,fontWeight: FontWeight.bold,color: color)) ,
+                          child:Text(SectionText,style: TextStyle(fontSize: 14.0,fontWeight: FontWeight.bold,color: iconColor)) ,
                         ),
 
                       ],

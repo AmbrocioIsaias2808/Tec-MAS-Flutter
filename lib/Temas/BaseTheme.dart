@@ -59,6 +59,7 @@ ThemeData BaseTheme(){
     tabBarTheme:_TabBarTheme(Tema.tabBarTheme),
     floatingActionButtonTheme: _FloatingActionButtonTheme(Tema.floatingActionButtonTheme),
     snackBarTheme:_SnackBarTheme(Tema.snackBarTheme),
+    canvasColor: BaseThemeColor_DarkBlue.withOpacity(0.9)
   );
 
 

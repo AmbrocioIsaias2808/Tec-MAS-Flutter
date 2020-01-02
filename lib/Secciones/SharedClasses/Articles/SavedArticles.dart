@@ -82,6 +82,7 @@ class _SavedArticlesState extends State<SavedArticles>{
         key: _key,
         title: "Artículos Guardados",
       ),
+      extendBodyBehindAppBar: true,
       body: Column(
           children: <Widget>[
             Expanded(child: numOfArticles == -1

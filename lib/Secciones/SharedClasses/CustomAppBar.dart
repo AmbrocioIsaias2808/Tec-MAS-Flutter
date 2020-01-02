@@ -38,7 +38,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
       title: Text(title),
       bottom: bottom,
       actions: actions,
-      backgroundColor: BaseThemeColor_DarkLightBlue.withOpacity(0.5),
+      backgroundColor: BaseThemeColor_DarkLightBlue.withOpacity(0.7),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(0)
