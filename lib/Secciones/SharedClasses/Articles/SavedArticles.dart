@@ -80,7 +80,7 @@ class _SavedArticlesState extends State<SavedArticles>{
     return Scaffold(
       appBar: CustomAppBar(
         key: _key,
-        title: "Artículos Guardados Prueba",
+        title: "Artículos Guardados Prueba p",
       ),
       extendBodyBehindAppBar: true,
       body: Column(
