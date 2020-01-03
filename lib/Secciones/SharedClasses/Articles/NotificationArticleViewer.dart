@@ -84,7 +84,7 @@ class _NotificationArticleViewerState extends State<NotificationArticleViewer> {
     });
   }
 
-  String _ErrorString_NetworkError="Revisa tu conecction resumen no hemos podido contactar al servidor. Intente mas tarde.";
+  String _ErrorString_NetworkError="Revisa tu conexión resumen no hemos podido contactar al servidor. Intente mas tarde.";
   String _ErrorString_NotFound="El contenido buscado no esta disponible por el momento, se ha eliminado o esta en revisión. Intente mas tarde.";
   String _ErrorString_ServerError="Ha sucedido un error del lado del servidor, dispense las molestias. Intente mas tarde.";
   Future<void> ServerCall() async {
