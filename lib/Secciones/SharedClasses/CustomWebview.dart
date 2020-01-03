@@ -12,6 +12,16 @@ import 'package:flutter_user_agent/flutter_user_agent.dart';
 import 'CommonlyUsed.dart';
 import 'LoadingWidget.dart';
 
+
+void CloseWindows(dynamic context ){
+  print("WindowsToPop: "+getNotfViewsToPop().toString());
+  for(int i=getNotfViewsToPop(); i>0 ; i--){
+    print("Pop notf view");
+    decNotfViewsToPop(context);
+  }
+  resetNotfViewsToPop();
+}
+
 class CustomWebview extends StatefulWidget {
 
   String SITE;
@@ -112,6 +122,7 @@ class _CustomWebviewState extends State<CustomWebview> {
   @override
   void initState(){
     super.initState();
+    addNotfViewToPop(); //Linea agregada para controlar el numero de notificaciones a cerrar posteriormente
     loadFrom();
     initUserAgentState();
     networkConnectionCkeck();
@@ -176,19 +187,7 @@ class _CustomWebviewState extends State<CustomWebview> {
     var media = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () async{
-        if(Mode==1) {
-          print("Normal mode close");
-          Navigator.pop(context);
-          controllerOfWebView.dispose();
-        }else if(Mode==2){
-          print("Notifier mode close");
-          for(int i=getNotfViewsToPop(); i>0 ; i--){
-            print("Pop notf view");
-            controllerOfWebView.dispose();
-            decNotfViewsToPop(context);
-          }
-          resetNotfViewsToPop();
-        }
+        CloseWindows(context);
         return false;
       },
       child: WebviewScaffold(

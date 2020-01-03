@@ -26,6 +26,14 @@ final NavigateTo = PageController();
 
 ServerSettings serverSettings = new ServerSettings();
 
+Widget Inicio_view=Widget_Articles(SeccionTitle: "Inicio", Category: 2,);
+Widget Becas_view=Widget_Articles(SeccionTitle:"Becas", Category: 3,);
+Widget Emergencias_view=Widget_Articles(SeccionTitle:"Emergencias", Category: 4,);
+Widget Calendario_view=Widget_Calendario(URL: "http://www.itmatamoros.edu.mx/wp-content/themes/tecnologico/pdf/Calendario_agosto_diciembre_2019",);
+Widget Transporte_view=Widget_Transporte();
+
+/*Pagina 3:*/
+
 
 void main(){
   runApp(App());
@@ -63,11 +71,11 @@ class _AppState extends State<App> {
         controller: NavigateTo,
         physics: NeverScrollableScrollPhysics(),
         children: <Widget>[
-          /*Pagina 0:*/ Widget_Articles(SeccionTitle: "Inicio", Category: 2,),
-          /*Pagina 1:*/ Widget_Articles(SeccionTitle:"Becas", Category: 3,),
-          /*Pagina 2:*/ Widget_Calendario(URL: "http://www.itmatamoros.edu.mx/wp-content/themes/tecnologico/pdf/Calendario_agosto_diciembre_2019",),
-          /*Pagina 3:*/ Widget_Transporte(),
-          /*Pagina 4:*/ Widget_Articles(SeccionTitle:"Emergencias", Category: 4,),
+          /*Pagina 0:*/ Inicio_view,
+          /*Pagina 1:*/ Becas_view,
+          /*Pagina 2:*/ Calendario_view,
+          /*Pagina 3:*/ Transporte_view,
+          /*Pagina 4:*/ Emergencias_view,
           /*Pagina 5:*/ Scaffold(appBar: CustomAppBar(title: "Mapa",),drawer: BarraDeNavegacion(),body:Center(child: Text("Mapa Interactivo", style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),),),
         ],
       )

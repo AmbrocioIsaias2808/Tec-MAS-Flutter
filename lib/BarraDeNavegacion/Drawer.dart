@@ -59,7 +59,7 @@ class BarraDeNavegacion extends StatelessWidget {
               Seccion(SectionIcon: Icons.map,SectionText: "Mapa Interactivo",iconColor:Colors.white,accion:(){ChangePage(context,5);}),
               Seccion(SectionIcon: Icons.book,SectionText: "SII",iconColor:Colors.white,accion: (){Scaffold.of(context).removeCurrentSnackBar();Navigator.pushNamed(context, '/SII');}),
               //Seccion(SectionIcon: Icons.book,SectionText: "pol",color:Colors.white,accion: (){Scaffold.of(context).removeCurrentSnackBar();Navigator.pushNamed(context, '/pol');}),
-              Seccion(SectionIcon: Icons.info,SectionText: "More Info",iconColor:Colors.white,accion: (){_showDialog(context);}),
+              Seccion(SectionIcon: Icons.info,SectionText: "More Info",iconColor:Colors.white,accion: (){/*_showDialog(context);*/Navigator.pushNamed(context, "/pol");}),
             ],),),)
 
           ],

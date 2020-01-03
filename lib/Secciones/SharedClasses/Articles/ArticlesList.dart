@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:tecmas/Secciones/Estructures/Databases/DBHelper.dart';
 import 'package:tecmas/Secciones/SharedClasses/CommonlyUsed.dart';
+import 'package:tecmas/Secciones/SharedClasses/Messeges/BasicMSGDialog.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
 import 'package:tecmas/main.dart';
 import 'dart:convert';
@@ -49,6 +50,7 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
   }
 
   void StopLoadingProcess(){
+    print("Stoping process");
     setState(() {
       isRefreshing=false;
       ShowMoreLoadingAnimation=false;
@@ -64,7 +66,13 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
 
       Future.delayed(Duration(milliseconds: 15000),(){
         print("TimeOut for Connection");
-          networkConnectionCkeck();
+          if (networkConnectionCkeck()==1){
+            setState(() {
+              print("Time out for connection, to much time for contact");
+              isRefreshing=false;
+              ShowMoreLoadingAnimation=false;
+            });
+          }
       });
 
       final response = await http.get(serverSettings.PaginarPorCategoria(cantidadAMostrar: "5", NumDePagina: Pagina.toString(), categoriaAFiltrar: Category.toString()),
@@ -79,6 +87,7 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
       ).timeout(Duration(seconds: 15), onTimeout: (){
         print("TimeOutBloker: \n\n\n");
         StopLoadingProcess();
+        print("To much time to contact");
         //Pagina=Pagina-1; if(Pagina==0){Pagina=1;}
         //print("Pagina: "+(Pagina-1).toString()+"but error happend so decressed: "+(Pagina).toString());
       });
@@ -140,11 +149,13 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
       print("Error: "+e.toString());
       StopLoadingProcess();
     }on Exception catch(e) {
-      if (e.toString().contains('SocketException')) {
+      print("Excepcion: "+e.toString());
+      /*if (e.toString().contains('SocketException')) {
         setState(() {
           networkError=true;
         });
-    }
+    }*/
+      StopLoadingProcess();
     //do something else
     }
 
@@ -361,19 +372,10 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
                     : /*Si sucesido algun error despliega el siguiente elemento*/
 
                 Expanded(child: Center(
-                  child:Column(children: <Widget>[
-                    SizedBox(height: 200, width: double.infinity,),
-                    Container(
-
-                        child:FloatingActionButton.extended(
-                        icon: articulos.isEmpty && isRefreshing? Icon(Icons.airplay):Icon(Icons.network_check),
-                        label: articulos.isEmpty && isRefreshing?Text("Conectando al servidor"):Text("Error Inesperado ¿Reintentar?"),
-                        onPressed: () => setState(() {
-                          print("articulos: "+articulos.isEmpty.toString()+" Refreshing: "+isRefreshing.toString()+" databaseload: "+databaseload.toString());
-                          (articulos.isEmpty || databaseload==false) && isRefreshing==false?initState():null;
-                        })
-                    ))
-                  ],),
+                  child:articulos.isEmpty && isRefreshing?
+                  BasicMSGDialog(Title: "Conectando...", Description: "Espera unos momentos por favor", ButtonText: "Reiniciar Conexión", MessegeType: 4, ButtonAction:(){initState();}, ButtonColor: Colors.green,ButtonTextColor: Colors.white, )
+                      :
+                  BasicMSGDialog(Title: "Oooops!!", Description: "Algo salio mal, ha ocurrido un error innesperado", ButtonText: "¿Reintentar?", MessegeType: 2, ButtonAction: (){initState();}, ButtonColor: Colors.orange, ButtonTextColor: Colors.white,)
                 ) ,)
 
 
