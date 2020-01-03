@@ -12,7 +12,7 @@ import 'package:tecmas/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:giffy_dialog/giffy_dialog.dart';
 import '../LoadingWidget.dart';
-
+/*
 int _NotfViewsToPop=0; //Vistas de Notificaciones a cerrar
 
 int getNotfViewsToPop(){
@@ -32,7 +32,7 @@ void resetNotfViewsToPop(){
   _NotfViewsToPop=0;
 }
 
-
+*/
 
 class NotificationArticleViewer extends StatefulWidget {
   final articleID;
@@ -172,8 +172,8 @@ class _NotificationArticleViewerState extends State<NotificationArticleViewer> {
     return _errorType==0 ?
     Scaffold(body: loaded==true ? CustomWebview(LoadingFromHTMLString: true, HTMLString:content , title: title, Mode: 2,) : LoadingWidget())
     : Scaffold(body: BasicMSGDialog(Title: _ErrorTitle,Description: _ErrorDescription, ButtonAction: (){
-      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-      Inicio_view), (Route<dynamic> route) => false);
+      Navigator.popUntil(context, ModalRoute.withName('/'));
+      //Navigator.pushNamedAndRemoveUntil(context, "/", (r) => false);
     },ButtonColor: _ButtonColor, ButtonText: "Regresar", MessegeType: _errorType, ButtonTextColor: Colors.white,));
     //return loaded ? ArticleViewer(ArticleContent: content, title: title,) :Center(child: CircularProgressIndicator(),);
   }

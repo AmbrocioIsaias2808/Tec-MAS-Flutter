@@ -56,6 +56,8 @@ class NotificationSystem{
       print("Tiene link: "+a.substring(0,48));
       if(a.substring(0,48)=="https://wordpresspruebas210919.000webhostapp.com"){
         print("Local link");
+        navigatorKey.currentState.popUntil(ModalRoute.withName("/"));
+        //navigatorKey.currentState.pushNamedAndRemoveUntil("/", (r) => false);
         navigatorKey.currentState.push(MaterialPageRoute(builder: (context)=>NotificationArticleViewer(articleID: a.substring(52),)));
       }else{
         print("External link");

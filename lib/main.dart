@@ -66,20 +66,34 @@ class _AppState extends State<App> {
           '/Favoritos':(context)=>SavedArticles(),
           '/SII':(context)=>Widget_SII(),
           '/pol':(context)=>pol(),
+          "/":(context)=>AppBody(),
         },
-      home:PageView(
-        controller: NavigateTo,
-        physics: NeverScrollableScrollPhysics(),
-        children: <Widget>[
-          /*Pagina 0:*/ Inicio_view,
-          /*Pagina 1:*/ Becas_view,
-          /*Pagina 2:*/ Calendario_view,
-          /*Pagina 3:*/ Transporte_view,
-          /*Pagina 4:*/ Emergencias_view,
-          /*Pagina 5:*/ Scaffold(appBar: CustomAppBar(title: "Mapa",),drawer: BarraDeNavegacion(),body:Center(child: Text("Mapa Interactivo", style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),),),
-        ],
-      )
+      initialRoute: "/",
 
+    );
+  }
+}
+
+
+class AppBody extends StatefulWidget {
+  @override
+  _AppBodyState createState() => _AppBodyState();
+}
+
+class _AppBodyState extends State<AppBody> {
+  @override
+  Widget build(BuildContext context) {
+    return PageView(
+      controller: NavigateTo,
+      physics: NeverScrollableScrollPhysics(),
+      children: <Widget>[
+        /*Pagina 0:*/ Inicio_view,
+        /*Pagina 1:*/ Becas_view,
+        /*Pagina 2:*/ Calendario_view,
+        /*Pagina 3:*/ Transporte_view,
+        /*Pagina 4:*/ Emergencias_view,
+        /*Pagina 5:*/ Scaffold(appBar: CustomAppBar(title: "Mapa",),drawer: BarraDeNavegacion(),body:Center(child: Text("Mapa Interactivo", style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),),),
+      ],
     );
   }
 }
