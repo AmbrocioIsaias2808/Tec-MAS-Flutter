@@ -20,19 +20,37 @@ class BarraDeNavegacion extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
-        return AlertDialog(
-          title: new Text("Version: 19.12.19"),
-          content: new Text("Developer: Ambrocio Isaías Laureano Castro"),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            new FlatButton(
-              child: new Text("Close"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
+        return SizedBox(
+            height: 20.0,
+            child: Card(
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              elevation: 3.0,
+              color: Colors.white,
+              margin: EdgeInsets.all(8.0),
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: 0.0,),
+                  Image.asset('assets/Imagenes/programmer.gif'),
+                  SizedBox(height: 16.0,),
+                  Column(
+                    children: <Widget>[
+                      Text('Versión:'),
+                      SizedBox(height: 20,),
+                      Text('Programador:', style: TextStyle(fontWeight: FontWeight.bold),),
+                      SizedBox(height: 10,),
+                      FlatButton(child: Text("Ambrocio Isaías Laureano Castro"),textColor: Colors.black,),
+                    ],
+                  ),
+                  SizedBox(height: 16.0,),
+                ],
+              ),
+            ));
+
+
+
+
+
+
       },
     );
   }

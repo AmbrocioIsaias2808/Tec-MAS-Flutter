@@ -29,7 +29,7 @@ ServerSettings serverSettings = new ServerSettings();
 Widget Inicio_view=Widget_Articles(SeccionTitle: "Inicio", Category: 2,);
 Widget Becas_view=Widget_Articles(SeccionTitle:"Becas", Category: 3,);
 Widget Emergencias_view=Widget_Articles(SeccionTitle:"Emergencias", Category: 4,);
-Widget Calendario_view=Widget_Calendario(URL: "http://www.itmatamoros.edu.mx/wp-content/themes/tecnologico/pdf/Calendario_agosto_diciembre_2019",);
+Widget Calendario_view=Widget_Calendario(url: "http://www.itmatamoros.edu.mx/wp-content/themes/tecnologico/pdf/Calendario_agosto_diciembre_2019.pdf",);
 Widget Transporte_view=Widget_Transporte();
 
 /*Pagina 3:*/
