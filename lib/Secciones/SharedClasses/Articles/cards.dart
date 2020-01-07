@@ -55,7 +55,7 @@ class _CardsState extends State<cards> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5.0),
       ),
-      elevation: 10,
+      elevation: 20,
       child: InkWell(
         focusColor: Colors.red,
         splashColor: Colors.blue,

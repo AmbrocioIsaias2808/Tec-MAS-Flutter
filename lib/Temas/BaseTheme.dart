@@ -6,7 +6,7 @@ Color BaseThemeColor_LightGray= Color.fromRGBO(241,241,241,1);
 
 Color BaseThemeAppBarColor= BaseThemeColor_DarkLightBlue;
 
-TextStyle BaseThemeText_whiteBold1 = TextStyle(color: Colors.white, fontWeight: FontWeight.bold);
+TextStyle BaseThemeText_TxtColorBold1 = TextStyle(color: Colors.black, fontWeight: FontWeight.bold);
 
 
 ThemeData BaseTheme(){
@@ -55,7 +55,7 @@ ThemeData BaseTheme(){
   return Tema.copyWith(
     primaryColor: BaseThemeColor_DarkLightBlue,
     backgroundColor: BaseThemeColor_DarkBlue,
-    scaffoldBackgroundColor: BaseThemeColor_DarkBlue,
+    scaffoldBackgroundColor: Colors.white,//BaseThemeColor_DarkBlue,
     tabBarTheme:_TabBarTheme(Tema.tabBarTheme),
     floatingActionButtonTheme: _FloatingActionButtonTheme(Tema.floatingActionButtonTheme),
     snackBarTheme:_SnackBarTheme(Tema.snackBarTheme),

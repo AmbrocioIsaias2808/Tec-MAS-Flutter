@@ -3,14 +3,14 @@ import 'package:flutter/widgets.dart';
 import 'package:tecmas/main.dart';
 
 class ServerSettings{
-  static const String _Pagina_URL="https://wordpresspruebas210919.000webhostapp.com";
-  //static String Pagina_URL="http://192.168.1.106:80/wordpress";
+  //static const String _Pagina_URL="https://wordpresspruebas210919.000webhostapp.com";
+  static const String _Pagina_URL="http://192.168.1.106:80/wordpress";
   static const String _Api_Interface="/wp-json/wp/v2";
   static const String _BaseRequestURL= _Pagina_URL+_Api_Interface;
   static const String _FilterPostByCategories = "/posts?categories=";
 
-  static const String _ApiKey="wFx01QuHh9ybSx82rzZvypurEs1HQpWy";
-
+  /*Server*/ //static const String _ApiKey="wFx01QuHh9ybSx82rzZvypurEs1HQpWy";
+  /*Local Server*/ static const String _ApiKey="lnRwqoS3YoMyrocnuqktRnniLgVN9ElD";
 
   ServerSettings();
 

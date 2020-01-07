@@ -7,7 +7,7 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:tecmas/Secciones/SharedClasses/Articles/NotificationArticleViewer.dart';
 import 'package:tecmas/Secciones/SharedClasses/CustomAppBar.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
-import 'package:flutter_user_agent/flutter_user_agent.dart';
+//import 'package:flutter_user_agent/flutter_user_agent.dart';
 
 import 'CommonlyUsed.dart';
 import 'LoadingWidget.dart';
@@ -124,7 +124,7 @@ class _CustomWebviewState extends State<CustomWebview> {
     super.initState();
     //addNotfViewToPop(); //Linea agregada para controlar el numero de notificaciones a cerrar posteriormente
     loadFrom();
-    initUserAgentState();
+    //initUserAgentState();
     networkConnectionCkeck();
     _onchanged = controllerOfWebView.onStateChanged.listen((WebViewStateChanged state) {
       if (mounted) {
@@ -144,7 +144,7 @@ class _CustomWebviewState extends State<CustomWebview> {
 
 
 
-  Future<void> initUserAgentState() async {
+  /*Future<void> initUserAgentState() async {
     String webViewUserAgent;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
@@ -163,7 +163,7 @@ class _CustomWebviewState extends State<CustomWebview> {
     setState(() {
       _webUserAgent = webViewUserAgent;
     });
-  }
+  }*/
 
   void loadingAnimation(){
     if(isloading==true){
@@ -192,7 +192,7 @@ class _CustomWebviewState extends State<CustomWebview> {
         return false;
       },
       child: WebviewScaffold(
-        appBar: CustomAppBar(title: title,),
+        appBar: CustomAppBar(title: title,withShape: false,),
         initialChild: LoadingWidget(),
         url: (LoadingFromAssets==true || LoadingFromHTMLString==true || CombineFileAndHTMLBODY==true)? Uri.dataFromString(SITE, mimeType: 'text/html',  encoding: Encoding.getByName('utf-8')).toString():SITE,
         withJavascript: true,
@@ -203,7 +203,7 @@ class _CustomWebviewState extends State<CustomWebview> {
         clearCookies: clearCookies,
         withOverviewMode: true,
         useWideViewPort: true,
-        userAgent: _webUserAgent,
+        //userAgent:_webUserAgent,
         supportMultipleWindows: true,
         bottomNavigationBar: Stack(
           children: <Widget>[
@@ -219,7 +219,7 @@ class _CustomWebviewState extends State<CustomWebview> {
               curve: Curves.fastOutSlowIn,
               child: Center(
                 child: FlatButton(
-                  child: Text(AlertMessegeString, style: BaseThemeText_whiteBold1) ,
+                  child: Text(AlertMessegeString, style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)) ,
                   onPressed: (){setState(() {
                     MSG_Height=0;
                   });},

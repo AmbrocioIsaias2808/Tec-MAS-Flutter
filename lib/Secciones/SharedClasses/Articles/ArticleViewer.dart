@@ -7,7 +7,6 @@ import 'package:tecmas/BarraDeNavegacion/Drawer.dart';
 import 'package:tecmas/Secciones/SharedClasses/CustomWebview.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
 import 'dart:convert';
-import 'package:flutter_user_agent/flutter_user_agent.dart';
 //import 'package:webview_flutter/webview_flutter.dart';
 
 import '../CommonlyUsed.dart';

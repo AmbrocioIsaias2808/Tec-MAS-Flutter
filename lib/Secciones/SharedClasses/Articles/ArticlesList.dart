@@ -157,6 +157,8 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
     }*/
       StopLoadingProcess();
     //do something else
+    }catch(e){
+      StopLoadingProcess();
     }
 
 
@@ -423,7 +425,7 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
           // Provide an optional curve to make the animation feel smoother.
           curve: Curves.fastOutSlowIn,
           child: ShowMoreLoadingAnimation ? Center(child: Padding(padding: EdgeInsets.all(4),child: CircularProgressIndicator(),),) : FlatButton(
-            child: isAllArticlesDisplayed ? Text("Estos son todos los Articulos", style: BaseThemeText_whiteBold1) : networkError ? Text("Error de Red ¿Reintentar?", style: BaseThemeText_whiteBold1,) : Text('Cargar Mas', style: BaseThemeText_whiteBold1),
+            child: isAllArticlesDisplayed ? Text("Estos son todos los Articulos", style: BaseThemeText_TxtColorBold1) : networkError ? Text("Error de Red ¿Reintentar?", style: BaseThemeText_TxtColorBold1,) : Text('Cargar Mas', style: BaseThemeText_TxtColorBold1),
             onPressed: ()async {
               int NetworkAvailable= await networkConnectionCkeck();
               print("Network: "+ NetworkAvailable.toString()+" isAllArticlesDisplay: "+ isAllArticlesDisplayed.toString()+" isRefreshing: "+isRefreshing.toString());

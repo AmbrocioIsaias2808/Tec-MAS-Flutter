@@ -49,7 +49,7 @@ class PDFViewer extends StatefulWidget {
 
   final String filepath;
   final Function errorHandeler;
-  const PDFViewer({Key key, this.filepath, this.errorHandeler=null}) : super(key: key);
+  const PDFViewer({Key key, this.filepath, this.errorHandeler}) : super(key: key);
 
 
   @override
@@ -87,12 +87,7 @@ class _PDFViewerState extends State<PDFViewer> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: error?
-          BasicMSGDialog(MessegeType: 1,Title:"Error al cargar documento",Description: "Comprueba tu conexión e intenta de nuevo",ButtonText: "¿Reintentar?",ButtonTextColor: Colors.white,ButtonAction: (){
-            widget.errorHandeler;
-            setState(() {
-              error=false;
-            });
-          },)
+          BasicMSGDialog(MessegeType: 1,Title:"Error al cargar documento",Description: "Comprueba tu conexión e intenta de nuevo",ButtonText: "¿Reintentar?",ButtonTextColor: Colors.white,ButtonAction: widget.errorHandeler,)
           :Stack(
         children: <Widget>[
           Container(

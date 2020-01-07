@@ -111,7 +111,7 @@ class _SavedArticlesState extends State<SavedArticles>{
                   //print("Error: desplazamiento al final de lista antes de finalizar el refresh");
                 }
               },
-            ) : Center(child: Text("Nada que mostrar aún",style: BaseThemeText_whiteBold1 ),),
+            ) : Center(child: Text("Nada que mostrar aún",style: BaseThemeText_TxtColorBold1 ),),
             ),
             numOfArticles >0 ?AnimatedContainer(
               // Use the properties stored in the State class.
@@ -128,7 +128,7 @@ class _SavedArticlesState extends State<SavedArticles>{
               curve: Curves.fastOutSlowIn,
               child: FlatButton(
                 child: Text("Estos son todos los Articulos",
-                    style: BaseThemeText_whiteBold1),
+                    style: BaseThemeText_TxtColorBold1),
               ),
             ):SizedBox(),
 

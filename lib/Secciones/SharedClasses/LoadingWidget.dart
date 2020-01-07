@@ -18,7 +18,7 @@ class LoadingWidget extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   ),
                 ),
-                Center(child: Text("Cargando", style: BaseThemeText_whiteBold1,),
+                Center(child: Text("Cargando", style: BaseThemeText_TxtColorBold1,),
                 )
               ],
             ),

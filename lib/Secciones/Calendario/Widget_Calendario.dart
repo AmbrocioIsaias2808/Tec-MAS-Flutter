@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tecmas/BarraDeNavegacion/Drawer.dart';
 import 'package:tecmas/Secciones/SharedClasses/CustomAppBar.dart';
 import 'package:tecmas/Secciones/SharedClasses/LoadingWidget.dart';
+import 'package:tecmas/Secciones/SharedClasses/Messeges/BasicMSGDialog.dart';
 import 'package:tecmas/Secciones/SharedClasses/PDFViewer.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -18,6 +19,7 @@ class _Widget_CalendarioState extends State<Widget_Calendario>  with AutomaticKe
 
   String pdfPath="";
   String pdfName="Documento";
+  bool error=false;
 
 
   void getPdf()async{
@@ -40,6 +42,9 @@ class _Widget_CalendarioState extends State<Widget_Calendario>  with AutomaticKe
       }
       catch(e){
         print("Error generado en Widget: Calendario al cargar el archivo"+e.toString());
+        setState(() {
+          error=true;
+        });
       }
 
     }
@@ -53,6 +58,7 @@ class _Widget_CalendarioState extends State<Widget_Calendario>  with AutomaticKe
   }
 
   void refresh(){
+    print("Refrescando");
     try{
       final dir = Directory(pdfPath);
       dir.deleteSync(recursive: true);
@@ -74,7 +80,8 @@ class _Widget_CalendarioState extends State<Widget_Calendario>  with AutomaticKe
           refresh();
         },)
       ],),
-      body: pdfPath=="" ? LoadingWidget() : pdfPath=="null" ? CircularProgressIndicator():PDFViewer(filepath: pdfPath, errorHandeler: (){refresh();},),
+      body: error ? BasicMSGDialog(MessegeType: 1,Title:"Error al cargar documento",Description: "Comprueba tu conexión e intenta de nuevo",ButtonText: "¿Reintentar?",ButtonTextColor: Colors.white,ButtonAction: (){refresh(); setState(() {error=false;});},)
+          :(pdfPath=="" ? LoadingWidget() : pdfPath=="null" ? CircularProgressIndicator():PDFViewer(filepath: pdfPath, errorHandeler: (){refresh();},)),
     );
   }
   @override
