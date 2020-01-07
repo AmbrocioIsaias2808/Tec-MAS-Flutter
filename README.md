@@ -51,7 +51,7 @@ A su vez incorpora ya un sistema de seguridad en el backend, esto utilizando el 
 
 Por ende las solicitudes a la api de wordpress han sido bloqueadas a menos que se envié junto con la petición http las credenciales correspondientes:
 
-![captura](C:\Users\Isaias\Documents\Tec-MAS-Flutter\tecmas\ReadmeFiles\captura.png)
+![captura](ReadmeFiles\captura.png)
 
 Además se incorpora el servicio de notificaciones de OneSignal, sin embargo tenemos ciertos bugs o contratiempos:
 
