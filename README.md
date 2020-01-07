@@ -75,22 +75,22 @@ De la rama TecMAS-19-11-18-(Lector-de-Articulos) a las anteriores necesito agreg
 
 **Capturas de Pantalla:**
 
-<p align="center"><img src="ReadmeFiles\ (1).png" alt=" (1)" style="zoom:50%;" /></p>
-<p align="center"><img src="ReadmeFiles\ (2).png" alt=" (1)" style="zoom:50%;" /></p>
-<p align="center"><img src="ReadmeFiles\ (3).png" alt=" (1)" style="zoom:50%;" /></p>
-<p align="center"><img src="ReadmeFiles\ (4).png" alt=" (1)" style="zoom:50%;" /></p>
-<p align="center"><img src="ReadmeFiles\ (5).png" alt=" (1)" style="zoom:50%;" /></p>
-<p align="center"><img src="ReadmeFiles\ (6).png" alt=" (1)" style="zoom:50%;" /></p>
-<p align="center"><img src="ReadmeFiles\ (7).png" alt=" (1)" style="zoom:50%;" /></p>
-<p align="center"><img src="ReadmeFiles\ (8).png" alt=" (1)" style="zoom:50%;" /></p>
-<p align="center"><img src="ReadmeFiles\ (9).png" alt=" (1)" style="zoom:50%;" /></p>
-<p align="center"><img src="ReadmeFiles\ (10).png" alt=" (1)" style="zoom:50%;" /></p>
-<p align="center"><img src="ReadmeFiles\ (11).png" alt=" (1)" style="zoom:50%;" /></p>
-<p align="center"><img src="ReadmeFiles\ (12).png" alt=" (1)" style="zoom:50%;" /></p>
-<p align="center"><img src="ReadmeFiles\ (13).png" alt=" (1)" style="zoom:50%;" /></p>
-<p align="center"><img src="ReadmeFiles\ (14).png" alt=" (1)" style="zoom:50%;" /></p>
-<p align="center"><img src="ReadmeFiles\ (15).png" alt=" (1)" style="zoom:50%;" /></p>
-<p align="center"><img src="ReadmeFiles\ (16).png" alt=" (1)" style="zoom:50%;" /></p>
+<p align="center"><img src="ReadmeFiles\ (1).png" alt=" (1)" width="50%" /></p>
+<p align="center"><img src="ReadmeFiles\ (2).png" alt=" (1)" width="50%"class="" /></p>
+<p align="center"><img src="ReadmeFiles\ (3).png" alt=" (1)" width="50%"class="" /></p>
+<p align="center"><img src="ReadmeFiles\ (4).png" alt=" (1)" width="50%"class="" /></p>
+<p align="center"><img src="ReadmeFiles\ (5).png" alt=" (1)" width="50%"class="" /></p>
+<p align="center"><img src="ReadmeFiles\ (6).png" alt=" (1)" width="50%" class="" /></p>
+<p align="center"><img src="ReadmeFiles\ (7).png" alt=" (1)" width="50%" class="" /></p>
+<p align="center"><img src="ReadmeFiles\ (8).png" alt=" (1)" width="50%" class="" /></p>
+<p align="center"><img src="ReadmeFiles\ (9).png" alt=" (1)" width="50%" class="" /></p>
+<p align="center"><img src="ReadmeFiles\ (10).png" alt=" (1)" width="50%"class="" /></p>
+<p align="center"><img src="ReadmeFiles\ (11).png" alt=" (1)" width="50%"class="" /></p>
+<p align="center"><img src="ReadmeFiles\ (12).png" alt=" (1)" width="50%"class="" /></p>
+<p align="center"><img src="ReadmeFiles\ (13).png" alt=" (1)" width="50%" class="" /></p>
+<p align="center"><img src="ReadmeFiles\ (14).png" alt=" (1)" width="50%"class="" /></p>
+<p align="center"><img src="ReadmeFiles\ (15).png" alt=" (1)" width="50%"class="" /></p>
+<p align="center"><img src="ReadmeFiles\ (16).png" alt=" (1)" width="50%"class="" /></p>
 **APK liberado:**
 
 <a href="https://raw.githubusercontent.com/AmbrocioIsaias2808/Tec-MAS-Flutter/TecMAS-19.12.16-(BugFix-SavedArticles)/ReadmeFiles/19.12.17.apk" target="_blank">Descargar aquí</a>
