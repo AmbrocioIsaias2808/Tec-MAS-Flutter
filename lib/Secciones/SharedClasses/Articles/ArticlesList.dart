@@ -299,6 +299,7 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
       print(ShowMoreLoadingAnimation);
      ShowMoreLoadingAnimation=true;
     });
+
     Future.delayed(Duration(milliseconds: 500),(){
       setState(() {
         ShowMoreLoadingAnimation=false;
