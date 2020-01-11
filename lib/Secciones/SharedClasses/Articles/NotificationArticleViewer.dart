@@ -56,10 +56,8 @@ class _NotificationArticleViewerState extends State<NotificationArticleViewer> {
   _NotificationArticleViewerState({this.articleID});
 
   Future<String> renderContent({@required String Content,@required String Title, bool error=false})async{
-    String Script="";
-    if(error){Script="<script>function changeBackground(color) {document.body.style.background = color;} window.addEventListener('load',function() { changeBackground('white') });</script>";}
     title=Title;
-    content = await rootBundle.loadString(filePath)+Script+Content+'</div></body></html>';
+    content = await rootBundle.loadString(filePath)+Content+'</div></body></html>';
     setState(() {
       DialogDismiss=true;
       loaded=true;

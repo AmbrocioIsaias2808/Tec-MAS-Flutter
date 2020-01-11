@@ -35,7 +35,8 @@ Widget Transporte_view=Widget_Transporte();
 /*Pagina 3:*/
 
 
-void main(){
+void main()async{
+
   runApp(App());
 }
 
