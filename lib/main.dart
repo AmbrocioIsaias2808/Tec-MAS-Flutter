@@ -6,6 +6,7 @@ import 'package:tecmas/Notifications/OneSignal/OneSignal.dart';
 import 'package:tecmas/Secciones/SII/Widget_SII.dart';
 import 'package:tecmas/Secciones/SharedClasses/Articles/NotificationArticleViewer.dart';
 import 'package:tecmas/Secciones/SharedClasses/Articles/SavedArticles.dart';
+import 'package:tecmas/Secciones/SharedClasses/CommonlyUsed.dart';
 import 'package:tecmas/Secciones/SharedClasses/CustomAppBar.dart';
 import 'package:tecmas/Secciones/SharedClasses/ServerSettings.dart';
 import 'package:tecmas/Secciones/pol.dart';
@@ -36,7 +37,9 @@ Widget Transporte_view=Widget_Transporte();
 
 
 void main()async{
-
+  print(fetchInitData(2));
+  print(fetchInitData(3));
+  print(fetchInitData(4));
   runApp(App());
 }
 

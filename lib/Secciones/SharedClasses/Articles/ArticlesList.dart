@@ -196,7 +196,7 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
         articulos.add(await DB.insert(a));
       }on Exception catch(e){
         StopLoadingProcess();
-        print("Execption");
+        print("Excepcion Articlelist DB");
         return articulos;
       }catch(e){
         print("Database error: "+e.toString());
@@ -263,7 +263,7 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
   }
 
   void InitialDataSource() async{
-    if(await networkConnectionCkeck()==1) {
+    if(await networkConnectionCkeck()==0) {
       print("Loading from internet");
       setState(() {
         hasData=false;
