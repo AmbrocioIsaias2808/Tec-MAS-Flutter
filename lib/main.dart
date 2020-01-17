@@ -10,6 +10,7 @@ import 'package:tecmas/Secciones/SharedClasses/CustomAppBar.dart';
 import 'package:tecmas/Secciones/SharedClasses/ServerSettings.dart';
 import 'package:tecmas/Secciones/pol.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
+import 'package:preload_page_view/preload_page_view.dart';
 //import 'package:tecmas/Notifications/OneSignal/OneSignal.dart';
 
 
@@ -22,7 +23,7 @@ import 'Secciones/Transporte/Widget_Transporte.dart';
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 final NotificationSystem notification = new NotificationSystem();
 
-final NavigateTo = PageController();
+final NavigateTo = PreloadPageController(initialPage: 0);
 
 ServerSettings serverSettings = new ServerSettings();
 
@@ -83,17 +84,35 @@ class AppBody extends StatefulWidget {
 class _AppBodyState extends State<AppBody> {
   @override
   Widget build(BuildContext context) {
-    return PageView(
-      controller: NavigateTo,
-      physics: NeverScrollableScrollPhysics(),
-      children: <Widget>[
-        /*Pagina 0:*/ Inicio_view,
-        /*Pagina 1:*/ Becas_view,
-        /*Pagina 2:*/ Calendario_view,
-        /*Pagina 3:*/ Transporte_view,
-        /*Pagina 4:*/ Emergencias_view,
-        /*Pagina 5:*/ Scaffold(appBar: CustomAppBar(title: "Mapa",),drawer: BarraDeNavegacion(),body:Center(child: Text("Mapa Interactivo", style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),),),
-      ],
+    return Container(
+      child: PreloadPageView.builder(
+        preloadPagesCount: 5,
+        itemCount: 6,
+        itemBuilder: (BuildContext context, int position) => DemoPage(position),
+        controller: NavigateTo,
+        onPageChanged: (int position) {
+          print('page changed. current: $position');
+        },
+      ),
     );
+  }
+}
+
+class DemoPage extends StatelessWidget {
+  DemoPage(this.index);
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    print('Page loaded: $index}');
+
+    switch(index){
+      case 0: return Inicio_view; break;
+      case 1: return Becas_view; break;
+      case 2: return Calendario_view; break;
+      case 3: return Transporte_view; break;
+      case 4: return Emergencias_view; break;
+      case 5: return Transporte_view; break;
+    }
   }
 }
