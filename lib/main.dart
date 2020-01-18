@@ -86,20 +86,50 @@ class _AppBodyState extends State<AppBody> {
   Widget build(BuildContext context) {
     return Container(
       child: PreloadPageView.builder(
+        physics: isSwipeEnable ? AlwaysScrollableScrollPhysics() : NeverScrollableScrollPhysics(),
         preloadPagesCount: 5,
-        itemCount: 6,
-        itemBuilder: (BuildContext context, int position) => DemoPage(position),
+        itemCount: 7,
+        itemBuilder: (BuildContext context, int position) => BodyPages(position),
         controller: NavigateTo,
         onPageChanged: (int position) {
           print('page changed. current: $position');
+          PagerMovementRestrictor(position);
+
         },
       ),
     );
   }
+
+  bool isSwipeEnable=true;
+  void PagerMovementRestrictor(int Page){
+
+
+        if(Page==3){
+          NavigateTo.animateToPage(2, duration: Duration(milliseconds: 500), curve: Curves.easeOutBack);
+        }
+
+        if(Page<3){
+          setState(() {
+            isSwipeEnable=true;
+          });
+        }
+
+        if(Page==4 || Page==5 || Page==6){
+          //Si la pagina corresponde al calendario o al Transporte o el mapa
+          setState(() {
+            isSwipeEnable=false;
+          });
+        }
+
+
+    print("SwipeState: "+isSwipeEnable.toString());
+  }
+
+
 }
 
-class DemoPage extends StatelessWidget {
-  DemoPage(this.index);
+class BodyPages extends StatelessWidget {
+  BodyPages(this.index);
   final int index;
 
   @override
@@ -109,10 +139,12 @@ class DemoPage extends StatelessWidget {
     switch(index){
       case 0: return Inicio_view; break;
       case 1: return Becas_view; break;
-      case 2: return Calendario_view; break;
-      case 3: return Transporte_view; break;
-      case 4: return Emergencias_view; break;
+      case 2: return Emergencias_view; break;
+      case 3: return Scaffold(body: Offstage(),); break;
+      case 4: return Calendario_view; break;
       case 5: return Transporte_view; break;
+      case 6: return Scaffold(appBar: CustomAppBar(withShape: true,title: "Mapa"), drawer: BarraDeNavegacion(), body:Center(child: Text("En Desarrollo"),)); break;
     }
   }
 }
+
