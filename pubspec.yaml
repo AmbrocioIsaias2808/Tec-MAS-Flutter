@@ -19,7 +19,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  webview_flutter: ^0.3.15+1
+  #webview_flutter: ^0.3.15+1
   flutter_webview_plugin: ^0.3.10
   preload_page_view: ^0.1.4
   # The following adds the Cupertino Icons font to your application.
@@ -62,6 +62,7 @@ dev_dependencies:
   giffy_dialog: ^1.6.1
   numberpicker: ^1.1.0
   package_info: ^0.4.0+13
+
 
 flutter_icons: #Para agregar los iconos de la aplicacion automaticamente por medio de consola de comandos
   android: true
