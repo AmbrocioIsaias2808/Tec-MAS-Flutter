@@ -62,6 +62,7 @@ dev_dependencies:
   giffy_dialog: ^1.6.1
   numberpicker: ^1.1.0
   package_info: ^0.4.0+13
+  curved_navigation_bar: ^0.3.1 #latest version
 
 
 flutter_icons: #Para agregar los iconos de la aplicacion automaticamente por medio de consola de comandos

@@ -5,6 +5,7 @@ import 'package:tecmas/Secciones/SharedClasses/Articles/SavedArticles.dart';
 import 'package:tecmas/Secciones/SharedClasses/CustomAppBar.dart';
 import 'package:tecmas/Secciones/Transporte/Widget_Transporte.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
+import 'package:tecmas/main.dart';
 
 import 'ArticlesList.dart';
 
@@ -45,9 +46,11 @@ class _Widget_ArticlesState extends State<Widget_Articles> with AutomaticKeepAli
           },
         )
       ],
+        leadingButton: IconButton(icon: new Icon(
+            Icons.menu
+        ),onPressed:(){OpenParentDrawer();},)
       ),
       extendBodyBehindAppBar: true,
-      drawer: BarraDeNavegacion(),
       body: ArticlesList(Category: Category),
     );
       }

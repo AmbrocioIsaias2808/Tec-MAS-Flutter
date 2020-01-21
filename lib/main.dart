@@ -12,6 +12,8 @@ import 'package:tecmas/Secciones/pol.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 //import 'package:tecmas/Notifications/OneSignal/OneSignal.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+
 
 
 import 'Secciones/Calendario/Widget_Calendario.dart';
@@ -22,7 +24,7 @@ import 'Secciones/Transporte/Widget_Transporte.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 final NotificationSystem notification = new NotificationSystem();
-
+GlobalKey<ScaffoldState> ParentScaffoldkey = new GlobalKey<ScaffoldState>();
 final NavigateTo = PreloadPageController(initialPage: 0);
 
 ServerSettings serverSettings = new ServerSettings();
@@ -35,6 +37,10 @@ Widget Transporte_view=Widget_Transporte();
 
 /*Pagina 3:*/
 
+void OpenParentDrawer(){
+  print("Opening");
+  ParentScaffoldkey.currentState.openDrawer();
+}
 
 void main(){
   runApp(App());
@@ -55,6 +61,7 @@ class _AppState extends State<App> {
     super.initState();
     notification.setNavigator(navigatorKey);
     notification.init();
+
   }
 
   @override
@@ -82,22 +89,81 @@ class AppBody extends StatefulWidget {
 }
 
 class _AppBodyState extends State<AppBody> {
+  int press=0;
+  GlobalKey _bottomNavigationKey = GlobalKey();
+  int _currentPage=0;
+  bool showBottomNavigationBar=true;
+  bool BNBIcolorselected=true; //marcador para el color del icono en la BottomNavigationBar
+  int AnimationDuration=500;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    NavigateTo.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (NavigateTo.page.toInt() == NavigateTo.page) {
+      final CurvedNavigationBarState navBarState = _bottomNavigationKey.currentState;
+      navBarState.setPage(NavigateTo.page.toInt());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: PreloadPageView.builder(
+    return Scaffold(
+      drawer: BarraDeNavegacion(),
+      key:ParentScaffoldkey,
+      extendBody: true,
+      body: PreloadPageView.builder(
         physics: isSwipeEnable ? AlwaysScrollableScrollPhysics() : NeverScrollableScrollPhysics(),
         preloadPagesCount: 5,
         itemCount: 7,
         itemBuilder: (BuildContext context, int position) => BodyPages(position),
         controller: NavigateTo,
         onPageChanged: (int position) {
-          print('page changed. current: $position');
+          //print('page changed. current: $position');
           PagerMovementRestrictor(position);
-
+        },
+      ),
+      bottomNavigationBar:  showBottomNavigationBar==false? null : CurvedNavigationBar(
+        key: _bottomNavigationKey,
+        animationCurve: Curves.fastOutSlowIn,
+        backgroundColor: Colors.transparent,
+        color: BaseThemeColor_DarkBlue,
+        animationDuration: Duration(milliseconds: AnimationDuration),
+        height: 45,
+        items: BottomNavigationButons(_currentPage),
+        onTap: (index) {
+          //print("\n\nPressed: Bottom bar index: "+ index.toString());
+            _currentPage=index;
+            NavigateTo.animateToPage(_currentPage, duration: Duration(milliseconds: AnimationDuration), curve: Curves.easeOutQuad);
+          //Handle button tap
         },
       ),
     );
+  }
+
+  List<Widget> BottomNavigationButons(int currentPage){
+    List Buttonicons=[
+      Icons.dashboard,
+      Icons.account_balance,
+      Icons.local_hospital,
+    ];
+    List<Widget> Buttons=[];
+    //dynamic coloricon;
+    for(int i=0; i<Buttonicons.length; i++){
+      /*if(currentPage==i){
+        //Si esta seleccionado
+        coloricon=BaseThemeColor_DarkBlue;
+      }else{
+        //Si no lo esta
+        coloricon=Colors.white;
+      }*/
+      Buttons.add(Icon(Buttonicons[i], size: 18, color:Colors.white));
+    }
+
+    return Buttons;
   }
 
   bool isSwipeEnable=true;
@@ -105,24 +171,29 @@ class _AppBodyState extends State<AppBody> {
 
 
         if(Page==3){
-          NavigateTo.animateToPage(2, duration: Duration(milliseconds: 500), curve: Curves.easeOutBack);
+          NavigateTo.animateToPage(2, duration: Duration(milliseconds: AnimationDuration), curve: Curves.easeOutBack);
         }
 
         if(Page<3){
           setState(() {
+            showBottomNavigationBar=true;
             isSwipeEnable=true;
           });
+
+
         }
 
         if(Page==4 || Page==5 || Page==6){
           //Si la pagina corresponde al calendario o al Transporte o el mapa
           setState(() {
             isSwipeEnable=false;
+            showBottomNavigationBar=false;
           });
         }
 
 
-    print("SwipeState: "+isSwipeEnable.toString());
+   // print("SwipeState: "+isSwipeEnable.toString());
+    print("\n\n");
   }
 
 
@@ -134,7 +205,7 @@ class BodyPages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Page loaded: $index}');
+    //print('Page loaded: $index}');
 
     switch(index){
       case 0: return Inicio_view; break;

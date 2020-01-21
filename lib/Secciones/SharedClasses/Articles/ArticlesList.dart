@@ -382,50 +382,53 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
 
               },
             ),
-        AnimatedContainer(
-          // Use the properties stored in the State class.
-          width: double.infinity,
-          height:MoreHeigh,
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, MoreHeigh>0?45:0),
+              child: AnimatedContainer(
+                // Use the properties stored in the State class.
+                width: double.infinity,
+                height:MoreHeigh,
 
-          decoration: BoxDecoration(
-              //color: Color.fromRGBO(27, 55, 94,1),
-              //borderRadius:BorderRadius.circular(50),
-          ),
-          // Define how long the animation should take.
-          duration: Duration(milliseconds: 500),
-          // Provide an optional curve to make the animation feel smoother.
-          curve: Curves.fastOutSlowIn,
-          child: ShowMoreLoadingAnimation ? Center(child: Padding(padding: EdgeInsets.all(4),child: CircularProgressIndicator(),),) : FlatButton(
-            child: isAllArticlesDisplayed ? Text("Estos son todos los Articulos", style: BaseThemeText_TxtColorBold1) : networkError ? Text("Error de Red ¿Reintentar?", style: BaseThemeText_TxtColorBold1,) : Text('Cargar Mas', style: BaseThemeText_TxtColorBold1),
-            onPressed: ()async {
-              int NetworkAvailable= await networkConnectionCkeck();
-              print("Network: "+ NetworkAvailable.toString()+" isAllArticlesDisplay: "+ isAllArticlesDisplayed.toString()+" isRefreshing: "+isRefreshing.toString());
-              if((isAllArticlesDisplayed==false && isRefreshing==false) && NetworkAvailable==1){
-                if(databaseload==true){
-                  setState((){ShowMoreLoadingAnimation=true;});
-                  await InitialDataSource();
-                  Future.delayed(Duration(milliseconds: 500),(){
-                    setState(() {ShowMoreLoadingAnimation=false;});
-                  });
+                decoration: BoxDecoration(
+                  //ycolor: Colors.orange,
+                  //borderRadius:BorderRadius.circular(50),
+                ),
+                // Define how long the animation should take.
+                duration: Duration(milliseconds: 500),
+                // Provide an optional curve to make the animation feel smoother.
+                curve: Curves.fastOutSlowIn,
+                child: ShowMoreLoadingAnimation ? Center(child: Padding(padding: EdgeInsets.all(4),child: CircularProgressIndicator(),),) : FlatButton(
+                  child: isAllArticlesDisplayed ? Text("Estos son todos los Articulos", style: BaseThemeText_TxtColorBold1) : networkError ? Text("Error de Red ¿Reintentar?", style: BaseThemeText_TxtColorBold1,) : Text('Cargar Mas', style: BaseThemeText_TxtColorBold1),
+                  onPressed: ()async {
+                    int NetworkAvailable= await networkConnectionCkeck();
+                    print("Network: "+ NetworkAvailable.toString()+" isAllArticlesDisplay: "+ isAllArticlesDisplayed.toString()+" isRefreshing: "+isRefreshing.toString());
+                    if((isAllArticlesDisplayed==false && isRefreshing==false) && NetworkAvailable==1){
+                      if(databaseload==true){
+                        setState((){ShowMoreLoadingAnimation=true;});
+                        await InitialDataSource();
+                        Future.delayed(Duration(milliseconds: 500),(){
+                          setState(() {ShowMoreLoadingAnimation=false;});
+                        });
 
-                }else{
-                  //Aumento la paginación y solicito los datos al servidor
-                  if(!networkError){Pagina++;}else{networkError=false;}
-                  setState(() {
-                    ShowMoreLoadingAnimation=true;
-                    ServerCall();
-                  });
-                }
-              }else{
-                print("Lanzando aqui");
-                    setState((){ShowMoreLoadingAnimation=true;});
-                    Future.delayed(Duration(milliseconds: 500),(){
-                      setState(() {ShowMoreLoadingAnimation=false;});
-                    });
-              }
-            },
-          ),
-        )
+                      }else{
+                        //Aumento la paginación y solicito los datos al servidor
+                        if(!networkError){Pagina++;}else{networkError=false;}
+                        setState(() {
+                          ShowMoreLoadingAnimation=true;
+                          ServerCall();
+                        });
+                      }
+                    }else{
+                      print("Lanzando aqui");
+                      setState((){ShowMoreLoadingAnimation=true;});
+                      Future.delayed(Duration(milliseconds: 500),(){
+                        setState(() {ShowMoreLoadingAnimation=false;});
+                      });
+                    }
+                  },
+                ),
+              ),
+            )
 
 
 
