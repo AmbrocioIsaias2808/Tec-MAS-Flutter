@@ -8,10 +8,11 @@ import 'package:tecmas/Secciones/SharedClasses/Articles/NotificationArticleViewe
 import 'package:tecmas/Secciones/SharedClasses/Articles/SavedArticles.dart';
 import 'package:tecmas/Secciones/SharedClasses/CustomAppBar.dart';
 import 'package:tecmas/Secciones/SharedClasses/ServerSettings.dart';
+import 'package:tecmas/Secciones/SharedClasses/SharedPreferencesManager.dart';
 import 'package:tecmas/Secciones/pol.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
 import 'package:preload_page_view/preload_page_view.dart';
-//import 'package:tecmas/Notifications/OneSignal/OneSignal.dart';
+import 'package:tecmas/Notifications/OneSignal/OneSignal.dart';
 
 
 import 'Secciones/Calendario/Widget_Calendario.dart';
@@ -22,6 +23,7 @@ import 'Secciones/Transporte/Widget_Transporte.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 final NotificationSystem notification = new NotificationSystem();
+final sharedPreferenceManager SharedPreferenceManager =sharedPreferenceManager();
 
 final NavigateTo = PreloadPageController(initialPage: 0);
 
@@ -53,6 +55,7 @@ class _AppState extends State<App> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    if(!mounted) return;
     notification.setNavigator(navigatorKey);
     notification.init();
   }

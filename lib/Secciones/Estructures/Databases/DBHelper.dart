@@ -26,7 +26,6 @@ class DBHelper{
   static const String DATE="date";
 
 
-
   Future<Database> get db async{
     if(_db!=null){
       return _db;

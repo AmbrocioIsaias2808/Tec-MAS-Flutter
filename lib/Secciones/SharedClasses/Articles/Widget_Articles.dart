@@ -5,7 +5,10 @@ import 'package:tecmas/Secciones/SharedClasses/Articles/SavedArticles.dart';
 import 'package:tecmas/Secciones/SharedClasses/CustomAppBar.dart';
 import 'package:tecmas/Secciones/Transporte/Widget_Transporte.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
+import 'package:tecmas/Notifications/OneSignal/OneSignal.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
+import '../../../main.dart';
 import 'ArticlesList.dart';
 
 class Widget_Articles extends StatefulWidget {
@@ -46,6 +49,14 @@ class _Widget_ArticlesState extends State<Widget_Articles> with AutomaticKeepAli
         )
       ],
       ),
+      /*floatingActionButton: FloatingActionButton(
+        heroTag: UniqueKey(),
+        child: Icon(Icons.send),
+        onPressed: (){
+
+          notification.notificationInitConfiguration();
+        },
+      ),*/
       extendBodyBehindAppBar: true,
       drawer: BarraDeNavegacion(),
       body: ArticlesList(Category: Category),
