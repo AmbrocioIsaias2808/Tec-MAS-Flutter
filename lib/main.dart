@@ -58,6 +58,7 @@ class _AppState extends State<App> {
     if(!mounted) return;
     notification.setNavigator(navigatorKey);
     notification.init();
+    notification.notificationInitConfiguration();
   }
 
   @override

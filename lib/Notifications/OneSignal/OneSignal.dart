@@ -42,10 +42,6 @@ class NotificationSystem{
       //navigatorKey.currentState.pushNamed('/SII');
     });
 
-    if(await SharedPreferenceManager.readBool(SharedPreferenceManager.Key_CIDN)==false){
-      notificationInitConfiguration();
-    }
-
   }
 
 
@@ -77,17 +73,22 @@ class NotificationSystem{
 
   }
 
-  void notificationInitConfiguration() async {
-    var status = await OneSignal.shared.getPermissionSubscriptionState();
-    var notification=OSCreateNotification(
-      playerIds: [status.subscriptionStatus.userId],
-      heading: "Configuración Inicial",
-      content: "Por favor haz click aquí para configurar la apertura de notificaciones. Puedes elegir abrirlas directamente en la aplicación o en tu navegador favorito. En cualquier caso te redirigiremos a un articulo de prueba, despues de ello la configuración habrá terminado. (Si ya has configurado esto previamente ignora el mensaje)",
-      url: "https://wordpresspruebas210919.000webhostapp.com/?p=548",
-    );
-    print("mandando notificacion");
+  void notificationInitConfiguration() {
+    print("Notificacion: ");
+    Future.delayed(Duration(seconds: 10),()async{
+      if(await SharedPreferenceManager.readBool(SharedPreferenceManager.Key_CIDN)==false){
+        var status = await OneSignal.shared.getPermissionSubscriptionState();
+        var notification=OSCreateNotification(
+          playerIds: [status.subscriptionStatus.userId],
+          heading: "Configuración Inicial",
+          content: "Por favor haz click aquí para configurar la apertura de notificaciones. Puedes elegir abrirlas directamente en la aplicación o en tu navegador favorito. En cualquier caso, despues de elegir seras rederigido a otra pantalla finalizando así la configuración. (Si ya has configurado esto previamente ignora el mensaje)",
+          url: "https://wordpresspruebas210919.000webhostapp.com/?p=548",
+        );
+        print("mandando notificacion");
 
-    var response = await OneSignal.shared.postNotification(notification);
+        var response = await OneSignal.shared.postNotification(notification);
+      }
+    });
 
     /*
     *
