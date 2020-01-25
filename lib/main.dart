@@ -26,6 +26,7 @@ final NotificationSystem notification = new NotificationSystem();
 final sharedPreferenceManager SharedPreferenceManager =sharedPreferenceManager();
 
 final NavigateTo = PreloadPageController(initialPage: 0);
+GlobalKey<ScaffoldState> ParentScaffoldkey = new GlobalKey<ScaffoldState>();
 
 ServerSettings serverSettings = new ServerSettings();
 
@@ -36,6 +37,11 @@ Widget Calendario_view=Widget_Calendario(url: "http://www.itmatamoros.edu.mx/wp-
 Widget Transporte_view=Widget_Transporte();
 
 /*Pagina 3:*/
+
+void OpenParentDrawer(){
+  print("Opening");
+  ParentScaffoldkey.currentState.openDrawer();
+}
 
 
 void main(){
@@ -85,11 +91,33 @@ class AppBody extends StatefulWidget {
   _AppBodyState createState() => _AppBodyState();
 }
 
+List<BottomNavigationBarItem> buildBottomNavBarItems() {
+  return [
+    BottomNavigationBarItem(
+      backgroundColor: Colors.white,
+        icon: new Icon(Icons.dashboard),
+        title: new Text(''),
+    ),
+    BottomNavigationBarItem(
+      icon: new Icon(Icons.account_balance),
+      title: new Text(''),
+    ),
+    BottomNavigationBarItem(
+        icon: Icon(Icons.local_hospital),
+        title: Text('')
+    )
+  ];
+}
+
 class _AppBodyState extends State<AppBody> {
+
+  int  bottomSelectedIndex;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: PreloadPageView.builder(
+    return Scaffold(
+      drawer: BarraDeNavegacion(),
+      key: ParentScaffoldkey,
+      body:PreloadPageView.builder(
         physics: isSwipeEnable ? AlwaysScrollableScrollPhysics() : NeverScrollableScrollPhysics(),
         preloadPagesCount: 5,
         itemCount: 7,
@@ -100,7 +128,23 @@ class _AppBodyState extends State<AppBody> {
           PagerMovementRestrictor(position);
 
         },
+      ),extendBody: true,
+      bottomNavigationBar: SizedBox(
+        height: 50,
+        child: isSwipeEnable?BottomNavigationBar(
+          onTap: (index) {
+            NavigateTo.animateToPage(index, duration: Duration(seconds: 1), curve: Curves.easeOutCubic);
+          },
+          currentIndex:bottomSelectedIndex,
+          items: buildBottomNavBarItems(),
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          backgroundColor: Colors.white,
+          selectedItemColor: BaseThemeColor_DarkBlue,
+          iconSize: 20,
+        ):null,
       ),
+
     );
   }
 
@@ -114,6 +158,7 @@ class _AppBodyState extends State<AppBody> {
 
         if(Page<3){
           setState(() {
+            bottomSelectedIndex =Page;
             isSwipeEnable=true;
           });
         }

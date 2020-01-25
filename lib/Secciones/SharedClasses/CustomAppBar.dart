@@ -9,11 +9,12 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget{
   PreferredSizeWidget bottom;
   Key key;
   bool withShape;
+  Widget leadingButton;
   static const dynamic Height=Size.fromHeight(56.0);
 
   static const List<Widget> vacio=[];
 
-  CustomAppBar({this.title="", this.actions=vacio, this.bottom , this.key, this.preferredSize=Height, this.withShape=true}) : super(key: key);
+  CustomAppBar({this.title="", this.actions=vacio, this.bottom , this.key, this.preferredSize=Height, this.withShape=true, this.leadingButton=null}) : super(key: key);
 
   @override
   _CustomAppBarState createState() => _CustomAppBarState(title: title, actions: actions, bottom: bottom, key: key);
@@ -37,6 +38,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
     return ClipPath(
       clipper: widget.withShape? figura():null,
       child: AppBar(
+        leading: widget.leadingButton,
         key: key,
         title: Text(title),
         bottom: bottom,

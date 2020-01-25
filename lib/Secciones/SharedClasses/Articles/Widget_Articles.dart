@@ -5,18 +5,16 @@ import 'package:tecmas/Secciones/SharedClasses/Articles/SavedArticles.dart';
 import 'package:tecmas/Secciones/SharedClasses/CustomAppBar.dart';
 import 'package:tecmas/Secciones/Transporte/Widget_Transporte.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
-import 'package:tecmas/Notifications/OneSignal/OneSignal.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:tecmas/main.dart';
 
-import '../../../main.dart';
 import 'ArticlesList.dart';
 
 class Widget_Articles extends StatefulWidget {
 
-final String SeccionTitle;
-final int Category;
+  final String SeccionTitle;
+  final int Category;
 
-Widget_Articles({@required this.SeccionTitle, @required this.Category});
+  Widget_Articles({@required this.SeccionTitle, @required this.Category});
 
   @override
   _Widget_ArticlesState createState() => _Widget_ArticlesState(SeccionTitle: SeccionTitle, Category: Category);
@@ -48,20 +46,14 @@ class _Widget_ArticlesState extends State<Widget_Articles> with AutomaticKeepAli
           },
         )
       ],
+          leadingButton: IconButton(icon: new Icon(
+              Icons.menu
+          ),onPressed:(){OpenParentDrawer();},)
       ),
-      /*floatingActionButton: FloatingActionButton(
-        heroTag: UniqueKey(),
-        child: Icon(Icons.send),
-        onPressed: (){
-
-          notification.notificationInitConfiguration();
-        },
-      ),*/
       extendBodyBehindAppBar: true,
-      drawer: BarraDeNavegacion(),
       body: ArticlesList(Category: Category),
     );
-      }
+  }
 
   @override
   bool get wantKeepAlive => true;
