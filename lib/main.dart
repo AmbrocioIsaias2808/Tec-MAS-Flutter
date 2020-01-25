@@ -111,7 +111,7 @@ List<BottomNavigationBarItem> buildBottomNavBarItems() {
 
 class _AppBodyState extends State<AppBody> {
 
-  int  bottomSelectedIndex;
+  int  bottomSelectedIndex=0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,17 +131,21 @@ class _AppBodyState extends State<AppBody> {
       ),extendBody: true,
       bottomNavigationBar: SizedBox(
         height: 50,
-        child: isSwipeEnable?BottomNavigationBar(
-          onTap: (index) {
-            NavigateTo.animateToPage(index, duration: Duration(seconds: 1), curve: Curves.easeOutCubic);
-          },
-          currentIndex:bottomSelectedIndex,
-          items: buildBottomNavBarItems(),
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          backgroundColor: Colors.white,
-          selectedItemColor: BaseThemeColor_DarkBlue,
-          iconSize: 20,
+        child: isSwipeEnable?ClipPath(
+          clipper: figura2(),
+          child: BottomNavigationBar(
+            onTap: (index) {
+              NavigateTo.animateToPage(index, duration: Duration(seconds: 1), curve: Curves.easeOutCubic);
+            },
+            currentIndex:bottomSelectedIndex,
+            items: buildBottomNavBarItems(),
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            backgroundColor: BaseThemeColor_DarkBlue,
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.white70,
+            iconSize: 20,
+          ),
         ):null,
       ),
 
@@ -197,3 +201,20 @@ class BodyPages extends StatelessWidget {
   }
 }
 
+class figura2 extends CustomClipper<Path> {
+  var radius=10.0;
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.lineTo(18, 0);
+    path.lineTo(0, 18);
+    path.lineTo(0, size.height);
+    path.lineTo(size.width, size.height);
+    path.lineTo(size.width, 18);
+    path.lineTo(size.width-18, 0);
+    path.close();
+    return path;
+  }
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
