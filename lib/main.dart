@@ -7,6 +7,7 @@ import 'package:tecmas/Secciones/SII/Widget_SII.dart';
 import 'package:tecmas/Secciones/SharedClasses/Articles/NotificationArticleViewer.dart';
 import 'package:tecmas/Secciones/SharedClasses/Articles/SavedArticles.dart';
 import 'package:tecmas/Secciones/SharedClasses/CustomAppBar.dart';
+import 'package:tecmas/Secciones/SharedClasses/CustomBottomNavigationBar.dart';
 import 'package:tecmas/Secciones/SharedClasses/ServerSettings.dart';
 import 'package:tecmas/Secciones/SharedClasses/SharedPreferencesManager.dart';
 import 'package:tecmas/Secciones/pol.dart';
@@ -94,7 +95,6 @@ class AppBody extends StatefulWidget {
 List<BottomNavigationBarItem> buildBottomNavBarItems() {
   return [
     BottomNavigationBarItem(
-      backgroundColor: Colors.white,
         icon: new Icon(Icons.dashboard),
         title: new Text(''),
     ),
@@ -129,23 +129,21 @@ class _AppBodyState extends State<AppBody> {
 
         },
       ),extendBody: true,
+      resizeToAvoidBottomInset: true,
       bottomNavigationBar: SizedBox(
-        height: 50,
-        child: isSwipeEnable?ClipPath(
-          clipper: figura2(),
-          child: BottomNavigationBar(
-            onTap: (index) {
-              NavigateTo.animateToPage(index, duration: Duration(seconds: 1), curve: Curves.easeOutCubic);
-            },
-            currentIndex:bottomSelectedIndex,
-            items: buildBottomNavBarItems(),
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
-            backgroundColor: BaseThemeColor_DarkBlue,
-            selectedItemColor: Colors.white,
-            unselectedItemColor: Colors.white70,
-            iconSize: 20,
-          ),
+        height: 40,
+        child: isSwipeEnable?CustomBottomNavBar(
+          onTap: (index) {
+            NavigateTo.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.easeOutCubic);
+          },
+          currentIndex:bottomSelectedIndex,
+          items: buildBottomNavBarItems(),
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          backgroundColor: BaseThemeColor_DarkBlue,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white70,
+          iconSize: 18,
         ):null,
       ),
 
@@ -199,22 +197,4 @@ class BodyPages extends StatelessWidget {
       case 6: return Scaffold(appBar: CustomAppBar(withShape: true,title: "Mapa"), drawer: BarraDeNavegacion(), body:Center(child: Text("En Desarrollo"),)); break;
     }
   }
-}
-
-class figura2 extends CustomClipper<Path> {
-  var radius=10.0;
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-    path.lineTo(18, 0);
-    path.lineTo(0, 18);
-    path.lineTo(0, size.height);
-    path.lineTo(size.width, size.height);
-    path.lineTo(size.width, 18);
-    path.lineTo(size.width-18, 0);
-    path.close();
-    return path;
-  }
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
