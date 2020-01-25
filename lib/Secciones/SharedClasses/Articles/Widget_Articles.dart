@@ -49,14 +49,14 @@ class _Widget_ArticlesState extends State<Widget_Articles> with AutomaticKeepAli
         )
       ],
       ),
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
         heroTag: UniqueKey(),
         child: Icon(Icons.send),
         onPressed: (){
 
           notification.notificationInitConfiguration();
         },
-      ),
+      ),*/
       extendBodyBehindAppBar: true,
       drawer: BarraDeNavegacion(),
       body: ArticlesList(Category: Category),
