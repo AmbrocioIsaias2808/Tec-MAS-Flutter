@@ -131,7 +131,7 @@ class _AppBodyState extends State<AppBody> {
       ),extendBody: true,
       resizeToAvoidBottomInset: true,
       bottomNavigationBar: SizedBox(
-        height: 40,
+        height: 49,
         child: isSwipeEnable?CustomBottomNavBar(
           onTap: (index) {
             NavigateTo.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.easeOutCubic);
@@ -140,9 +140,9 @@ class _AppBodyState extends State<AppBody> {
           items: buildBottomNavBarItems(),
           showSelectedLabels: false,
           showUnselectedLabels: false,
-          backgroundColor: BaseThemeColor_DarkBlue,
+          backgroundColor:BaseThemeColor_DarkBlue,
           selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.white70,
+          unselectedItemColor: Colors.blue,
           iconSize: 18,
         ):null,
       ),

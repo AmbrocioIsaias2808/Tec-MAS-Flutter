@@ -25,8 +25,8 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return ClipPath(
-      clipper:bottomNavBarFigure(),
-      clipBehavior: Clip.hardEdge,
+      //clipper:bottomNavBarFigure(),
+      clipBehavior: Clip.antiAlias,
       child: BottomNavigationBar(
         onTap: widget.onTap,
         currentIndex:widget.currentIndex,
