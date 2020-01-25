@@ -29,7 +29,7 @@ final NavigateTo = PreloadPageController(initialPage: 0);
 
 ServerSettings serverSettings = new ServerSettings();
 
-Widget Inicio_view=Widget_Articles(SeccionTitle: "Inicio", Category: 2,);
+Widget Inicio_view=Widget_Articles(SeccionTitle: "Inicio", Category: 5,);
 Widget Becas_view=Widget_Articles(SeccionTitle:"Becas", Category: 3,);
 Widget Emergencias_view=Widget_Articles(SeccionTitle:"Emergencias", Category: 4,);
 Widget Calendario_view=Widget_Calendario(url: "http://www.itmatamoros.edu.mx/wp-content/themes/tecnologico/pdf/Calendario_agosto_diciembre_2019.pdf",);

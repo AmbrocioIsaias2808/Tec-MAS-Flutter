@@ -348,7 +348,9 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
                   child:articulos.isEmpty && isRefreshing?
                   BasicMSGDialog(Title: "Conectando...", Description: "Espera unos momentos por favor", ButtonText: "Reiniciar Conexión", MessegeType: 4, ButtonAction:(){initState();}, ButtonColor: Colors.green,ButtonTextColor: Colors.white, )
                       :
-                  BasicMSGDialog(Title: "Oooops!!", Description: "Algo salio mal, ha ocurrido un error innesperado", ButtonText: "¿Reintentar?", MessegeType: 2, ButtonAction: (){initState();}, ButtonColor: Colors.orange, ButtonTextColor: Colors.white,)
+                      articulos.isEmpty && networkError==false? BasicMSGDialog(Title: "HMP", Description: "Algo salio mal, ha ocurrido un error innesperado", ButtonText: "¿Reintentar?", MessegeType: 2, ButtonAction: (){initState();}, ButtonColor: Colors.orange, ButtonTextColor: Colors.white,):
+
+                      BasicMSGDialog(Title: "Oooops!!", Description: "Algo salio mal, ha ocurrido un error innesperado", ButtonText: "¿Reintentar?", MessegeType: 2, ButtonAction: (){initState();}, ButtonColor: Colors.orange, ButtonTextColor: Colors.white,)
                 ) ,)
 
 
