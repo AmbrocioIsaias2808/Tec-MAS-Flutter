@@ -54,6 +54,7 @@ dev_dependencies:
   giffy_dialog: ^1.6.1
   numberpicker: ^1.1.0
   package_info: ^0.4.0+13
+  share: ^0.6.3+5
 
 
   #For management of SQLite Databases:

@@ -66,7 +66,7 @@ class _CustomWebviewState extends State<CustomWebview> {
     if(netState==0 && AlertMessege==false && Mode==1){
       Messege("No he podido conectarme a Internet. Es posible que algunos elementos no se visualicen correctamente.");
     }else if(netState==1 && AlertMessege==true){
-      Messege("Como medida de seguridad te recomendamos cerrar sesión cuando termines tu cosulta");
+      Messege("Como medida de seguridad te recomendamos cerrar sesión cuando termines tu consulta");
     }else if(netState==0 && AlertMessege==true){
       Messege("No he podido conectarme a Internet");
     }

@@ -190,6 +190,7 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
         image: image,
         content: object['content']['rendered'],
         category: Category,
+        url:object["link"],
       );
 
       try {
@@ -348,7 +349,7 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
                   child:articulos.isEmpty && isRefreshing?
                   BasicMSGDialog(Title: "Conectando...", Description: "Espera unos momentos por favor", ButtonText: "Reiniciar Conexión", MessegeType: 4, ButtonAction:(){initState();}, ButtonColor: Colors.green,ButtonTextColor: Colors.white, )
                       :
-                  BasicMSGDialog(Title: "Oooops!!", Description: "Algo salio mal, ha ocurrido un error inesperado", ButtonText: "¿Reintentar?", MessegeType: 2, ButtonAction: (){initState();}, ButtonColor: Colors.orange, ButtonTextColor: Colors.white,)
+                  BasicMSGDialog(Title: "Oooops!!", Description: "Algo salio mal, es probable que aún no haya contendio o un error se produjo al contactar al servidor ", ButtonText: "¿Reintentar?", MessegeType: 2, ButtonAction: (){initState();}, ButtonColor: Colors.orange, ButtonTextColor: Colors.white,)
                 ) ,)
 
 

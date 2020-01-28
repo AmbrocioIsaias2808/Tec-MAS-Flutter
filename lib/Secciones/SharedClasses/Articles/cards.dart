@@ -5,6 +5,7 @@ import 'package:tecmas/Secciones/Estructures/Databases/DBHelper.dart';
 import 'package:tecmas/Secciones/SharedClasses/Articles/ArticleViewer.dart';
 import 'package:tecmas/Secciones/SharedClasses/NetworkImageBox.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
+import 'package:share/share.dart';
 
 import '../CommonlyUsed.dart';
 
@@ -107,14 +108,24 @@ class _CardsState extends State<cards> {
 
                         }else{
                           setState(() {_isSaved=true;});
-                          await DB.saveArticle(Articles.CreateAndSave(num: articulo.num, image: articulo.image, title: articulo.title, content: articulo.content, date: DateTime.now().millisecondsSinceEpoch ));
+                          await DB.saveArticle(Articles.CreateAndSave(num: articulo.num, image: articulo.image, title: articulo.title, content: articulo.content, date: DateTime.now().millisecondsSinceEpoch, url: articulo.url ));
                           ShowSnackWithDelay(context, 1000, BasicSnack("Elemento guardado en tu lista de favoritos"));
 
                         }
                       },
                     )
                         : null,
-                  )
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width-60,0, 15, 0),
+                    child: FloatingActionButton(
+                      backgroundColor: Colors.transparent,
+                      heroTag: UniqueKey(),
+                      child: Icon(Icons.share, color:Colors.white),
+                      elevation: 20,
+                      onPressed: (){Share.share("Noticias TecNM Matamoros\n\n"+articulo.title.toString()+": "+articulo.url.toString());},
+                    ),
+                  ),
 
                 ],
               ),
