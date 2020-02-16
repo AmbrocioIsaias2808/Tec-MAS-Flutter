@@ -4,8 +4,6 @@ import 'dart:convert';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:tecmas/Secciones/SharedClasses/Articles/NotificationArticleViewer.dart';
-import 'package:tecmas/Secciones/Transporte/Widget_Transporte.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../main.dart';
 import 'dart:io' show Platform;
@@ -21,15 +19,14 @@ class NotificationSystem{
     navigatorKey=nav;
   }
 
-  void init() async{
-
-
+  Future<void> init() async{
+    print("Configurando notificaciones");
     OneSignal.shared.init(
         "b43ebbab-e2b2-4b03-8496-0e054bac7c31",
 
         iOSSettings: {
           OSiOSSettings.autoPrompt: false,
-          OSiOSSettings.inAppLaunchUrl: true
+          OSiOSSettings.inAppLaunchUrl: true,
         }
     );
     OneSignal.shared.setInFocusDisplayType(OSNotificationDisplayType.notification);
@@ -41,7 +38,6 @@ class NotificationSystem{
       //String a= result.notification.payload.jsonRepresentation().replaceAll('"{', '{').replaceAll('}"', '}');
 
       //print("Opened notification: \n${a}");
-
      await NotificationArticleOpener(jsonDecode(result.notification.payload.jsonRepresentation().replaceAll('"{', '{').replaceAll('}"', '}')));
       //navigatorKey.currentState.pushNamed('/SII');
     });
@@ -49,7 +45,7 @@ class NotificationSystem{
   }
 
 
-  void NotificationArticleOpener(var jsonData){
+  void NotificationArticleOpener(var jsonData)async{
 
     try{
       String a = jsonData['custom']['u'].toString();
@@ -59,6 +55,12 @@ class NotificationSystem{
         navigatorKey.currentState.popUntil(ModalRoute.withName("/"));
         //navigatorKey.currentState.pushNamedAndRemoveUntil("/", (r) => false);
         navigatorKey.currentState.push(MaterialPageRoute(builder: (context)=>NotificationArticleViewer(articleID: a.substring(52),)));
+        if(await SharedPreferenceManager.readBool(SharedPreferenceManager.Key_CIDN)==false){
+          print("Not registeres");
+          await SharedPreferenceManager.saveBool(SharedPreferenceManager.Key_CIDN, true);
+        }else{
+          print("Ya esta configurada esta wea");
+        }
       }else{
         print("External link");
       }
@@ -69,6 +71,32 @@ class NotificationSystem{
 
 
 
+  }
+
+  void notificationInitConfiguration() {
+    print("Notificacion: ");
+    Future.delayed(Duration(seconds: 10),()async{
+      if(await SharedPreferenceManager.readBool(SharedPreferenceManager.Key_CIDN)==false){
+        var status = await OneSignal.shared.getPermissionSubscriptionState();
+        var notification=OSCreateNotification(
+          playerIds: [status.subscriptionStatus.userId],
+          heading: "Configuración Inicial",
+          content: "Por favor haz click aquí para configurar la apertura de notificaciones. Puedes elegir abrirlas directamente en la aplicación o en tu navegador favorito. En cualquier caso, despues de elegir seras rederigido a otra pantalla finalizando así la configuración. (Si ya has configurado esto previamente ignora el mensaje)",
+          url: "https://wordpresspruebas210919.000webhostapp.com/?p=548",
+        );
+        print("mandando notificacion");
+
+        var response = await OneSignal.shared.postNotification(notification);
+      }
+    });
+
+    /*
+    *
+
+    this.setState(() {
+      _debugLabelString = "Sent notification with response: $response";
+    });
+    * */
   }
 
 

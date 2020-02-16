@@ -16,18 +16,11 @@ Tec-MAS pretende ser un medio de comunicación y difusión de información entre
 
 La presente versión incorpora las siguientes funciones:
 
-- Permite visualizar todos los artículos dados de alta en la plataforma de wordpress de forma "paginada"
+La presente versión a comparación de la anterior 20.01.05 trae ciertos cambios:
 
-- Se ha mejorado el lector de pdfs usado en la secciòn del calendario, ahora es un widget mas fluido.
-
-- Es posible visualizar los artìculos y navegar por los hipervínculos, sin embargo aùn no se permite descargar archivos.
-
-  Funciones incorporadas y cambios en esta versión:
-
-  * Se ha modificado el tema de colores y el estilo de la barra de navegaciòn.
-  * Se han corregido ciertos bugs y errores en ciertas funcionalidades.
-  * Se han retirado ciertos plugins y se ha agregado soporte para proguard.
-  * El sistema de notificaciones, al menos en desarrollo esta funcionando.
+* Se han corregido bugs y errores en los apartados de noticias relevantes a la carga de datos y peticiones al servidor.
+* Ahora los apartados importantes de la aplicación inician todas las peticiones al servidor en segundo plano al iniciar el aplicativo, esto mejora la fluides al navegar por el aplicativo.
+* Se ha modificado por ende el sistema de navegación, los apartados de noticias pueden ser accedidos al desplazar con el dedo hacia la izquierda.
 
 **Desde el lado del servidor:**
 
@@ -51,7 +44,6 @@ A su vez incorpora ya un sistema de seguridad en el backend, esto utilizando el 
 
 Por ende las solicitudes a la api de wordpress han sido bloqueadas a menos que se envié junto con la petición http las credenciales correspondientes:
 <p align="center"><img src="ReadmeFiles\captura.png" alt=" (1)"/></p>
-
 Además se incorpora el servicio de notificaciones de OneSignal, sin embargo tenemos ciertos bugs o contratiempos:
 
 * En cuanto a este servicio los anteriores problemas han sido corregidos, sin embargo queda solo un ligero dilema mas que problema, se necesita enviar una notificaciòn programada ante la primera apertura de la aplicaciòn para configurar correctamente la apertura de las notificaciones desde la aplicaciòn.
@@ -60,9 +52,8 @@ Además se incorpora el servicio de notificaciones de OneSignal, sin embargo ten
 
 - En la vista de calendario estoy conciente que es probable que surjan errores en dispositivos IOS, es asì que entraria en tela de revisiòn ese aspecto.
 - Posiblemente ver la revisiòn del splash screen para dispositivos IOS.
-- Me gustaria mejorar el sistema que solicita los datos al servidor, en esta versiòn y anteriores cada apartado como Inicio, Emergencias y Becas carga de forma inicial cuando se abre su apartado para solicitar la informaciòn a mostrar al servidor, seria genial poder hacer esas peticiones al abrir la aplicaciòn y posteriormente solo mostrar la informaciòn.
-- Checar la integraciòn del mapa interactivo.
-- Posiblemente ver la forma de mejorar el apartado de transporte, seria interesante poder poner mapas de google maps
+- Checar la integración del mapa interactivo, las anteriores pruebas han seguido siendo sin éxito total, puedo poner que están al 88% de ser fructíferas pero se necesitan verificar detalles aún.
+- Posiblemente ver la forma de mejorar el apartado de transporte, seria interesante poder poner mapas tipo google maps.
 
 **Resuelto pero en revisión:**
 
@@ -92,7 +83,7 @@ De la rama TecMAS-19-11-18-(Lector-de-Articulos) a las anteriores necesito agreg
 <p align="center"><img src="ReadmeFiles\ (16).png" alt=" (1)" width="50%"class="" /></p>
 **APK liberado:**
 
-<a href="https://raw.githubusercontent.com/AmbrocioIsaias2808/Tec-MAS-Flutter/TecMAS-20.01.03.02-(PDFViewerAndOpt)/ReadmeFiles/S-20.01.05-fix%20(2).apk" target="_blank">Descargar aquí</a>
+<a href="https://raw.githubusercontent.com/AmbrocioIsaias2808/Tec-MAS-Flutter/TecMAS-20.01.18-(Experimental-PageView)/ReadmeFiles/S-20.01.18.apk" target="_blank">Descargar aquí</a>
 
 ### Mapa Interactivo:
 

@@ -26,7 +26,6 @@ class DBHelper{
   static const String DATE="date";
 
 
-
   Future<Database> get db async{
     if(_db!=null){
       return _db;
@@ -86,7 +85,7 @@ class DBHelper{
     return maps.length;
   }
 
-  Future<List<Articles>> getArticulos(int category) async{
+  Future<List> getArticulos(int category) async{
     var dbClient=await db;
     String Category=category.toString();
     //List<Map> maps = await dbClient.query(TABLE,columns:[ID,NAME]);

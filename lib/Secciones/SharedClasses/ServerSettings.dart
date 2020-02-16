@@ -10,7 +10,9 @@ class ServerSettings{
   static const String _FilterPostByCategories = "/posts?categories=";
 
   /*Server*/ static const String _ApiKey="wFx01QuHh9ybSx82rzZvypurEs1HQpWy";
+<<<<<<< HEAD
   /*Local Server*/ //static const String _ApiKey="lnRwqoS3YoMyrocnuqktRnniLgVN9ElD";
+
 
   ServerSettings();
 

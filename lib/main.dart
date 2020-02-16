@@ -8,9 +8,11 @@ import 'package:tecmas/Secciones/SharedClasses/Articles/NotificationArticleViewe
 import 'package:tecmas/Secciones/SharedClasses/Articles/SavedArticles.dart';
 import 'package:tecmas/Secciones/SharedClasses/CustomAppBar.dart';
 import 'package:tecmas/Secciones/SharedClasses/ServerSettings.dart';
+import 'package:tecmas/Secciones/SharedClasses/SharedPreferencesManager.dart';
 import 'package:tecmas/Secciones/pol.dart';
 import 'package:tecmas/Temas/BaseTheme.dart';
-//import 'package:tecmas/Notifications/OneSignal/OneSignal.dart';
+import 'package:preload_page_view/preload_page_view.dart';
+import 'package:tecmas/Notifications/OneSignal/OneSignal.dart';
 
 
 import 'Secciones/Calendario/Widget_Calendario.dart';
@@ -21,8 +23,9 @@ import 'Secciones/Transporte/Widget_Transporte.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 final NotificationSystem notification = new NotificationSystem();
+final sharedPreferenceManager SharedPreferenceManager =sharedPreferenceManager();
 
-final NavigateTo = PageController();
+final NavigateTo = PreloadPageController(initialPage: 0);
 
 ServerSettings serverSettings = new ServerSettings();
 
@@ -52,8 +55,10 @@ class _AppState extends State<App> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    if(!mounted) return;
     notification.setNavigator(navigatorKey);
     notification.init();
+    notification.notificationInitConfiguration();
   }
 
   @override
@@ -83,17 +88,67 @@ class AppBody extends StatefulWidget {
 class _AppBodyState extends State<AppBody> {
   @override
   Widget build(BuildContext context) {
-    return PageView(
-      controller: NavigateTo,
-      physics: NeverScrollableScrollPhysics(),
-      children: <Widget>[
-        /*Pagina 0:*/ Inicio_view,
-        /*Pagina 1:*/ Becas_view,
-        /*Pagina 2:*/ Calendario_view,
-        /*Pagina 3:*/ Transporte_view,
-        /*Pagina 4:*/ Emergencias_view,
-        /*Pagina 5:*/ Scaffold(appBar: CustomAppBar(title: "Mapa",),drawer: BarraDeNavegacion(),body:Center(child: Text("Mapa Interactivo", style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),),),
-      ],
+    return Container(
+      child: PreloadPageView.builder(
+        physics: isSwipeEnable ? AlwaysScrollableScrollPhysics() : NeverScrollableScrollPhysics(),
+        preloadPagesCount: 5,
+        itemCount: 7,
+        itemBuilder: (BuildContext context, int position) => BodyPages(position),
+        controller: NavigateTo,
+        onPageChanged: (int position) {
+          print('page changed. current: $position');
+          PagerMovementRestrictor(position);
+
+        },
+      ),
     );
   }
+
+  bool isSwipeEnable=true;
+  void PagerMovementRestrictor(int Page){
+
+
+        if(Page==3){
+          NavigateTo.animateToPage(2, duration: Duration(milliseconds: 500), curve: Curves.easeOutBack);
+        }
+
+        if(Page<3){
+          setState(() {
+            isSwipeEnable=true;
+          });
+        }
+
+        if(Page==4 || Page==5 || Page==6){
+          //Si la pagina corresponde al calendario o al Transporte o el mapa
+          setState(() {
+            isSwipeEnable=false;
+          });
+        }
+
+
+    print("SwipeState: "+isSwipeEnable.toString());
+  }
+
+
 }
+
+class BodyPages extends StatelessWidget {
+  BodyPages(this.index);
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    print('Page loaded: $index}');
+
+    switch(index){
+      case 0: return Inicio_view; break;
+      case 1: return Becas_view; break;
+      case 2: return Emergencias_view; break;
+      case 3: return Scaffold(body: Offstage(),); break;
+      case 4: return Calendario_view; break;
+      case 5: return Transporte_view; break;
+      case 6: return Scaffold(appBar: CustomAppBar(withShape: true,title: "Mapa"), drawer: BarraDeNavegacion(), body:Center(child: Text("En Desarrollo"),)); break;
+    }
+  }
+}
+

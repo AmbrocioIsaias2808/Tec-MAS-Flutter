@@ -117,7 +117,7 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
 
             /*Nota del desarrollador - Apuntes Personales
           *
-          * Me sugiero a mi mismo personalizar mediante excepciones personalidas este tipo de errores.
+          * Me sugiero a mi mismo personalizar mediante excepciones este tipo de errores.
           * */
             setState(() {
               isAllArticlesDisplayed=true;
@@ -221,7 +221,7 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
 
 
 
-  Future<List<Articles>> GetArticlesFromServer;
+  Future<List> GetArticlesFromServer;
   final scrollController= ScrollController();
 
   int NumOfArticlesOnDatabase;
@@ -252,10 +252,11 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
 
   }
 
-  void loadFromDatabase(){
+  void loadFromDatabase()async{
+    articulos= await DB.getArticulos(Category);
     setState(() {
               print("Loading from database");
-              GetArticlesFromServer=DB.getArticulos(Category);
+              GetArticlesFromServer= Future.delayed(Duration(microseconds: 0), (){return articulos;});
               print(GetArticlesFromServer);
               databaseload=true;
               ShowSnackWithDelay(context, 1000, BasicSnack(MSG_MostrandoBD));
@@ -292,36 +293,6 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
   bool isRefreshing=false;
   bool databaseload=false;
   final String MSG_MostrandoBD = "Lo siento, no he podido contactar al servidor.";
-
-
-  /*void ShowMoreLoadingAnimationManualControl(){
-    setState((){
-      print(ShowMoreLoadingAnimation);
-     ShowMoreLoadingAnimation=true;
-    });
-
-    Future.delayed(Duration(milliseconds: 500),(){
-      setState(() {
-        ShowMoreLoadingAnimation=false;
-        print(ShowMoreLoadingAnimation);
-      });
-    });
-  }*/
-
-
-  /*Future networkConnectionCkeck() async{
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        return 1;
-      }
-    } on SocketException catch (_) {
-      setState(() {
-        networkError=true;
-      });
-      return 0;
-    }
-  }*/
 
   Future networkConnectionCkeck() async{
     int netState = await NetworkConnectionCkeck();
@@ -377,7 +348,7 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
                   child:articulos.isEmpty && isRefreshing?
                   BasicMSGDialog(Title: "Conectando...", Description: "Espera unos momentos por favor", ButtonText: "Reiniciar Conexión", MessegeType: 4, ButtonAction:(){initState();}, ButtonColor: Colors.green,ButtonTextColor: Colors.white, )
                       :
-                  BasicMSGDialog(Title: "Oooops!!", Description: "Algo salio mal, ha ocurrido un error innesperado", ButtonText: "¿Reintentar?", MessegeType: 2, ButtonAction: (){initState();}, ButtonColor: Colors.orange, ButtonTextColor: Colors.white,)
+                  BasicMSGDialog(Title: "Oooops!!", Description: "Algo salio mal, ha ocurrido un error inesperado", ButtonText: "¿Reintentar?", MessegeType: 2, ButtonAction: (){initState();}, ButtonColor: Colors.orange, ButtonTextColor: Colors.white,)
                 ) ,)
 
 
@@ -430,22 +401,21 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
               int NetworkAvailable= await networkConnectionCkeck();
               print("Network: "+ NetworkAvailable.toString()+" isAllArticlesDisplay: "+ isAllArticlesDisplayed.toString()+" isRefreshing: "+isRefreshing.toString());
               if((isAllArticlesDisplayed==false && isRefreshing==false) && NetworkAvailable==1){
-                  if(databaseload==true){
+                if(databaseload==true){
+                  setState((){ShowMoreLoadingAnimation=true;});
+                  await InitialDataSource();
+                  Future.delayed(Duration(milliseconds: 500),(){
+                    setState(() {ShowMoreLoadingAnimation=false;});
+                  });
 
-                    setState((){ShowMoreLoadingAnimation=true;});
-                    await InitialDataSource();
-                    Future.delayed(Duration(milliseconds: 500),(){
-                      setState(() {ShowMoreLoadingAnimation=false;});
-                    });
-
-                  }else{
-                        //Aumento la paginación y solicito los datos al servidor
-                        Pagina++;
-                        setState(() {
-                          ShowMoreLoadingAnimation=true;
-                          ServerCall();
-                        });
-                  }
+                }else{
+                  //Aumento la paginación y solicito los datos al servidor
+                  if(!networkError){Pagina++;}else{networkError=false;}
+                  setState(() {
+                    ShowMoreLoadingAnimation=true;
+                    ServerCall();
+                  });
+                }
               }else{
                 print("Lanzando aqui");
                     setState((){ShowMoreLoadingAnimation=true;});
@@ -453,7 +423,6 @@ class _ArticlesListState extends State<ArticlesList> with AutomaticKeepAliveClie
                       setState(() {ShowMoreLoadingAnimation=false;});
                     });
               }
-
             },
           ),
         )

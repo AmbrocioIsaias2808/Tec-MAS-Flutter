@@ -19,10 +19,10 @@ class Widget_Transporte extends StatefulWidget {
 class _Widget_TransporteState extends State<Widget_Transporte> {
 
   static const List<String> ruta=[
-    /*Ruta 1: */ 'http://www.itmatamoros.edu.mx/wp-content/uploads/2019/02/Ruta-Tec-1-2019.jpg',
-    /*Ruta 2: */ 'http://www.itmatamoros.edu.mx/wp-content/uploads/2019/02/Ruta-Tec-2-2019.jpg',
-    /*Ruta 3: */ 'http://www.itmatamoros.edu.mx/wp-content/uploads/2019/02/Ruta-Tec-3-2019.jpg',
-    /*Ruta 4: */ 'http://www.itmatamoros.edu.mx/wp-content/uploads/2019/02/Ruta-Tec-1-2019.jpg',
+    /*Ruta 1: */ 'https://wordpresspruebas210919.000webhostapp.com/AppMedia/Ruta-Tec-1-2019.jpg',
+    /*Ruta 2: */ 'https://wordpresspruebas210919.000webhostapp.com/AppMedia/Ruta-Tec-2-2019.jpg',
+    /*Ruta 3: */ 'https://wordpresspruebas210919.000webhostapp.com/AppMedia/Ruta-Tec-3-2019.jpg',
+    /*Ruta 4: */ 'https://wordpresspruebas210919.000webhostapp.com/AppMedia/Ruta-Tec-1-2019.jpg',
   ];
 
   final NumeroDeRutas=ruta.length;
